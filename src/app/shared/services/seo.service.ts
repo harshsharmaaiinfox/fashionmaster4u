@@ -33,6 +33,16 @@ export class SeoService {
   ) { }
 
   /**
+   * Set favicon dynamically
+   */
+  setFavicon(url: string): void {
+    const favIcon = this.document.getElementById('appIcon') as HTMLLinkElement;
+    if (favIcon) {
+      favIcon.href = `${url}?v=fashion4u-2`;
+    }
+  }
+
+  /**
    * Set comprehensive SEO data including meta tags and structured data
    * Works on both server and client side
    */
@@ -439,6 +449,7 @@ export class SeoService {
       type: 'website',
       url: 'https://FashionMaster4u.com/'
     });
+    this.setFavicon('assets/images/fashion4ufav.png');
   }
 
   /**
