@@ -1,0 +1,58 @@
+.payment-icon {
+    max-width: 175px;
+}
+
+.payment-option {
+    width: 100%;
+
+    .payment-category {
+        border: 2px solid #E0E0E0;
+        border-radius: 8px;
+        padding: 16px 20px;
+        transition: all 0.3s ease;
+        cursor: pointer;
+        background: white;
+
+        &:hover {
+            border-color: #1B4B45;
+            box-shadow: 0 4px 16px rgba(27, 75, 69, 0.15);
+        }
+
+        .form-check {
+            margin: 0;
+
+            .form-check-input {
+                width: 20px;
+                height: 20px;
+                border: 2px solid #E0E0E0;
+                cursor: pointer;
+
+                &:checked {
+                    background-color: #1B4B45;
+                    border-color: #1B4B45;
+                }
+
+                &:focus {
+                    box-shadow: 0 0 0 4px rgba(27, 75, 69, 0.1);
+                }
+            }
+
+            .form-check-label {
+                font-weight: 600;
+                color: #212121;
+                font-size: 16px;
+                cursor: pointer;
+                display: flex;
+                align-items: center;
+                gap: 12px;
+                width: 100%;
+            }
+        }
+    }
+
+    .payment-category:has(.form-check-input:checked) {
+        border-color: #1B4B45;
+        background: rgba(27, 75, 69, 0.05);
+        box-shadow: 0 4px 16px rgba(27, 75, 69, 0.15);
+    }
+}

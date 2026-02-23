@@ -1,0 +1,144 @@
+<footer class="footer-section">
+
+    <!-- ── Top Accent Bar ── -->
+    <div class="footer-top-bar">
+        <div class="container-fluid-lg">
+            <div class="footer-top-inner">
+                <span class="footer-top-text">
+                    <i class="ri-shield-check-line"></i>
+                    Secure Payments &nbsp;·&nbsp;
+                    <i class="ri-truck-line"></i>
+                    Fast Delivery &nbsp;·&nbsp;
+                    <i class="ri-refresh-line"></i>
+                    Easy Returns &nbsp;·&nbsp;
+                    <i class="ri-customer-service-2-line"></i>
+                    24/7 Support
+                </span>
+            </div>
+        </div>
+    </div>
+
+    <!-- ── Main Footer Body ── -->
+    <div class="footer-body">
+        <div class="container-fluid-lg">
+            <div class="footer-grid">
+
+                <!-- Col 1: Brand -->
+                <div class="footer-col footer-col--brand">
+                    <div class="footer-logo-wrap">
+                        <img src="assets/images/logo.png" alt="FashionMaster4u Logo" class="footer-logo-img">
+                    </div>
+                    <p class="footer-tagline">
+                        Elevate your style with our premium collection. Quality, comfort, and elegance in every stitch.
+                    </p>
+                    <!-- Social Pills -->
+                    <div class="footer-social-pills">
+                        <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" aria-label="Facebook"
+                            class="social-pill">
+                            <i class="ri-facebook-fill"></i>
+                        </a>
+                        <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" aria-label="Instagram"
+                            class="social-pill">
+                            <i class="ri-instagram-line"></i>
+                        </a>
+                        <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" aria-label="Twitter"
+                            class="social-pill">
+                            <i class="ri-twitter-x-line"></i>
+                        </a>
+                        <a href="https://youtube.com" target="_blank" rel="noopener noreferrer" aria-label="YouTube"
+                            class="social-pill">
+                            <i class="ri-youtube-line"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Col 2: Quick Links -->
+                <div class="footer-col">
+                    <h5 class="footer-col-title">Quick Links</h5>
+                    <ul class="footer-links">
+                        <li><a routerLink="/about-us"><i class="ri-arrow-right-s-line"></i>About Us</a></li>
+                        <li><a routerLink="/term-condition"><i class="ri-arrow-right-s-line"></i>Terms & Conditions</a>
+                        </li>
+                        <li><a routerLink="/privacy-policy"><i class="ri-arrow-right-s-line"></i>Privacy Policy</a></li>
+                        <li><a routerLink="/return-policy"><i class="ri-arrow-right-s-line"></i>Return Policy</a></li>
+                        <li><a routerLink="/shipping-policy"><i class="ri-arrow-right-s-line"></i>Shipping Policy</a>
+                        </li>
+                        <li><a routerLink="/Contact-Us"><i class="ri-arrow-right-s-line"></i>Contact Us</a></li>
+                    </ul>
+                </div>
+
+                <!-- Col 3: Contact Info -->
+                <div class="footer-col">
+                    <h5 class="footer-col-title">Get In Touch</h5>
+                    <ul class="footer-contact-list">
+                        <li>
+                            <div class="contact-icon"><i class="ri-map-pin-2-fill"></i></div>
+                            <span>Plot no.3, F/F Third Floor, Shop No.20, Dharamvir Market, Main Mathura Road, Badarpur,
+                                Near Sibel Cinema, South Delhi, New Delhi, Delhi, India, 110044</span>
+                        </li>
+                        <li>
+                            <div class="contact-icon"><i class="ri-phone-fill"></i></div>
+                            <span>+91 8447543032</span>
+                        </li>
+                        <li>
+                            <div class="contact-icon"><i class="ri-mail-fill"></i></div>
+                            <a href="mailto:info@fashionmaster4u.com"
+                                class="contact-link">info&#64;fashionmaster4u.com</a>
+                        </li>
+                        <li>
+                            <div class="contact-icon"><i class="ri-global-line"></i></div>
+                            <a href="https://fashionmaster4u.com/" target="_blank" rel="noopener noreferrer"
+                                class="contact-link">fashionmaster4u.com</a>
+                        </li>
+                        <li>
+                            <div class="contact-icon"><i class="ri-time-fill"></i></div>
+                            <span>Mon – Sat: 9:00 AM – 8:00 PM</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Col 4: Newsletter -->
+                <div class="footer-col">
+                    <h5 class="footer-col-title">Stay Updated</h5>
+                    <p class="footer-newsletter-text">
+                        Subscribe to get exclusive deals, new arrivals and style inspiration straight to your inbox.
+                    </p>
+                    <div class="footer-newsletter">
+                        <input type="email" placeholder="Your email address" class="newsletter-input">
+                        <button class="newsletter-btn" aria-label="Subscribe">
+                            <i class="ri-send-plane-fill"></i>
+                        </button>
+                    </div>
+                    <p class="footer-newsletter-note">
+                        <i class="ri-lock-line"></i> We respect your privacy. No spam, ever.
+                    </p>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- ── Footer Bottom Bar ── -->
+    <div class="footer-bottom-bar">
+        <div class="container-fluid-lg">
+            <div class="footer-bottom-inner">
+                <p class="footer-copyright">
+                    © 2025 <strong>NGOMASTER INFOTECH PRIVATE LIMITED</strong>. All Rights Reserved.
+                </p>
+                <div class="footer-bottom-links">
+                    <a routerLink="/privacy-policy">Privacy</a>
+                    <span class="sep">·</span>
+                    <a routerLink="/term-condition">Terms</a>
+                    <span class="sep">·</span>
+                    <a routerLink="/sitemap">Sitemap</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Back to Top -->
+    <button class="back-to-top" [class.show]="showBackToTop" (click)="scrollToTop()" aria-label="Back to top">
+        <i class="ri-arrow-up-line"></i>
+    </button>
+
+</footer>

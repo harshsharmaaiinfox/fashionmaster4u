@@ -1,0 +1,505 @@
+// Header menu inline styles
+.header-menu {
+  flex: 1;
+  margin: 0 20px;
+
+  .main-nav {
+    width: 100%;
+
+    .navbar-nav {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      gap: 24px;
+      margin: 0;
+      padding: 0;
+
+      .nav-item {
+        margin: 0;
+
+        .nav-link,
+        a.nav-link,
+        .dropdown-toggle,
+        a.dropdown-toggle {
+          padding: 8px 0;
+          color: #ffffff !important;
+          font-weight: 500;
+          font-size: 15px;
+          font-family: sans-serif;
+          text-decoration: none;
+          transition: all 0.3s ease;
+          position: relative;
+
+          &:hover,
+          &:focus {
+            color: #D4AF37 !important; // Golden yellow accent from banner
+            opacity: 1;
+          }
+
+          &.active {
+            color: #D4AF37 !important; // Golden yellow for active link
+            
+            &::after {
+              content: '';
+              position: absolute;
+              bottom: -4px;
+              left: 0;
+              right: 0;
+              height: 2px;
+              background-color: #D4AF37; // Golden yellow underline
+            }
+          }
+        }
+      }
+    }
+  }
+
+  @media (max-width: 1199px) {
+    display: none;
+  }
+}
+
+// Header styles - always solid background, no overlay
+// Black background with golden accents
+header {
+  position: relative;
+  z-index: 1000;
+  background-color: rgba(0, 0, 0, 0.98); // Black background
+  width: 100%;
+
+  // Prevent overlay behavior
+  &:not(.header-absolute) {
+    position: relative !important;
+  }
+
+  .top-nav {
+    background-color: rgba(0, 0, 0, 0.98); // Black background
+    backdrop-filter: blur(10px);
+    position: relative;
+    z-index: 1001;
+    width: 100%;
+    padding: 16px 0;
+
+    .navbar-top {
+
+        .web-logo,
+        .web-logo a,
+        .web-logo h5 {
+          color: #ffffff !important;
+        }
+
+        .header-menu .main-nav .navbar-nav .nav-item .nav-link {
+          color: #ffffff;
+          transition: color 0.3s ease;
+
+          &:hover {
+            color: #D4AF37; // Golden yellow accent from banner
+          }
+
+          &.active {
+            color: #D4AF37; // Golden yellow for active link
+          }
+        }
+
+        .middle-box {
+          .search-box {
+            .search-input-group {
+              background-color: #ffffff;
+              backdrop-filter: blur(10px);
+              border-color: rgba(255, 255, 255, 0.3);
+
+              .search-input {
+                color: #2c2c2c;
+
+                &::placeholder {
+                  color: #666;
+                }
+              }
+
+              .search-button {
+                background-color: #D4AF37; // Golden yellow matching banner accents
+
+                &:hover {
+                  background-color: #C19A2B; // Darker golden yellow on hover
+                }
+              }
+            }
+          }
+        }
+
+        .rightside-box {
+          .right-side-menu {
+            .right-side {
+              color: #ffffff;
+
+              i {
+                color: #ffffff !important;
+              }
+
+              .header-wishlist,
+              .header-wishlist i,
+              .header-wishlist .badge,
+              .header-wishlist .cil-cart {
+                color: #ffffff !important;
+              }
+
+              .onhover-dropdown {
+                color: #ffffff;
+
+                i {
+                  color: #ffffff !important;
+                }
+              }
+            }
+          }
+        }
+    }
+  }
+
+  // When header is active (sticky)
+  &.active {
+    .top-nav {
+      background-color: rgba(0, 0, 0, 0.98); // Black background
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+    }
+  }
+}
+
+// Adjust navbar-top layout for new structure
+.navbar-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+
+  // Add gap after logo
+  app-logo,
+  .web-logo {
+    margin-right: 40px;
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+
+    .logo-container {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .hexagon-logo {
+      width: 40px;
+      height: 40px;
+      background-color: #ffffff;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      clip-path: polygon(30% 0%, 70% 0%, 100% 50%, 70% 100%, 30% 100%, 0% 50%);
+      flex-shrink: 0;
+
+      .logo-letter {
+        color: #2B5441; // Deep olive green matching banner
+        font-size: 24px;
+        font-weight: 700;
+        font-family: sans-serif;
+        line-height: 1;
+      }
+    }
+
+    .brand-name {
+      color: #ffffff;
+      font-size: 18px;
+      font-weight: 600;
+      font-family: sans-serif;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+
+    img {
+      height: 80px;
+    }
+
+    @media (max-width: 1400px) {
+      margin-right: 30px;
+
+      .hexagon-logo {
+        width: 36px;
+        height: 36px;
+
+        .logo-letter {
+          font-size: 22px;
+        }
+      }
+
+      .brand-name {
+        font-size: 16px;
+      }
+    }
+
+    @media (max-width: 1200px) {
+      margin-right: 20px;
+
+      .hexagon-logo {
+        width: 32px;
+        height: 32px;
+
+        .logo-letter {
+          font-size: 20px;
+        }
+      }
+
+      .brand-name {
+        font-size: 14px;
+      }
+    }
+
+    @media (max-width: 767px) {
+      margin-right: 10px;
+
+      .logo-container {
+        gap: 8px;
+      }
+
+      .hexagon-logo {
+        width: 28px;
+        height: 28px;
+
+        .logo-letter {
+          font-size: 18px;
+        }
+      }
+
+      .brand-name {
+        font-size: 12px;
+      }
+    }
+  }
+
+  .middle-box {
+    margin-left: auto;
+    margin-right: 20px;
+
+    @media (max-width: 1199px) {
+      margin-left: auto;
+      margin-right: 0;
+    }
+  }
+
+  // Ensure menu links match banner colors - Global override
+  .header-menu {
+    .main-nav {
+      .navbar-nav {
+        .nav-item {
+
+          .nav-link,
+          a.nav-link,
+          .dropdown-toggle,
+          a.dropdown-toggle,
+          >a {
+            color: #ffffff !important;
+
+            &:hover,
+            &:focus,
+            &.active,
+            &.show {
+              color: #D4AF37 !important; // Golden yellow accent from banner
+            }
+          }
+        }
+      }
+    }
+  }
+
+  // Ensure cart icon is always white
+  .rightside-box {
+    .right-side-menu {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      list-style: none;
+      margin: 0;
+      padding: 0;
+
+      .right-side {
+        display: flex;
+        align-items: center;
+
+        .header-wishlist,
+        .header-wishlist i,
+        .header-wishlist .cil-cart,
+        .header-icon,
+        .header-icon i,
+        .swap-icon,
+        .swap-icon i {
+          color: #ffffff !important;
+        }
+      }
+    }
+  }
+}
+
+// Mobile Responsive Styles
+@media (max-width: 1199px) {
+  .navbar-top {
+    padding: 10px 0;
+
+    .web-logo {
+      margin-right: 15px !important;
+
+      img {
+        height: 50px !important;
+      }
+    }
+
+    .middle-box {
+      margin-right: 10px;
+    }
+
+    .rightside-box {
+      .right-side-menu {
+        gap: 8px;
+
+        .right-side {
+          padding: 5px;
+
+          i {
+            font-size: 20px;
+          }
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 767px) {
+  .navbar-top {
+    padding: 8px 0;
+    flex-wrap: nowrap;
+    gap: 10px;
+
+    .web-logo {
+      margin-right: 10px !important;
+      flex-shrink: 1;
+
+      img {
+        height: 40px !important;
+      }
+    }
+
+    .middle-box {
+      margin-right: 8px;
+      flex-shrink: 1;
+      min-width: 0;
+
+      .mobile-search {
+        max-width: 100%;
+      }
+    }
+
+    .rightside-box {
+      flex-shrink: 0;
+
+      .right-side-menu {
+        gap: 5px;
+
+        .right-side {
+          padding: 3px;
+
+          i {
+            font-size: 18px;
+          }
+        }
+      }
+    }
+  }
+
+  // Ensure mobile menu button is visible and properly styled
+  .navbar-menu-button {
+    margin-right: 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  .navbar-top {
+    .web-logo {
+      img {
+        height: 47px !important;
+      }
+    }
+
+    .middle-box {
+      .mobile-search {
+        font-size: 14px;
+      }
+    }
+
+    .rightside-box {
+      .right-side-menu {
+        .right-side {
+          i {
+            font-size: 16px;
+          }
+        }
+      }
+    }
+  }
+}
+
+// Ensure profile dropdown is visible on laptop screens
+@media (min-width: 1200px) {
+  .navbar-top {
+    .rightside-box {
+      display: flex !important;
+
+      .right-side-menu {
+        display: flex !important;
+
+        .right-side {
+          display: inline-block !important;
+
+          &.onhover-dropdown {
+            display: inline-block !important;
+          }
+        }
+      }
+    }
+  }
+}
+
+// Ensure profile dropdown is visible on all screen sizes
+@media (max-width: 1199px) {
+  .navbar-top .rightside-box {
+    display: flex !important;
+
+    .right-side-menu {
+      display: flex !important;
+
+      .right-side {
+        display: inline-block !important;
+
+        &.onhover-dropdown {
+          display: inline-block !important;
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 767px) {
+  .navbar-top .rightside-box {
+    display: flex !important;
+
+    .right-side-menu {
+      display: flex !important;
+
+      .right-side {
+        display: inline-block !important;
+
+        &.onhover-dropdown {
+          display: inline-block !important;
+        }
+      }
+    }
+  }
+}
