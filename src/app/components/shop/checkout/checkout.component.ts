@@ -201,7 +201,9 @@ export class CheckoutComponent {
           }
 
           if (valid) {
-            this.checkout();
+            setTimeout(() => {
+              this.checkout();
+            });
           }
         });
 
@@ -232,8 +234,10 @@ export class CheckoutComponent {
     });
 
     this.cartService.getUpdateQtyClickEvent().subscribe(() => {
-      this.products();
-      this.checkout();
+      setTimeout(() => {
+        this.products();
+        this.checkout();
+      });
     });
 
     this.form.controls['phone']?.valueChanges.subscribe((value) => {
@@ -271,16 +275,22 @@ export class CheckoutComponent {
   public subTotal: number = 0;
 
   ngOnInit() {
-    this.checkout$.subscribe(data => this.checkoutTotal = data);
+    this.checkout$.subscribe(data => {
+      setTimeout(() => {
+        this.checkoutTotal = data;
+      });
+    });
 
     // Subscribe to cart items and store locally to prevent disappearing
     this.cartItem$.subscribe(items => {
-      if (items && items.length > 0) {
-        this.localCartItems = [...items];
-        this.subTotal = items.reduce((prev, curr: Cart) => {
-          return (prev + Number(curr.sub_total));
-        }, 0);
-      }
+      setTimeout(() => {
+        if (items && items.length > 0) {
+          this.localCartItems = [...items];
+          this.subTotal = items.reduce((prev, curr: Cart) => {
+            return (prev + Number(curr.sub_total));
+          }, 0);
+        }
+      });
     });
 
     // Restore saved checkout state if returning from a payment page
@@ -944,33 +954,35 @@ export class CheckoutComponent {
     }
 
     if (valid) {
-      this.loading = true;
+      setTimeout(() => {
+        this.loading = true;
 
-      const payload = { ...this.form.value };
+        const payload = { ...this.form.value };
 
-      // If payment_method is missing, inject a default from settings to satisfy backend
-      if (!payload.payment_method) {
-        const setting = this.store.selectSnapshot(state => state.setting).setting;
-        if (setting && setting.payment_methods && setting.payment_methods.length) {
-          const defaultMethod = setting.payment_methods.find((m: any) => m.status);
-          if (defaultMethod) {
-            payload.payment_method = defaultMethod.name;
+        // If payment_method is missing, inject a default from settings to satisfy backend
+        if (!payload.payment_method) {
+          const setting = this.store.selectSnapshot(state => state.setting).setting;
+          if (setting && setting.payment_methods && setting.payment_methods.length) {
+            const defaultMethod = setting.payment_methods.find((m: any) => m.status);
+            if (defaultMethod) {
+              payload.payment_method = defaultMethod.name;
+            }
           }
         }
-      }
 
-      this.store.dispatch(new Checkout(payload)).subscribe({
-        next: (value) => {
-          this.storeData = value;
-          console.log(this.storeData);
-        },
-        error: (err) => {
-          this.loading = false;
-          throw new Error(err);
-        },
-        complete: () => {
-          this.loading = false;
-        }
+        this.store.dispatch(new Checkout(payload)).subscribe({
+          next: (value) => {
+            this.storeData = value;
+            console.log(this.storeData);
+          },
+          error: (err) => {
+            this.loading = false;
+            throw new Error(err);
+          },
+          complete: () => {
+            this.loading = false;
+          }
+        });
       });
     } else {
       const invalidFields = Object?.keys(this.form?.controls).filter(key => this.form.controls[key].invalid);

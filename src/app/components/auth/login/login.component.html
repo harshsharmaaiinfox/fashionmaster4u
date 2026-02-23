@@ -1,170 +1,129 @@
-<div class="login-wrapper">
-  <!-- <app-breadcrumb [breadcrumb]="breadcrumb"></app-breadcrumb> -->
+<div class="login-page-wrapper">
+  <section class="premium-login-section">
+    <div class="login-container">
+      <div class="split-layout">
 
-  <section class="login-section">
-    <div class="container-fluid-lg">
-      <div class="row justify-content-center">
-        <!-- Centered Login Form -->
-        <div class="col-lg-12">
-          <div class="login-form-container">
-            <div class="login-card">
-              <app-alert></app-alert>
-              <div class="login-header">
-                <div class="logo-section">
-                  <div class="logo-icon">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none"
-                      stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                      <path
-                        d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z">
-                      </path>
-                    </svg>
-                  </div>
-                  <h1>Welcome To FashionMaster4u</h1>
+        <!-- Left Side: Brand Story (Visible on Desktop) -->
+        <div class="brand-side d-none d-lg-flex">
+          <div class="brand-content">
+            <div class="brand-logo-wrap animate-fade-in">
+              <img src="assets/images/fashionmaster.png" alt="Fashionmaster4u" class="brand-logo">
+            </div>
+            <div class="brand-text">
+              <h2 class="display-title animate-slide-up">Curating Style, <br><span>Empowering You.</span></h2>
+              <p class="brand-description animate-slide-up-delayed">Experience the next level of fashion with our
+                meticulously crafted collections. Join our community of trendsetters.</p>
+            </div>
+            <div class="brand-features animate-slide-up-further">
+              <div class="feature-item">
+                <div class="feature-icon"><i class="ri-shield-check-line"></i></div>
+                <span>Secure Shopping</span>
+              </div>
+              <div class="feature-item">
+                <div class="feature-icon"><i class="ri-loop-right-line"></i></div>
+                <span>Easy Returns</span>
+              </div>
+              <div class="feature-item">
+                <div class="feature-icon"><i class="ri-vip-diamond-line"></i></div>
+                <span>Premium Quality</span>
+              </div>
+            </div>
+          </div>
+          <div class="decorative-blob"></div>
+          <div class="decorative-blob-2"></div>
+        </div>
+
+        <!-- Right Side: Login Form -->
+        <div class="form-side">
+          <div class="login-glass-card shadow-2xl">
+            <app-alert></app-alert>
+
+            <div class="form-header text-center">
+              <div class="mobile-logo d-lg-none mb-4">
+                <img src="assets/images/fashionmaster.png" alt="Fashionmaster4u" class="img-fluid"
+                  style="max-height: 50px;">
+              </div>
+              <h3>{{ 'Welcome Back' | translate }}</h3>
+              <p class="text-muted">{{ 'Login to your account to continue' | translate }}</p>
+            </div>
+
+            <form [formGroup]="form" (ngSubmit)="submit()" class="auth-form mt-4">
+              <!-- Email Field -->
+              <div class="form-floating-group">
+                <div class="input-container"
+                  [class.error]="form.controls['email'].touched && form.controls['email'].invalid">
+                  <i class="ri-mail-line field-icon"></i>
+                  <input type="email" id="email" formControlName="email" class="form-control" placeholder=" ">
+                  <label for="email">{{ 'Email Address' | translate }}</label>
                 </div>
-                <p class="login-subtitle">{{ 'Login Your Account' | translate }}</p>
+                <div *ngIf="form.controls['email'].touched && form.controls['email'].errors?.['required']"
+                  class="error-hint">
+                  <i class="ri-error-warning-line"></i> {{ 'Email Is Required' | translate }}
+                </div>
+                <div *ngIf="form.controls['email'].touched && form.controls['email'].errors?.['email']"
+                  class="error-hint">
+                  <i class="ri-error-warning-line"></i> {{ 'Invalid Email' | translate }}
+                </div>
               </div>
 
-              <form [formGroup]="form" (ngSubmit)="submit()" class="login-form">
-                <div class="form-group">
-                  <label for="email">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
-                      stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                      <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
-                      <polyline points="22,6 12,13 2,6"></polyline>
-                    </svg>
-                    {{ 'Email Address' | translate }}
-                  </label>
-                  <div class="input-wrapper">
-                    <input type="email" id="email" formControlName="email" placeholder="Enter your email address"
-                      [class.invalid]="form.controls['email'].touched && form.controls['email'].invalid"
-                      [class.valid]="form.controls['email'].touched && form.controls['email'].valid">
-                    <div class="input-icon">
-                      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
-                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
-                        <polyline points="22,6 12,13 2,6"></polyline>
-                      </svg>
-                    </div>
-                  </div>
-                  <div *ngIf="form.controls['email'].touched && form.controls['email'].errors?.['required']"
-                    class="error-message">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
-                      stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                      <circle cx="12" cy="12" r="10"></circle>
-                      <line x1="12" y1="8" x2="12" y2="12"></line>
-                      <line x1="12" y1="16" x2="12.01" y2="16"></line>
-                    </svg>
-                    {{ 'Email Is Required' | translate }}
-                  </div>
-                  <div *ngIf="form.controls['email'].touched && form.controls['email'].errors?.['email']"
-                    class="error-message">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
-                      stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                      <circle cx="12" cy="12" r="10"></circle>
-                      <line x1="12" y1="8" x2="12" y2="12"></line>
-                      <line x1="12" y1="16" x2="12.01" y2="16"></line>
-                    </svg>
-                    {{ 'Invalid Email' | translate }}
-                  </div>
+              <!-- Password Field -->
+              <div class="form-floating-group mt-4">
+                <div class="input-container"
+                  [class.error]="form.controls['password'].touched && form.controls['password'].invalid">
+                  <i class="ri-lock-2-line field-icon"></i>
+                  <input type="password" id="password" formControlName="password" class="form-control" placeholder=" ">
+                  <label for="password">{{ 'Password' | translate }}</label>
                 </div>
-
-                <div class="form-group">
-                  <label for="password">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
-                      stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                      <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
-                      <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
-                    </svg>
-                    {{ 'Password' | translate }}
-                  </label>
-                  <div class="input-wrapper">
-                    <input type="password" id="password" formControlName="password" placeholder="Enter your password"
-                      [class.invalid]="form.controls['password'].touched && form.controls['password'].invalid"
-                      [class.valid]="form.controls['password'].touched && form.controls['password'].valid">
-                    <div class="input-icon">
-                      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
-                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
-                        <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
-                      </svg>
-                    </div>
-                  </div>
-                  <div *ngIf="form.controls['password'].touched && form.controls['password'].errors?.['required']"
-                    class="error-message">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
-                      stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                      <circle cx="12" cy="12" r="10"></circle>
-                      <line x1="12" y1="8" x2="12" y2="12"></line>
-                      <line x1="12" y1="16" x2="12.01" y2="16"></line>
-                    </svg>
-                    {{ 'Password Is Required' | translate }}
-                  </div>
+                <div *ngIf="form.controls['password'].touched && form.controls['password'].errors?.['required']"
+                  class="error-hint">
+                  <i class="ri-error-warning-line"></i> {{ 'Password Is Required' | translate }}
                 </div>
-
-                <div class="form-group" *ngIf="reCaptcha">
-                  <re-captcha formControlName="recaptcha"></re-captcha>
-                  <div *ngIf="form.controls['recaptcha']?.touched && form.controls['recaptcha']?.errors?.['required']"
-                    class="error-message">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
-                      stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                      <circle cx="12" cy="12" r="10"></circle>
-                      <line x1="12" y1="8" x2="12" y2="12"></line>
-                      <line x1="12" y1="16" x2="12.01" y2="16"></line>
-                    </svg>
-                    {{ 'ReCaptcha is Required' | translate }}
-                  </div>
-                </div>
-
-                <div class="form-options">
-                  <label class="remember-me">
-                    <input type="checkbox" id="remeberme" class="custom-checkbox">
-                    <span class="checkmark"></span>
-                    <span class="label-text">{{ 'Remember Me' | translate }}</span>
-                  </label>
-                  <a [routerLink]="['/auth/forgot-password']" class="forgot-password">
-                    {{ 'Forgot Password' | translate }}?
-                  </a>
-                </div>
-
-                <button type="submit" class="login-btn" [disabled]="form.invalid || isLoading">
-                  <span *ngIf="!isLoading">{{ 'Login' | translate }}</span>
-                  <span *ngIf="isLoading" class="loading-text">Logging in...</span>
-                  <svg *ngIf="!isLoading" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
-                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <line x1="5" y1="12" x2="19" y2="12"></line>
-                    <polyline points="12 5 19 12 12 19"></polyline>
-                  </svg>
-                  <svg *ngIf="isLoading" class="spinner" xmlns="http://www.w3.org/2000/svg" width="20" height="20"
-                    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                    stroke-linejoin="round">
-                    <circle cx="12" cy="12" r="10"></circle>
-                    <path d="M12 2v4"></path>
-                    <path d="M12 18v4"></path>
-                    <path d="M4.93 4.93l2.83 2.83"></path>
-                    <path d="M16.24 16.24l2.83 2.83"></path>
-                    <path d="M2 12h4"></path>
-                    <path d="M18 12h4"></path>
-                    <path d="M4.93 19.07l2.83-2.83"></path>
-                    <path d="M16.24 7.76l2.83-2.83"></path>
-                  </svg>
-                </button>
-              </form>
-
-              <div class="divider">
-                <span>{{ 'OR' | translate }}</span>
               </div>
 
-              <div class="signup-section">
-                <p>{{ "Dont Have An Account" | translate }}?</p>
-                <a [routerLink]="['/auth/register']" class="signup-link">
-                  {{ 'Sign up' | translate }}
-                  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
-                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <line x1="5" y1="12" x2="19" y2="12"></line>
-                    <polyline points="12 5 19 12 12 19"></polyline>
-                  </svg>
+              <!-- ReCaptcha -->
+              <div class="form-group mt-4" *ngIf="reCaptcha">
+                <re-captcha formControlName="recaptcha"></re-captcha>
+                <div *ngIf="form.controls['recaptcha']?.touched && form.controls['recaptcha']?.errors?.['required']"
+                  class="error-hint">
+                  <i class="ri-error-warning-line"></i> {{ 'ReCaptcha is Required' | translate }}
+                </div>
+              </div>
+
+              <!-- Options -->
+              <div class="form-utils mt-4">
+                <label class="custom-checkbox-wrap">
+                  <input type="checkbox" id="rememberme">
+                  <span class="custom-box"></span>
+                  <span class="text">{{ 'Remember Me' | translate }}</span>
+                </label>
+                <a [routerLink]="['/auth/forgot-password']" class="forgot-link">
+                  {{ 'Forgot Password' | translate }}?
                 </a>
               </div>
+
+              <!-- Submit Button -->
+              <button type="submit" class="premium-submit-btn mt-5" [disabled]="form.invalid || isLoading">
+                <span *ngIf="!isLoading" class="btn-text">
+                  {{ 'Login' | translate }}
+                  <i class="ri-arrow-right-line ms-2"></i>
+                </span>
+                <div *ngIf="isLoading" class="loader-wrap">
+                  <span class="loader"></span>
+                  <span>{{ 'Creating Account...' | translate }}</span>
+                </div>
+              </button>
+            </form>
+
+            <div class="auth-divider mt-5">
+              <span>{{ 'OR' | translate }}</span>
+            </div>
+
+            <div class="signup-footer mt-4 text-center">
+              <p>{{ "Dont Have An Account" | translate }}?</p>
+              <a [routerLink]="['/auth/register']" class="register-cta">
+                {{ 'Create An Account' | translate }}
+                <i class="ri-user-add-line"></i>
+              </a>
             </div>
           </div>
         </div>

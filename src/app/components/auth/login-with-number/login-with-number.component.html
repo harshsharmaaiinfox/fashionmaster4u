@@ -1,59 +1,117 @@
-<app-breadcrumb [breadcrumb]="breadcrumb"></app-breadcrumb>
-<section class="log-in-section section-b-space">
-    <div class="container-fluid-lg w-100">
-        <div class="row">
-            <div class="col-xxl-6 col-xl-5 col-lg-6 d-lg-block d-none ms-auto">
-                <div class="image-contain">
-                    <img src="assets/images/inner-page/sign-up.png" class="img-fluid" alt="register">
-                </div>
-            </div>
-            <div class="col-xxl-4 col-xl-5 col-lg-6 col-sm-8 mx-auto">
-                <app-alert></app-alert>
-                <div class="log-in-box">
-                    <div class="log-in-title">
-                        <h3>Welcome To FashionMaster4u</h3>
-                        <h4>{{ 'login_your_account' | translate }}</h4>
-                    </div>
-                    <div class="input-box">
-                        <form class="row g-4" [formGroup]="form" (ngSubmit)="submit()">
+<div class="login-page-wrapper">
+    <section class="premium-login-section">
+        <div class="login-container">
+            <div class="split-layout">
 
-                            <div class="col-12 phone-field">
-                                <div class="form-floating log-in-form">
-                                    <input type="number" class="form-control" id="phone" id="phone"
-                                        formControlName="phone" placeholder="{{ 'phone' | translate }}">
-                                    <label for="phone">{{ 'phone_number' | translate }}</label>
-                                    <div *ngIf="form.controls['phone'].touched && form.controls['phone'].errors?.['required']"
-                                        class="invalid-feedback">{{ 'phone_number_is_required' | translate }}</div>
-                                    <select2 class="custom-select intl-tel-input" [data]="codes" [templates]="template"
-                                        formControlName="country_code">
-                                        <ng-template #template let-data="data">
-                                            <div class="country">
-                                                <div class="flag-box">
+                <!-- Left Side: Brand Story -->
+                <div class="brand-side d-none d-lg-flex">
+                    <div class="brand-content">
+                        <div class="brand-logo-wrap animate-fade-in">
+                            <img src="assets/images/fashionmaster.png" alt="Fashionmaster4u" class="brand-logo">
+                        </div>
+                        <div class="brand-text">
+                            <h2 class="display-title animate-slide-up">Fast Access, <br><span>Seamless Style.</span>
+                            </h2>
+                            <p class="brand-description animate-slide-up-delayed">Login instantly using your mobile
+                                number. We'll send a secure one-time password to keep your account safe while providing
+                                the fastest access.</p>
+                        </div>
+                        <div class="brand-features animate-slide-up-further">
+                            <div class="feature-item">
+                                <div class="feature-icon"><i class="ri-smartphone-line"></i></div>
+                                <span>Fast login via OTP</span>
+                            </div>
+                            <div class="feature-item">
+                                <div class="feature-icon"><i class="ri-shield-user-line"></i></div>
+                                <span>Passwordless security</span>
+                            </div>
+                            <div class="feature-item">
+                                <div class="feature-icon"><i class="ri-flashlight-line"></i></div>
+                                <span>One-tap authentication</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="decorative-blob"></div>
+                    <div class="decorative-blob-2"></div>
+                </div>
+
+                <!-- Right Side: Login with Number Form -->
+                <div class="form-side">
+                    <div class="login-glass-card shadow-2xl">
+                        <app-alert></app-alert>
+
+                        <div class="form-header text-center">
+                            <div class="mobile-logo d-lg-none mb-4">
+                                <img src="assets/images/fashionmaster.png" alt="Fashionmaster4u" class="img-fluid"
+                                    style="max-height: 50px;">
+                            </div>
+                            <h3>{{ 'Login via Mobile' | translate }}</h3>
+                            <p class="text-muted">{{ 'Enter your mobile number to receive an OTP' | translate }}</p>
+                        </div>
+
+                        <form [formGroup]="form" (ngSubmit)="submit()" class="auth-form mt-5">
+                            <!-- Phone Number Field -->
+                            <div class="form-floating-group">
+                                <div class="phone-input-split">
+                                    <div class="country-picker">
+                                        <select2 [data]="codes" [templates]="template" formControlName="country_code">
+                                            <ng-template #template let-data="data">
+                                                <div class="country-opt">
                                                     <div class="iti-flag {{data?.class}}"></div>
+                                                    <span class="c-code">+{{data.code}}</span>
                                                 </div>
-                                                <span class="dial-code">{{data.code}}</span>
-                                            </div>
-                                        </ng-template>
-                                    </select2>
+                                            </ng-template>
+                                        </select2>
+                                    </div>
+                                    <div class="input-container flex-grow-1"
+                                        [class.error]="form.controls['phone'].touched && form.controls['phone'].invalid">
+                                        <i class="ri-smartphone-line field-icon"></i>
+                                        <input type="number" id="phone" formControlName="phone" class="form-control"
+                                            placeholder=" ">
+                                        <label for="phone">{{ 'Phone Number' | translate }}</label>
+                                    </div>
+                                </div>
+                                <div *ngIf="form.controls['phone'].touched && form.controls['phone'].errors?.['required']"
+                                    class="error-hint">
+                                    <i class="ri-error-warning-line"></i> {{ 'Phone Number Is Required' | translate }}
                                 </div>
                             </div>
-                            <div class="col-12">
-                                <app-button [id]="'send_otp_btn'">{{ 'Send Otp' | translate }}</app-button>
-                            </div>
+
+                            <!-- Submit Button -->
+                            <button type="submit" class="premium-submit-btn mt-5"
+                                [disabled]="form.invalid || isLoading">
+                                <span *ngIf="!isLoading" class="btn-text">
+                                    {{ 'Send OTP' | translate }}
+                                    <i class="ri-message-3-line ms-2"></i>
+                                </span>
+                                <div *ngIf="isLoading" class="loader-wrap">
+                                    <span class="loader"></span>
+                                    <span>{{ 'Sending OTP...' | translate }}</span>
+                                </div>
+                            </button>
                         </form>
-                    </div>
 
-                    <div class="other-log-in">
-                        <h6>{{ 'or' | translate }}</h6>
-                    </div>
+                        <div class="auth-divider mt-5">
+                            <span>{{ 'OR' | translate }}</span>
+                        </div>
 
-                    <div class="sign-up-box">
-                        <h4>{{ "don't_have_an_account"| translate}}?</h4>
-                        <a [routerLink]="['/auth/register']">{{ 'sign_up'| translate}}</a>
+                        <div class="signup-footer mt-4 text-center">
+                            <p>{{ "Dont Have An Account" | translate }}?</p>
+                            <a [routerLink]="['/auth/register']" class="register-cta">
+                                {{ 'Create An Account' | translate }}
+                                <i class="ri-user-add-line"></i>
+                            </a>
+                        </div>
+
+                        <div class="mt-3 text-center">
+                            <a [routerLink]="['/auth/login']" class="register-cta bg-transparent border-0 opacity-75">
+                                {{ 'Login with Password' | translate }}
+                                <i class="ri-lock-line"></i>
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
-            <div class="col-xxl-7 col-xl-6 col-lg-6"></div>
         </div>
-    </div>
-</section>
+    </section>
+</div>

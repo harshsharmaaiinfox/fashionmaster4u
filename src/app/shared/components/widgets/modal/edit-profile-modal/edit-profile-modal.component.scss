@@ -1,18 +1,16 @@
-// Primary Color
-$primary-color: #1B4B45;
-$primary-dark: #0f2e2a;
-$primary-light: #2a6b63;
-$primary-lighter: #e8f4f2;
+// Premium Boutique Color Palette
+$boutique-black: #000000;
+$boutique-slate: #0f172a;
+$boutique-gray: #64748b;
+$boutique-light: #f8fafc;
+$boutique-white: #ffffff;
+$accent-red: #ef4444;
 
 // Enhanced Modal Backdrop
 ::ng-deep .modal-backdrop {
-  background-color: rgba(0, 0, 0, 0.6);
-  backdrop-filter: blur(4px);
+  background-color: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(8px);
   transition: opacity 0.3s ease;
-
-  &.show {
-    opacity: 1;
-  }
 }
 
 // Modal Dialog Enhancement
@@ -20,15 +18,16 @@ $primary-lighter: #e8f4f2;
   .modal-content {
     border: none;
     box-shadow: none;
+    background: transparent;
   }
 }
 
 .edit-profile-modal {
   background: #ffffff;
-  border-radius: 1rem;
+  border-radius: 24px;
   overflow: hidden;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-  animation: modalSlideIn 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+  animation: modalSlideIn 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   max-width: 600px;
   width: 100%;
   margin: 0 auto;
@@ -38,6 +37,7 @@ $primary-lighter: #e8f4f2;
       opacity: 0;
       transform: translateY(-20px) scale(0.95);
     }
+
     to {
       opacity: 1;
       transform: translateY(0) scale(1);
@@ -45,8 +45,8 @@ $primary-lighter: #e8f4f2;
   }
 
   .modal-header {
-    background: linear-gradient(135deg, $primary-color 0%, $primary-dark 100%);
-    padding: 1.5rem 2rem;
+    background: $boutique-black;
+    padding: 24px 32px;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -55,13 +55,13 @@ $primary-lighter: #e8f4f2;
     .header-content {
       display: flex;
       align-items: center;
-      gap: 1rem;
+      gap: 1.25rem;
 
       .header-icon {
         width: 48px;
         height: 48px;
-        background: rgba(255, 255, 255, 0.2);
-        border-radius: 0.75rem;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 12px;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -74,49 +74,51 @@ $primary-lighter: #e8f4f2;
       }
 
       .modal-title {
-        font-size: 1.5rem;
-        font-weight: 600;
+        font-size: 1.25rem;
+        font-weight: 800;
         color: #ffffff;
         margin: 0;
+        text-transform: uppercase;
+        letter-spacing: 1px;
       }
     }
 
     .btn-close {
       width: 40px;
       height: 40px;
-      border-radius: 0.5rem;
-      background: rgba(255, 255, 255, 0.1);
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.15);
       border: none;
       display: flex;
       align-items: center;
       justify-content: center;
       cursor: pointer;
-      transition: all 0.3s ease;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
       padding: 0;
+      color: #ffffff;
 
       i {
-        font-size: 1.25rem;
-        color: #ffffff;
+        font-size: 24px;
       }
 
       &:hover {
-        background: rgba(255, 255, 255, 0.2);
+        background: rgba(255, 255, 255, 0.25);
         transform: rotate(90deg);
       }
     }
   }
 
   .modal-body {
-    padding: 2rem;
+    padding: 32px;
 
     .form-fields {
       display: flex;
       flex-direction: column;
-      gap: 1.5rem;
+      gap: 24px;
 
       .form-group {
         position: relative;
-        animation: fadeInUp 0.4s ease forwards;
+        animation: fadeInUp 0.5s ease forwards;
         opacity: 0;
 
         @for $i from 1 through 3 {
@@ -130,6 +132,7 @@ $primary-lighter: #e8f4f2;
             opacity: 0;
             transform: translateY(10px);
           }
+
           to {
             opacity: 1;
             transform: translateY(0);
@@ -139,107 +142,79 @@ $primary-lighter: #e8f4f2;
         .form-label {
           display: flex;
           align-items: center;
-          gap: 0.5rem;
-          font-size: 0.9375rem;
-          font-weight: 600;
-          color: $primary-color;
-          margin-bottom: 0.75rem;
-          transition: all 0.3s ease;
+          gap: 8px;
+          font-size: 11px;
+          font-weight: 900;
+          color: #94a3b8;
+          text-transform: uppercase;
+          letter-spacing: 1.5px;
+          margin-bottom: 10px;
 
           i {
-            font-size: 1.125rem;
-            color: $primary-light;
-            transition: all 0.3s ease;
-          }
-
-          &:hover {
-            color: $primary-dark;
-
-            i {
-              color: $primary-color;
-              transform: scale(1.1);
-            }
+            font-size: 16px;
+            color: #cbd5e1;
           }
         }
 
         .form-control {
           width: 100%;
-          padding: 0.875rem 1rem;
-          font-size: 0.9375rem;
-          color: #334155;
-          background: #ffffff;
-          border: 2px solid #e2e8f0;
-          border-radius: 0.5rem;
+          padding: 16px 20px;
+          font-size: 14px;
+          font-weight: 600;
+          color: $boutique-slate;
+          background: #fafafa;
+          border: 2px solid #f1f5f9;
+          border-radius: 16px;
           transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-          position: relative;
 
           &:hover {
-            border-color: #cbd5e1;
+            border-color: #e2e8f0;
+            background: #ffffff;
           }
 
           &:focus {
             outline: none;
-            border-color: $primary-color;
-            box-shadow: 0 0 0 3px rgba(27, 75, 69, 0.1);
-            transform: translateY(-1px);
+            border-color: $boutique-black;
+            background: #ffffff;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+            transform: translateY(-2px);
           }
 
           &::placeholder {
             color: #94a3b8;
-            transition: opacity 0.3s ease;
-          }
-
-          &:focus::placeholder {
-            opacity: 0.5;
+            font-weight: 400;
           }
 
           &.is-invalid {
-            border-color: #ef4444;
-            animation: shake 0.4s ease;
-
-            @keyframes shake {
-              0%, 100% { transform: translateX(0); }
-              25% { transform: translateX(-5px); }
-              75% { transform: translateX(5px); }
-            }
+            border-color: $accent-red;
+            background: #fffafa;
 
             &:focus {
-              box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
+              box-shadow: 0 0 0 4px rgba(239, 68, 68, 0.1);
             }
           }
         }
 
         .invalid-feedback {
-          display: block;
-          margin-top: 0.5rem;
-          font-size: 0.875rem;
-          color: #ef4444;
-          animation: slideDown 0.3s ease;
           display: flex;
           align-items: center;
-          gap: 0.25rem;
+          gap: 6px;
+          margin-top: 8px;
+          font-size: 12px;
+          font-weight: 700;
+          color: $accent-red;
 
           &::before {
-            content: '⚠';
-            font-size: 0.875rem;
-          }
-
-          @keyframes slideDown {
-            from {
-              opacity: 0;
-              transform: translateY(-5px);
-            }
-            to {
-              opacity: 1;
-              transform: translateY(0);
-            }
+            content: "\EB7E";
+            font-family: 'remixicon';
+            font-size: 14px;
           }
         }
 
         &.phone-field {
           .phone-input-group {
             display: flex;
-            gap: 0.75rem;
+            gap: 12px;
             align-items: stretch;
 
             .intl-tel-input {
@@ -249,126 +224,60 @@ $primary-lighter: #e8f4f2;
               ::ng-deep .select2-container {
                 .select2-selection {
                   height: auto;
-                  border: 2px solid #e2e8f0;
-                  border-radius: 0.5rem;
-                  background: #ffffff;
-                  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-                  min-height: 48px;
+                  border: 2px solid #f1f5f9;
+                  border-radius: 16px;
+                  background: #fafafa;
+                  transition: all 0.3s;
+                  min-height: 54px;
 
                   &:hover {
-                    border-color: #cbd5e1;
+                    border-color: #e2e8f0;
+                    background: #ffffff;
                   }
 
                   &.select2-selection--single {
                     .select2-selection__rendered {
-                      padding: 0.875rem 1rem;
-                      line-height: 1.5;
-                      color: #334155;
+                      padding: 16px 15px;
+                      line-height: normal;
+                      font-weight: 600;
+                      color: $boutique-slate;
                     }
 
                     .select2-selection__arrow {
                       height: 100%;
-                      right: 0.75rem;
-                      top: 50%;
-                      transform: translateY(-50%);
+                      right: 12px;
 
                       b {
-                        border-color: $primary-color transparent transparent transparent;
-                        border-width: 5px 5px 0 5px;
-                        margin-top: -2.5px;
+                        border-color: $boutique-black transparent transparent transparent;
                       }
                     }
                   }
                 }
 
-                &.select2-container--open {
-                  .select2-selection {
-                    border-color: $primary-color;
-                    box-shadow: 0 0 0 3px rgba(27, 75, 69, 0.1);
-                  }
+                &.select2-container--open .select2-selection {
+                  border-color: $boutique-black;
+                  background: #ffffff;
                 }
               }
 
               ::ng-deep .select2-dropdown {
-                border: 2px solid $primary-color;
-                border-radius: 0.5rem;
-                box-shadow: 0 8px 24px rgba(27, 75, 69, 0.15);
-                margin-top: 0.25rem;
-                animation: dropdownSlideDown 0.3s ease;
+                border: 2px solid $boutique-black;
+                border-radius: 16px;
+                box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+                overflow: hidden;
 
-                @keyframes dropdownSlideDown {
-                  from {
-                    opacity: 0;
-                    transform: translateY(-10px);
-                  }
-                  to {
-                    opacity: 1;
-                    transform: translateY(0);
-                  }
-                }
+                .select2-results__option {
+                  padding: 12px 16px;
+                  font-size: 14px;
+                  font-weight: 500;
 
-                .select2-search {
-                  padding: 0.75rem;
-
-                  .select2-search__field {
-                    border: 2px solid #e2e8f0;
-                    border-radius: 0.5rem;
-                    padding: 0.5rem 0.75rem;
-                    font-size: 0.875rem;
-
-                    &:focus {
-                      outline: none;
-                      border-color: $primary-color;
-                      box-shadow: 0 0 0 3px rgba(27, 75, 69, 0.1);
-                    }
-                  }
-                }
-
-                .select2-results {
-                  .select2-results__options {
-                    max-height: 200px;
-
-                    .select2-results__option {
-                      padding: 0.75rem 1rem;
-                      transition: all 0.2s ease;
-
-                      &[aria-selected="true"] {
-                        background: $primary-lighter;
-                        color: $primary-color;
-                        font-weight: 600;
-                      }
-
-                      &:hover {
-                        background: rgba(27, 75, 69, 0.1);
-                        color: $primary-dark;
-                      }
-
-                      .country {
-                        display: flex;
-                        align-items: center;
-                        gap: 0.75rem;
-
-                        .flag-box {
-                          width: 24px;
-                          height: 18px;
-                          display: flex;
-                          align-items: center;
-                          justify-content: center;
-                        }
-
-                        .dial-code {
-                          font-weight: 500;
-                          color: inherit;
-                        }
-                      }
-                    }
+                  &[aria-selected="true"] {
+                    background: #f8fafc;
+                    color: $boutique-black;
+                    font-weight: 700;
                   }
                 }
               }
-            }
-
-            .intl-input-padding {
-              flex: 1;
             }
           }
         }
@@ -377,157 +286,86 @@ $primary-lighter: #e8f4f2;
   }
 
   .modal-footer {
-    padding: 1.5rem 2rem;
-    background: #f8fafc;
-    border-top: 1px solid #e2e8f0;
+    padding: 24px 32px;
+    background: $boutique-light;
+    border-top: 1px solid #f1f5f9;
     display: flex;
     justify-content: flex-end;
-    gap: 1rem;
+    gap: 12px;
 
     .btn {
-      padding: 0.75rem 2rem;
-      font-size: 0.9375rem;
-      font-weight: 600;
-      border-radius: 0.5rem;
+      height: 52px;
+      padding: 0 32px;
+      font-size: 13px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      border-radius: 16px;
       border: none;
       cursor: pointer;
-      transition: all 0.3s ease;
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      min-width: 120px;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 
       &.btn-cancel {
         background: #ffffff;
-        color: #64748b;
-        border: 2px solid #e2e8f0;
+        color: $boutique-gray;
+        border: 1px solid #e2e8f0;
 
         &:hover {
-          background: #f1f5f9;
-          border-color: #cbd5e1;
-          color: #475569;
+          border-color: $boutique-black;
+          color: $boutique-black;
         }
       }
 
       &.btn-submit {
-        background: linear-gradient(135deg, $primary-color 0%, $primary-dark 100%);
+        background: $boutique-black;
         color: #ffffff;
-        box-shadow: 0 4px 12px rgba(27, 75, 69, 0.3);
-        position: relative;
-        overflow: hidden;
-
-        &::before {
-          content: '';
-          position: absolute;
-          top: 0;
-          left: -100%;
-          width: 100%;
-          height: 100%;
-          background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-          transition: left 0.5s ease;
-        }
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
 
         &:hover:not(:disabled) {
-          transform: translateY(-2px);
-          box-shadow: 0 6px 16px rgba(27, 75, 69, 0.4);
-
-          &::before {
-            left: 100%;
-          }
-        }
-
-        &:active:not(:disabled) {
-          transform: translateY(0);
-          box-shadow: 0 2px 8px rgba(27, 75, 69, 0.3);
+          transform: translateY(-3px);
+          box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+          background: #334155;
         }
 
         &:disabled {
-          opacity: 0.6;
+          opacity: 0.5;
           cursor: not-allowed;
-          transform: none;
+          filter: grayscale(1);
         }
       }
     }
   }
 }
 
-// Global Select2 Overrides for this modal
-.edit-profile-modal {
-  ::ng-deep {
-    .select2-container {
-      width: 100% !important;
+// Global Select2 Overrides
+.edit-profile-modal ::ng-deep {
+  .select2-container {
+    width: 100% !important;
 
-      .select2-selection {
-        height: auto !important;
-        min-height: 48px;
-        display: flex;
-        align-items: center;
-      }
+    .select2-selection {
+      min-height: 54px;
     }
   }
 }
 
-// Responsive Design
+// Responsive
 @media (max-width: 768px) {
   .edit-profile-modal {
-    .modal-header {
-      padding: 1.25rem 1.5rem;
-
-      .header-content {
-        .header-icon {
-          width: 40px;
-          height: 40px;
-
-          i {
-            font-size: 1.25rem;
-          }
-        }
-
-        .modal-title {
-          font-size: 1.25rem;
-        }
-      }
-
-      .btn-close {
-        width: 36px;
-        height: 36px;
-
-        i {
-          font-size: 1.125rem;
-        }
-      }
-    }
+    margin: 0 15px;
 
     .modal-body {
-      padding: 1.5rem;
-
-      .form-fields {
-        gap: 1.25rem;
-
-        .form-group {
-          &.phone-field {
-            .phone-input-group {
-              flex-direction: column;
-              gap: 0.75rem;
-
-              .intl-tel-input {
-                min-width: 100%;
-              }
-            }
-          }
-        }
-      }
+      padding: 24px;
     }
 
     .modal-footer {
-      padding: 1.25rem 1.5rem;
       flex-direction: column-reverse;
 
       .btn {
         width: 100%;
-        min-width: auto;
       }
     }
   }
 }
-

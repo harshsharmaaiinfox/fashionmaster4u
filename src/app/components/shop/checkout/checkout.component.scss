@@ -1,983 +1,701 @@
-// ============================================
-// Theme Variables
-// ============================================
-$theme-primary: #1B4B45;
-$theme-primary-light: #2A6B63;
-$theme-primary-dark: #0F2E2A;
-$theme-accent: #F5F5F5;
-$theme-success: #4CAF50;
-$theme-error: #F44336;
-$theme-warning: #FF9800;
-$text-primary: #212121;
-$text-secondary: #757575;
-$border-color: #E0E0E0;
-$bg-light: #FAFAFA;
+// Premium Fashion Checkout Styling - FashionMaster4u
+// Design: Minimalist Boutique, High-Contrast, Professional
 
-// Spacing
-$spacing-xs: 8px;
-$spacing-sm: 12px;
-$spacing-md: 16px;
-$spacing-lg: 24px;
-$spacing-xl: 32px;
-
-// Border Radius
-$radius-sm: 8px;
-$radius-md: 12px;
-$radius-lg: 16px;
-
-// Shadows
-$shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.08);
-$shadow-md: 0 4px 16px rgba(0, 0, 0, 0.12);
-$shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.16);
-$shadow-theme: 0 4px 16px rgba(27, 75, 69, 0.15);
-
-// ============================================
-// Checkout Section Styling
-// ============================================
-.checkout-section-2 {
-    background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
-    padding: $spacing-xl 0;
+:host {
+    display: block;
+    background-color: #ffffff;
     min-height: 100vh;
+}
 
-    .container-fluid-lg {
-        max-width: 1400px;
-        margin: 0 auto;
-        padding: 0 $spacing-md;
+.checkout-section-2 {
+    padding: 60px 0;
+
+    @media (max-width: 991px) {
+        padding: 30px 0;
     }
 }
 
-// ============================================
-// Step Indicator (if added)
-// ============================================
-.checkout-steps {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: $spacing-xl;
-    padding: $spacing-lg;
-    background: white;
-    border-radius: $radius-md;
-    box-shadow: $shadow-sm;
-
-    .step {
-        flex: 1;
-        text-align: center;
-        position: relative;
-
-        &:not(:last-child)::after {
-            content: '';
-            position: absolute;
-            top: 20px;
-            right: -50%;
-            width: 100%;
-            height: 2px;
-            background: $border-color;
-            z-index: 0;
-        }
-
-        &.active {
-            .step-number {
-                background: $theme-primary;
-                color: white;
-            }
-
-            .step-title {
-                color: $theme-primary;
-                font-weight: 600;
-            }
-        }
-
-        &.completed {
-            &::after {
-                background: $theme-primary;
-            }
-
-            .step-number {
-                background: $theme-success;
-                color: white;
-            }
-        }
-
-        .step-number {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background: $bg-light;
-            color: $text-secondary;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 600;
-            margin-bottom: $spacing-xs;
-            position: relative;
-            z-index: 1;
-            transition: all 0.3s ease;
-        }
-
-        .step-title {
-            font-size: 14px;
-            color: $text-secondary;
-            transition: all 0.3s ease;
-        }
-    }
-}
-
-// ============================================
-// Left Sidebar - Form Sections
-// ============================================
-.left-sidebar-checkout {
-
-    .checkout-form-section,
-    .checkout-detail-box {
-        margin-bottom: $spacing-lg;
-    }
-
-    .checkbox-main-box {
-        background: white;
-        border-radius: $radius-md;
-        padding: $spacing-lg;
-        box-shadow: $shadow-sm;
-        margin-bottom: $spacing-lg;
-        transition: all 0.3s ease;
-        border: 2px solid transparent;
-
-        &:hover {
-            box-shadow: $shadow-md;
-            border-color: rgba($theme-primary, 0.1);
-        }
-
-        .checkout-title1 {
-            margin-bottom: $spacing-lg;
-            padding-bottom: $spacing-md;
-            border-bottom: 2px solid $theme-primary;
-            position: relative;
-
-            h2 {
-                font-size: 20px;
-                font-weight: 700;
-                color: $theme-primary;
-                margin: 0;
-                display: flex;
-                align-items: center;
-                gap: $spacing-sm;
-
-                &::before {
-                    content: '';
-                    width: 4px;
-                    height: 24px;
-                    background: $theme-primary;
-                    border-radius: 2px;
-                }
-            }
-        }
-    }
-}
-
-// ============================================
-// Custom Form Styling
-// ============================================
-.checkout-form {
-    .form-box {
-        margin-bottom: $spacing-lg;
-
-        label {
-            font-weight: 600;
-            color: $text-primary;
-            margin-bottom: $spacing-xs;
-            font-size: 14px;
-            display: block;
-            transition: color 0.3s ease;
-        }
-
-        .form-control,
-        input[type="text"],
-        input[type="email"],
-        input[type="number"],
-        input[type="password"] {
-            border: 2px solid $border-color;
-            border-radius: $radius-sm;
-            padding: 12px 16px;
-            font-size: 15px;
-            transition: all 0.3s ease;
-            background: white;
-
-            &:focus {
-                border-color: $theme-primary;
-                box-shadow: 0 0 0 4px rgba($theme-primary, 0.1);
-                outline: none;
-            }
-
-            &::placeholder {
-                color: lighten($text-secondary, 10%);
-            }
-
-            &.is-invalid {
-                border-color: $theme-error;
-
-                &:focus {
-                    box-shadow: 0 0 0 4px rgba($theme-error, 0.1);
-                }
-            }
-        }
-
-        .invalid-feedback {
-            display: block;
-            color: $theme-error;
-            font-size: 13px;
-            margin-top: $spacing-xs;
-            font-weight: 500;
-        }
-    }
-
-    // Custom Checkbox Styling
-    .form-checkbox {
-        display: flex;
-        align-items: center;
-        gap: $spacing-sm;
-
-        .form-check-input {
-            width: 20px;
-            height: 20px;
-            border: 2px solid $border-color;
-            border-radius: 4px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-
-            &:checked {
-                background-color: $theme-primary;
-                border-color: $theme-primary;
-            }
-
-            &:focus {
-                box-shadow: 0 0 0 4px rgba($theme-primary, 0.1);
-            }
-        }
-
-        .form-check-label {
-            margin: 0;
-            cursor: pointer;
-            font-weight: 500;
-            color: $text-primary;
-        }
-    }
-
-    // Phone Field Styling
-    .phone-field {
-        .intl-tel-input {
-            width: 120px;
-        }
-
-        .intl-input-padding {
-            padding-left: 130px;
-        }
-    }
-}
-
-// ============================================
-// Select2 Custom Styling
-// ============================================
-::ng-deep {
-    .custom-select {
-        .select2-container {
-            .select2-selection {
-                border: 2px solid $border-color;
-                border-radius: $radius-sm;
-                padding: 10px 16px;
-                min-height: 48px;
-                transition: all 0.3s ease;
-
-                &:focus,
-                &:focus-within {
-                    border-color: $theme-primary;
-                    box-shadow: 0 0 0 4px rgba($theme-primary, 0.1);
-                }
-            }
-        }
-    }
-}
-
-// ============================================
-// Checkout Detail Box (Logged In Users)
-// ============================================
-.checkout-detail-box {
-    ul {
-        list-style: none;
-        padding: 0;
-        margin: 0;
-
-        li {
-            background: white;
-            border-radius: $radius-md;
-            padding: $spacing-lg;
-            margin-bottom: $spacing-lg;
-            box-shadow: $shadow-sm;
-            transition: all 0.3s ease;
-
-            &:hover {
-                box-shadow: $shadow-md;
-            }
-
-            .checkout-icon {
-                width: 48px;
-                height: 48px;
-                background: linear-gradient(135deg, $theme-primary 0%, $theme-primary-light 100%);
-                border-radius: 12px;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                margin-bottom: $spacing-md;
-
-                i {
-                    font-size: 24px;
-                    color: white;
-                }
-            }
-
-            .checkout-box {
-                .checkout-title {
-                    display: flex;
-                    justify-content: space-between;
-                    align-items: center;
-                    margin-bottom: $spacing-md;
-                    padding-bottom: $spacing-sm;
-                    border-bottom: 1px solid $border-color;
-
-                    h4 {
-                        font-size: 18px;
-                        font-weight: 700;
-                        color: $theme-primary;
-                        margin: 0;
-                    }
-
-                    a {
-                        color: $theme-primary;
-                        font-size: 14px;
-                        text-decoration: none;
-                        transition: all 0.3s ease;
-                        font-weight: 600;
-
-                        &:hover {
-                            color: $theme-primary-dark;
-                            gap: 8px;
-                        }
-
-                        i {
-                            transition: transform 0.3s ease;
-                        }
-
-                        &:hover i {
-                            transform: scale(1.2);
-                        }
-                    }
-                }
-            }
-        }
-    }
-}
-
-// ============================================
-// Order Summary Card (Right Sidebar)
-// ============================================
-.pos-detail-card {
-    position: sticky;
-    top: 100px;
-    background: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(10px);
-    border-radius: $radius-lg;
-    box-shadow: $shadow-lg;
-    border: 1px solid rgba($theme-primary, 0.1);
-    overflow: hidden;
-
-    .card-body {
-        padding: $spacing-lg;
-
-        .title-header {
-            margin-bottom: $spacing-lg;
-            padding-bottom: $spacing-md;
-            border-bottom: 2px solid $theme-primary;
-
-            h5 {
-                font-size: 22px;
-                font-weight: 700;
-                color: $theme-primary;
-                margin: 0;
-            }
-        }
-
-        // Product List
-        .cart-listing {
-            list-style: none;
-            padding: 0;
-            margin: 0 0 $spacing-lg 0;
-            max-height: 400px;
-            overflow-y: auto;
-
-            &::-webkit-scrollbar {
-                width: 6px;
-            }
-
-            &::-webkit-scrollbar-track {
-                background: $bg-light;
-                border-radius: 3px;
-            }
-
-            &::-webkit-scrollbar-thumb {
-                background: $theme-primary;
-                border-radius: 3px;
-            }
-
-            li {
-                display: flex;
-                gap: $spacing-md;
-                padding: $spacing-md;
-                margin-bottom: $spacing-sm;
-                background: $bg-light;
-                border-radius: $radius-sm;
-                transition: all 0.3s ease;
-
-                &:hover {
-                    background: darken($bg-light, 3%);
-                    transform: translateX(0px);
-                }
-
-                img {
-                    width: 70px;
-                    height: 70px;
-                    object-fit: cover;
-                    border-radius: $radius-sm;
-                    border: 2px solid white;
-                }
-
-                .cart-content {
-                    flex: 1;
-
-                    h4 {
-                        font-size: 15px;
-                        font-weight: 600;
-                        color: $text-primary;
-                        margin: 0 0 $spacing-xs 0;
-                        line-height: 1.4;
-                    }
-
-                    h5.text-theme {
-                        font-size: 13px;
-                        color: $theme-primary;
-                        margin: 0 0 4px 0;
-                        font-weight: 500;
-                    }
-
-                    h5.price {
-                        font-size: 16px;
-                        font-weight: 700;
-                        color: $theme-primary-dark;
-                        margin: 0;
-                    }
-                }
-            }
-        }
-
-        // Summary Total
-        .summary-total {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-
-            li {
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-                padding: $spacing-sm 0;
-                border-bottom: 1px solid $border-color;
-
-                &.border-cls {
-                    padding: $spacing-md 0;
-                    background: $bg-light;
-                    padding: $spacing-md;
-                    border-radius: $radius-sm;
-                    margin: $spacing-sm 0;
-                    border: none;
-                }
-
-                &.list-total {
-                    border-top: 2px solid $theme-primary;
-                    border-bottom: none;
-                    padding: $spacing-md 0 0 0;
-                    margin-top: $spacing-sm;
-
-                    h4 {
-                        font-size: 18px;
-                        font-weight: 700;
-                        color: $theme-primary;
-                    }
-
-                    .price {
-                        font-size: 22px;
-                        font-weight: 700;
-                        color: $theme-primary-dark;
-                    }
-                }
-
-                h4 {
-                    font-size: 15px;
-                    font-weight: 600;
-                    color: $text-primary;
-                    margin: 0;
-                }
-
-                .price {
-                    font-size: 15px;
-                    font-weight: 600;
-                    color: $text-primary;
-                }
-
-                .txt-primary {
-                    color: $theme-primary !important;
-                }
-
-                .text-muted {
-                    color: $text-secondary !important;
-                }
-            }
-
-            // Coupon Section
-            .coupon-sec {
-                flex-direction: column;
-                align-items: stretch;
-                padding: $spacing-md 0;
-
-                .promocode-title {
-                    color: $theme-primary;
-                    font-weight: 600;
-                    cursor: pointer;
-                    text-decoration: none;
-                    transition: all 0.3s ease;
-
-                    &:hover {
-                        color: $theme-primary-dark;
-                    }
-
-                    h4 {
-                        color: inherit;
-                        margin: 0;
-                    }
-                }
-
-                .coupon-box {
-                    margin-top: $spacing-sm;
-
-                    .input-group {
-                        display: flex;
-                        gap: $spacing-sm;
-
-                        input {
-                            flex: 1;
-                            border: 2px solid $border-color;
-                            border-radius: $radius-sm;
-                            padding: 12px 16px;
-                            font-size: 14px;
-                            transition: all 0.3s ease;
-
-                            &:focus {
-                                border-color: $theme-primary;
-                                box-shadow: 0 0 0 4px rgba($theme-primary, 0.1);
-                                outline: none;
-                            }
-
-                            &.is-invalid {
-                                border-color: $theme-error;
-                            }
-                        }
-
-                        .btn-apply {
-                            background: $theme-primary;
-                            color: white;
-                            border: none;
-                            padding: 12px 24px;
-                            border-radius: $radius-sm;
-                            font-weight: 600;
-                            cursor: pointer;
-                            transition: all 0.3s ease;
-
-                            &:hover {
-                                background: $theme-primary-dark;
-                                transform: translateY(-2px);
-                                box-shadow: $shadow-theme;
-                            }
-                        }
-                    }
-                }
-
-                .apply-sec {
-                    background: linear-gradient(135deg, lighten($theme-success, 35%) 0%, lighten($theme-success, 40%) 100%);
-                    padding: $spacing-md;
-                    border-radius: $radius-sm;
-                    display: flex;
-                    justify-content: space-between;
-                    align-items: center;
-                    border: 2px solid $theme-success;
-
-                    div {
-                        display: flex;
-                        align-items: center;
-                        gap: $spacing-sm;
-
-                        img {
-                            width: 40px;
-                            height: 40px;
-                        }
-
-                        h4 {
-                            font-size: 14px;
-                            margin: 0;
-                            color: darken($theme-success, 20%);
-
-                            span {
-                                font-weight: 700;
-                                color: $theme-success;
-                            }
-
-                            p {
-                                margin: 4px 0 0 0;
-                                font-size: 12px;
-                                font-weight: 500;
-                            }
-                        }
-                    }
-
-                    a {
-                        color: $theme-error;
-                        font-weight: 600;
-                        text-decoration: none;
-                        font-size: 14px;
-                        transition: all 0.3s ease;
-
-                        &:hover {
-                            color: darken($theme-error, 10%);
-                        }
-                    }
-                }
-            }
-        }
-
-        // Place Order Button
-        .btn.theme-bg-color {
-            background: linear-gradient(135deg, $theme-primary 0%, $theme-primary-light 100%);
-            border: none;
-            border-radius: $radius-sm;
-            padding: 16px;
-            font-size: 16px;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            transition: all 0.3s ease;
-            box-shadow: $shadow-theme;
-
-            &:hover:not(:disabled) {
-                background: linear-gradient(135deg, $theme-primary-dark 0%, $theme-primary 100%);
-                transform: translateY(-2px);
-                box-shadow: 0 6px 20px rgba($theme-primary, 0.3);
-            }
-
-            &:disabled {
-                opacity: 0.6;
-                cursor: not-allowed;
-            }
-        }
-    }
-}
-
-// ============================================
-// Payment Options Card (Right Sidebar)
-// ============================================
-.payment-options-card {
-    margin-bottom: $spacing-lg;
-
-    .card-body {
-        padding: $spacing-lg;
-
-        .title-header {
-            margin-bottom: $spacing-lg;
-            padding-bottom: $spacing-md;
-            border-bottom: 2px solid $theme-primary;
-
-            h5 {
-                font-size: 22px;
-                font-weight: 700;
-                color: $theme-primary;
-                margin: 0;
-                display: flex;
-                align-items: center;
-
-                i {
-                    font-size: 24px;
-                }
-            }
-        }
-    }
-}
-
-// ============================================
-// Empty States
-// ============================================
-.empty-box {
-    text-align: center;
-    padding: $spacing-xl;
-    background: $bg-light;
-    border-radius: $radius-md;
-    margin: $spacing-md 0;
-
-    h2 {
-        font-size: 16px;
-        color: $text-secondary;
-        font-weight: 500;
-    }
-}
-
-// ============================================
-// Loading States
-// ============================================
-.custom-box-loader {
-    position: relative;
-
-    .box-loader {
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background: rgba(255, 255, 255, 0.95);
-        backdrop-filter: blur(4px);
-        border-radius: $radius-md;
-        z-index: 10;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-}
-
-// ============================================
-// Payment Modal Styling
-// ============================================
-.upi_bar {
-    margin: 0;
-    padding: 0;
-    margin-top: -65px;
-
-    li {
-        a {
-            display: block;
-            border: 1px solid $border-color;
-            width: 50px;
-            height: 50px;
-            border-radius: $radius-sm;
-            transition: all 0.3s ease;
-
-            &:hover {
-                border-color: $theme-primary;
-                background: rgba($theme-primary, 0.05);
-            }
-        }
-    }
-}
-
-.payment-icons {
-    width: 260px;
-    border: 1px solid $border-color;
-    display: inline-block;
-    border-radius: $radius-sm;
-    padding: $spacing-sm;
-}
-
-::ng-deep .payByNeoKred {
-    app-loader {
-        width: 500px;
-        height: 500px;
-        display: inline-block;
-    }
-
-    .loader-wrapper,
-    .custom-loader-wrapper {
-        position: absolute;
-        height: 500px;
-    }
-}
-
-// ============================================
-// Responsive Design
-// ============================================
-@media (max-width: 1199px) {
-    .pos-detail-card {
-        position: relative;
-        top: 0;
-        margin-top: $spacing-lg;
-    }
-}
-
-@media (max-width: 767px) {
-    .checkout-section-2 {
-        padding: $spacing-lg 0;
-    }
-
-    .checkout-steps {
-        padding: $spacing-md;
-
-        .step {
-            .step-title {
-                font-size: 12px;
-            }
-
-            .step-number {
-                width: 32px;
-                height: 32px;
-                font-size: 14px;
-            }
-        }
-    }
-
-    .left-sidebar-checkout {
-        .checkbox-main-box {
-            padding: $spacing-md;
-
-            .checkout-title1 {
-                h2 {
-                    font-size: 18px;
-                }
-            }
-        }
-    }
-
-    .checkout-form {
-        .form-box {
-            margin-bottom: $spacing-md;
-        }
-    }
-
-    .pos-detail-card {
-        .card-body {
-            padding: $spacing-md;
-
-            .cart-listing {
-                max-height: 300px;
-
-                li {
-                    img {
-                        width: 60px;
-                        height: 60px;
-                    }
-                }
-            }
-        }
-    }
-
-    .checkout-detail-box {
-        ul li {
-            padding: $spacing-md;
-
-            .checkout-icon {
-                width: 40px;
-                height: 40px;
-
-                i {
-                    font-size: 20px;
-                }
-            }
-        }
-    }
-}
-
-// ============================================
-// Animations
-// ============================================
-@keyframes slideInUp {
-    from {
-        opacity: 0;
-        transform: translateY(20px);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-    }
-
-    to {
-        opacity: 1;
-    }
-}
-
-.checkbox-main-box,
-.pos-detail-card {
-    animation: slideInUp 0.5s ease-out;
-}
-
-// Smooth transitions for all interactive elements
-* {
-    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-// ============================================
-// Minimum Order Alert
-// ============================================
-.checkout-minimum-order-alert {
-    background: linear-gradient(135deg, lighten($theme-error, 45%) 0%, lighten($theme-error, 48%) 100%);
-    border: 1.5px solid rgba($theme-error, 0.3);
-    border-radius: $radius-sm;
-    padding: $spacing-md;
+// Section Header Logic
+.checkout-section-title {
     display: flex;
     align-items: center;
-    gap: $spacing-sm;
-    margin-top: $spacing-lg;
-    margin-bottom: $spacing-xs;
-    animation: fadeInSlide 0.4s ease-out;
-    box-shadow: 0 4px 12px rgba($theme-error, 0.08);
+    gap: 15px;
+    margin-bottom: 30px;
 
-    .alert-icon {
-        width: 32px;
-        height: 32px;
-        background: $theme-error;
+    .step-number {
+        width: 36px;
+        height: 36px;
+        background: #0F172A;
+        color: #ffffff;
         border-radius: 50%;
         display: flex;
         align-items: center;
         justify-content: center;
+        font-size: 16px;
+        font-weight: 800;
         flex-shrink: 0;
+    }
 
-        i {
-            color: white;
-            font-size: 18px;
+    h2 {
+        font-size: 22px;
+        font-weight: 800;
+        color: #0f172a;
+        margin: 0;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+}
+
+// Main Left Column Containers
+.left-sidebar-checkout {
+    .checkbox-main-box {
+        background: #ffffff;
+        border: 1px solid #f1f5f9;
+        border-radius: 20px;
+        padding: 40px;
+        margin-bottom: 30px;
+        transition: all 0.3s ease;
+
+        &:hover {
+            border-color: #e2e8f0;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.02);
+        }
+
+        @media (max-width: 767px) {
+            padding: 25px;
         }
     }
 
-    .alert-content {
+    .checkout-detail-box {
+        margin-bottom: 30px;
+
+        ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+
+            li {
+                background: #ffffff;
+                border: 1px solid #f1f5f9;
+                border-radius: 20px;
+                padding: 40px;
+                margin-bottom: 30px;
+
+                @media (max-width: 767px) {
+                    padding: 25px;
+                }
+            }
+        }
+    }
+
+    .checkout-title {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 25px;
+
         h4 {
-            font-size: 14px;
-            font-weight: 700;
-            color: darken($theme-error, 10%);
-            margin: 0 0 2px 0;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
+            font-size: 20px;
+            font-weight: 800;
+            color: #0f172a;
+            margin: 0;
         }
 
-        p {
-            font-size: 13px;
-            color: darken($theme-error, 5%);
-            margin: 0;
-            font-weight: 500;
-            line-height: 1.25;
+        a {
+            font-size: 14px;
+            font-weight: 700;
+            color: #64748b;
+            text-decoration: underline;
+
+            &:hover {
+                color: #000000;
+            }
         }
     }
 }
 
-@keyframes fadeInSlide {
-    0% {
-        opacity: 0;
-        transform: translateY(10px);
+// Form Elements
+.checkout-form {
+    .form-box {
+        margin-bottom: 25px;
+
+        label {
+            display: block;
+            font-size: 13px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #94a3b8;
+            margin-bottom: 10px;
+        }
+
+        .form-control {
+            height: 54px;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 0 18px;
+            font-size: 15px;
+            font-weight: 600;
+            color: #0f172a;
+            background: #f8fafc;
+            transition: all 0.2s;
+
+            &:focus {
+                background: #ffffff;
+                border-color: #000000;
+                box-shadow: none;
+            }
+
+            &::placeholder {
+                color: #cbd5e1;
+                font-weight: 500;
+            }
+        }
+
+        .invalid-feedback {
+            font-size: 12px;
+            font-weight: 600;
+            color: #ef4444;
+            margin-top: 6px;
+        }
     }
-    100% {
-        opacity: 1;
-        transform: translateY(0);
+
+    .form-checkbox {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+
+        .form-check-input {
+            width: 20px;
+            height: 20px;
+            border: 2px solid #e2e8f0;
+            border-radius: 6px;
+            cursor: pointer;
+
+            &:checked {
+                background-color: #000000;
+                border-color: #000000;
+            }
+        }
+
+        .form-check-label {
+            font-size: 14px;
+            font-weight: 600;
+            color: #475569;
+            margin: 0;
+            cursor: pointer;
+        }
+    }
+}
+
+// Select2 Custom Overrides
+::ng-deep {
+    .custom-select {
+        width: 100% !important;
+
+        .select2-container {
+            width: 100% !important;
+
+            .select2-selection--single {
+                height: 54px !important;
+                background-color: #f8fafc !important;
+                border: 1.5px solid #e2e8f0 !important;
+                border-radius: 12px !important;
+                display: flex !important;
+                align-items: center !important;
+                position: relative;
+
+                .select2-selection__rendered {
+                    padding-left: 18px !important;
+                    font-weight: 600 !important;
+                    color: #0f172a !important;
+                    line-height: normal !important;
+                }
+
+                .select2-selection__arrow {
+                    height: 100% !important;
+                    width: 40px !important;
+                    right: 5px !important;
+                    top: 10px !important;
+                    display: flex !important;
+                    align-items: center !important;
+                    justify-content: center !important;
+
+                    b {
+                        margin-top: 0 !important;
+                        border-width: 6px 5px 0 5px !important;
+                    }
+                }
+            }
+
+            &.select2-container--focus {
+                .select2-selection--single {
+                    background-color: #ffffff !important;
+                    width: 100% !important;
+                    border: 2px solid !important;
+                    border-color: #e2e8f0 !important;
+                }
+            }
+        }
+    }
+
+    // Dropdown Results Overrides (The popup list)
+    .select2-container--open {
+        z-index: 9999;
+
+        .select2-dropdown {
+            border: 1px solid #1e293b !important;
+            border-radius: 12px !important;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3) !important;
+            background-color: #0f172a !important;
+            color: #ffffff !important;
+            overflow: hidden;
+            margin-top: 5px;
+        }
+
+        .select2-search--dropdown {
+            padding: 10px !important;
+            background-color: #1e293b !important;
+
+            .select2-search__field {
+                background-color: #0f172a !important;
+                border: 1px solid #334155 !important;
+                border-radius: 8px !important;
+                padding: 8px 12px !important;
+                font-weight: 500 !important;
+                color: #ffffff !important;
+
+                &:focus {
+                    border-color: #ffffff !important;
+                    outline: none;
+                }
+            }
+        }
+
+        .select2-results__options {
+            max-height: 300px !important;
+
+            &::-webkit-scrollbar {
+                width: 5px;
+            }
+
+            &::-webkit-scrollbar-thumb {
+                background: #334155;
+                border-radius: 10px;
+            }
+
+            .select2-results__option {
+                padding: 12px 18px !important;
+                font-size: 14px !important;
+                font-weight: 500 !important;
+                color: rgba(255, 255, 255, 0.8) !important;
+                background-color: #0f172a !important;
+                transition: all 0.2s;
+
+                &[aria-selected="true"] {
+                    background-color: #1e293b !important;
+                    color: #ffffff !important;
+                }
+
+                &--highlighted {
+                    background-color: #334155 !important;
+                    color: #ffffff !important;
+                }
+            }
+        }
+    }
+}
+
+// Phone Input Cluster
+.phone-field {
+    display: flex !important;
+    gap: 10px;
+
+    select2 {
+        width: 100px !important;
+        flex-shrink: 0;
+    }
+
+    .form-control {
+        flex: 1;
+    }
+}
+
+// Right Sidebar - Order Summary
+.checkout-summary-card {
+    background: #ffffff;
+    border: 1px solid #f1f5f9;
+    border-radius: 20px;
+    padding: 35px;
+    position: sticky;
+    top: 100px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.03);
+
+    @media (max-width: 991px) {
+        margin-top: 30px;
+        padding: 25px;
+    }
+
+    .title-header {
+        border-bottom: 1.5px solid #0F172A;
+        padding-bottom: 20px;
+        margin-bottom: 25px;
+
+        h5 {
+            font-size: 20px;
+            font-weight: 900;
+            color: #000000;
+            margin: 0;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+    }
+
+    .cart-listing {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        max-height: 350px;
+        overflow-y: auto;
+
+        &::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        &::-webkit-scrollbar-thumb {
+            background: #e2e8f0;
+            border-radius: 10px;
+        }
+
+        li {
+            display: flex;
+            gap: 15px;
+            padding: 15px 0;
+            border-bottom: 1px solid #f8fafc;
+
+            &:last-child {
+                border-bottom: none;
+            }
+
+            img {
+                width: 60px;
+                height: 75px;
+                border-radius: 8px;
+                object-fit: cover;
+                background: #f8fafc;
+            }
+
+            .cart-content {
+                flex: 1;
+
+                h4 {
+                    font-size: 14px;
+                    font-weight: 700;
+                    color: #1e293b;
+                    margin: 0 0 5px;
+                    line-height: 1.4;
+                }
+
+                .text-theme {
+                    font-size: 12px;
+                    color: #94a3b8;
+                    font-weight: 600;
+                    margin-bottom: 3px;
+                }
+
+                .price {
+                    font-size: 15px;
+                    font-weight: 800;
+                    color: #0f172a;
+                }
+            }
+        }
+    }
+
+    .summary-total {
+        list-style: none;
+        padding: 20px 0 0;
+        margin: 20px 0 0;
+        border-top: 1.5px dashed #e2e8f0;
+
+        li {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 12px;
+
+            h4 {
+                margin: 0;
+                font-size: 15px;
+                color: #64748b;
+                font-weight: 500;
+
+                &.price {
+                    color: #0f172a;
+                    font-weight: 700;
+                }
+            }
+
+            &.list-total {
+                margin-top: 15px;
+                padding-top: 15px;
+                border-top: 1.5px solid #0F172A;
+
+                h4 {
+                    font-size: 18px;
+                    font-weight: 700;
+                    color: #000000;
+
+                    &.price {
+                        font-size: 24px;
+                        font-weight: 950;
+                        letter-spacing: -0.5px;
+                    }
+                }
+            }
+        }
+    }
+
+    // Points & Wallet Overrides
+    .border-cls {
+        background: #f8fafc;
+        padding: 12px 15px;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+
+        label {
+            font-size: 12px;
+            font-weight: 700;
+            color: #475569;
+        }
+
+        input {
+            width: 16px;
+            height: 16px;
+        }
+    }
+
+    // Promo Code Box
+    .coupon-box {
+        margin-top: 15px;
+
+        .input-group {
+            display: flex;
+            gap: 8px;
+
+            input {
+                flex: 1;
+                height: 44px;
+                border-radius: 8px;
+                border: 1.5px solid #e2e8f0;
+                padding: 0 12px;
+                font-size: 13px;
+                font-weight: 600;
+
+                &:focus {
+                    border-color: #000000;
+                    outline: none;
+                }
+            }
+
+            .btn-apply {
+                height: 44px;
+                padding: 0 15px;
+                background: #0F172A;
+                color: #ffffff;
+                border: none;
+                border-radius: 8px;
+                font-size: 13px;
+                font-weight: 700;
+                text-transform: uppercase;
+            }
+        }
+    }
+
+    // Order Button
+    .theme-bg-color {
+        width: 100%;
+        height: 60px;
+        background: #0F172A !important;
+        color: #ffffff !important;
+        border-radius: 12px;
+        font-size: 16px;
+        font-weight: 900;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        border: none;
+        margin-top: 25px;
+        transition: all 0.3s;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+
+        &:hover:not(:disabled) {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.25);
+            background: #1e293b !important;
+        }
+
+        &:disabled {
+            opacity: 0.5;
+            background: #94a3b8 !important;
+            box-shadow: none;
+        }
+    }
+}
+
+// Payment Methods Header (Separate Card)
+.payment-options-card {
+    background: #ffffff;
+    border: 1px solid #f1f5f9;
+    border-radius: 20px;
+    padding: 40px;
+    margin-bottom: 30px;
+
+    .checkout-section-title {
+        margin-bottom: 30px;
+    }
+}
+
+// ============================================
+// Deep Component Overrides
+// ============================================
+::ng-deep {
+
+    // 1. Address Block Premium Overrides
+    app-address-block {
+        .row {
+            margin: 0 -10px;
+        }
+
+        .col-lg-6,
+        .col-sm-6 {
+            padding: 0 10px;
+        }
+
+        .address-box {
+            border: 1.5px solid #f1f5f9 !important;
+            border-radius: 16px !important;
+            padding: 25px !important;
+            transition: all 0.3s ease !important;
+            background: #ffffff !important;
+            cursor: pointer;
+            position: relative;
+            margin-bottom: 20px;
+
+            &.active {
+                border-color: #0F172A !important;
+                background: #f8fafc !important;
+
+                &::after {
+                    content: '\eb7a'; // remix icon check
+                    font-family: 'remixicon';
+                    position: absolute;
+                    top: 15px;
+                    right: 15px;
+                    font-size: 20px;
+                    color: #0F172A;
+                }
+            }
+
+            &:hover:not(.active) {
+                border-color: #e2e8f0 !important;
+                transform: translateY(-2px);
+            }
+
+            .label {
+                font-size: 11px !important;
+                font-weight: 800 !important;
+                text-transform: uppercase !important;
+                color: #94a3b8 !important;
+                letter-spacing: 1px !important;
+                margin-bottom: 5px !important;
+                display: block;
+            }
+
+            h5 {
+                font-size: 16px !important;
+                font-weight: 700 !important;
+                color: #0f172a !important;
+                margin-bottom: 10px !important;
+            }
+
+            p {
+                font-size: 14px !important;
+                line-height: 1.5 !important;
+                color: #64748b !important;
+                margin: 0 !important;
+            }
+        }
+    }
+
+    // 2. Delivery Block Premium Overrides
+    app-delivery-block {
+        .delivery-option {
+            border: 1.5px solid #f1f5f9 !important;
+            border-radius: 14px !important;
+            padding: 20px !important;
+            background: #f8fafc !important;
+            transition: all 0.2s !important;
+
+            &:has(input:checked) {
+                border-color: #000000 !important;
+                background: #ffffff !important;
+            }
+
+            .form-check-label {
+                font-weight: 700 !important;
+                color: #0f172a !important;
+                font-size: 15px !important;
+                cursor: pointer;
+            }
+        }
+    }
+
+    // 3. Payment Block Premium Overrides
+    app-payment-block {
+        .payment-option {
+            border: 1.5px solid #f1f5f9 !important;
+            border-radius: 12px !important;
+            padding: 18px !important;
+            margin-bottom: 12px !important;
+            display: flex !important;
+            align-items: center !important;
+            gap: 15px !important;
+            cursor: pointer;
+            transition: all 0.2s !important;
+
+            &:hover {
+                border-color: #e2e8f0 !important;
+            }
+
+            &.active {
+                border-color: #000000 !important;
+                background: #f8fafc !important;
+            }
+
+            .form-check-input {
+                width: 22px !important;
+                height: 22px !important;
+                border: 2px solid #e2e8f0 !important;
+                cursor: pointer;
+
+                &:checked {
+                    background-color: #000000 !important;
+                    border-color: #000000 !important;
+                }
+            }
+
+            .payment-label {
+                font-weight: 700 !important;
+                color: #0f172a !important;
+                font-size: 15px !important;
+                flex: 1;
+            }
+
+            img {
+                height: 24px;
+                object-fit: contain;
+            }
+        }
     }
 }

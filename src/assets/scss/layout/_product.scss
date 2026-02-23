@@ -779,8 +779,8 @@
 
     img {
       @include pseudowh($width: 100%,
-        $height: calc(100px + (140 - 100) * ((100vw - 320px) / (1920 - 320))));
-      object-fit: contain;
+        $height: calc(180px + (260 - 180) * ((100vw - 320px) / (1920 - 320))));
+      object-fit: cover;
       transition: opacity 0.5s, transform 1.25s cubic-bezier(0, 0, 0.44, 1.18);
     }
   }

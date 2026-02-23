@@ -1,8 +1,8 @@
-// Primary Color
-$primary-color: #1B4B45;
-$primary-dark: #0f2e2a;
-$primary-light: #2a6b63;
-$primary-lighter: #e8f4f2;
+// Premium Slate Theme Colors
+$primary-color: #0F172A;
+$primary-dark: #020617;
+$primary-light: #1E293B;
+$primary-lighter: #F1F5F9;
 
 // Dashboard Menu Bar - Full Width
 .dashboard-menu-bar {
@@ -189,7 +189,7 @@ $primary-lighter: #e8f4f2;
 
         &:hover {
             transform: translateY(-4px);
-            box-shadow: 0 8px 24px rgba(27, 75, 69, 0.15);
+            box-shadow: 0 8px 24px rgba(15, 23, 42, 0.15);
 
             &::before {
                 transform: scaleY(1);
@@ -214,15 +214,15 @@ $primary-lighter: #e8f4f2;
         }
 
         &.balance-card .stat-icon {
-            background: linear-gradient(135deg, #1B4B45 0%, #2a6b63 100%);
+            background: linear-gradient(135deg, #0F172A 0%, #1E293B 100%);
         }
 
         &.points-card .stat-icon {
-            background: linear-gradient(135deg, #1B4B45 0%, #0f2e2a 100%);
+            background: linear-gradient(135deg, #0F172A 0%, #020617 100%);
         }
 
         &.orders-card .stat-icon {
-            background: linear-gradient(135deg, #2a6b63 0%, #1B4B45 100%);
+            background: linear-gradient(135deg, #1E293B 0%, #0F172A 100%);
         }
 
         .stat-content {
@@ -260,11 +260,11 @@ $primary-lighter: #e8f4f2;
         transition: all 0.3s ease;
 
         &:hover {
-            box-shadow: 0 8px 24px rgba(27, 75, 69, 0.12);
+            box-shadow: 0 8px 24px rgba(15, 23, 42, 0.12);
         }
 
         .card-header {
-            background: linear-gradient(135deg, $primary-lighter 0%, rgba(27, 75, 69, 0.05) 100%);
+            background: linear-gradient(135deg, $primary-lighter 0%, rgba(15, 23, 42, 0.05) 100%);
             padding: 1.25rem 1.5rem;
             border-bottom: 2px solid $primary-lighter;
 
@@ -402,7 +402,7 @@ $primary-lighter: #e8f4f2;
 
             &:hover {
                 transform: translateX(4px);
-                box-shadow: 0 4px 16px rgba(27, 75, 69, 0.12);
+                box-shadow: 0 4px 16px rgba(15, 23, 42, 0.12);
                 border-color: $primary-lighter;
 
                 &::before {
@@ -415,10 +415,10 @@ $primary-lighter: #e8f4f2;
             }
 
             &.unread {
-                background: linear-gradient(135deg, rgba(27, 75, 69, 0.03) 0%, rgba(232, 244, 242, 0.5) 100%);
+                background: linear-gradient(135deg, rgba(15, 23, 42, 0.03) 0%, rgba(241, 245, 249, 0.5) 100%);
                 border-left-color: $primary-color;
                 border-left-width: 4px;
-                box-shadow: 0 2px 8px rgba(27, 75, 69, 0.08);
+                box-shadow: 0 2px 8px rgba(15, 23, 42, 0.08);
 
                 &::after {
                     content: '';
@@ -429,7 +429,7 @@ $primary-lighter: #e8f4f2;
                     height: 10px;
                     background: $primary-color;
                     border-radius: 50%;
-                    box-shadow: 0 0 0 3px rgba(27, 75, 69, 0.2);
+                    box-shadow: 0 0 0 3px rgba(15, 23, 42, 0.2);
                     animation: pulse-notification 2s infinite;
                 }
 
@@ -597,35 +597,36 @@ $primary-lighter: #e8f4f2;
         }
     }
 }
-    .notifications-wrapper {
-        .title-header {
-            h5 {
-                font-size: 1.25rem;
 
-                &::before {
-                    height: 24px;
-                }
-            }
-        }
+.notifications-wrapper {
+    .title-header {
+        h5 {
+            font-size: 1.25rem;
 
-        .notification-list {
-            li {
-                padding: 1rem 1.25rem;
-
-                h4 {
-                    font-size: 0.9375rem;
-                }
-
-                h5 {
-                    font-size: 0.8125rem;
-                }
-
-                &.unread::after {
-                    top: 1rem;
-                    right: 1.25rem;
-                    width: 8px;
-                    height: 8px;
-                }
+            &::before {
+                height: 24px;
             }
         }
     }
+
+    .notification-list {
+        li {
+            padding: 1rem 1.25rem;
+
+            h4 {
+                font-size: 0.9375rem;
+            }
+
+            h5 {
+                font-size: 0.8125rem;
+            }
+
+            &.unread::after {
+                top: 1rem;
+                right: 1.25rem;
+                width: 8px;
+                height: 8px;
+            }
+        }
+    }
+}

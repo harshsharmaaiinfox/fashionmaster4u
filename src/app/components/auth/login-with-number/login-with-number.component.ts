@@ -28,6 +28,7 @@ export class LoginWithNumberComponent {
     title: "Login With Number",
     items: [{ label: 'Login With Number', active: true }]
   }
+  public isLoading: boolean = false;
 
   constructor(
     private store: Store,
@@ -44,11 +45,16 @@ export class LoginWithNumberComponent {
   submit() {
     this.form.markAllAsTouched();
     if (this.form.valid) {
+      this.isLoading = true;
       const payload = { ...this.form.value, 'store-id': environment.storeId };
       this.store.dispatch(new LoginWithNumber(payload)).subscribe({
         complete: () => {
+          this.isLoading = false;
           this.authService.otpType = 'number';
           this.router.navigateByUrl('/auth/otp');
+        },
+        error: () => {
+          this.isLoading = false;
         }
       })
     }

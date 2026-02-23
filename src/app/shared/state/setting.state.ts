@@ -50,53 +50,14 @@ export class SettingState {
             customValue = JSON.parse(JSON.stringify(result.values));
             const customPayments = [
 
-              {
-                name: 'neoKred',
-                status: false,
-                title: 'Pay By UPI INTENT',
-                // icon: './assets/images/payment/pay_by_qr.png',
-              },
-              {
-                name: 'RaylomShop_nabu',
-                status: false,
-                title: 'Pay By UPI INTENT 3',
-                // icon: './assets/images/payment/RaylomShop_nabu.png',
-              },
+
               {
                 name: 'cash_free',
-                status: false,
-                title: 'Cash Free',
-                icon: './assets/images/cash_free.jpg',
-              },
-              {
-                name: 'zyaada_pay',
-                status: false,
-                title: 'Zyaada Pay',
-                icon: './assets/images/zyaada_pay_logo.jpg',
-              },
-              {
-                name: 'sub_paisa',
-                status: false,
-                title: 'Sab Paisa',
-                icon: './assets/images/sub_paisa.png'
-              },
-              {
-                name: 'ease_buzz',
-                status: false,
-                title: 'Ease Buzz',
-                icon: './assets/images/easebuzz.png'
-              },
-              {
-                name: 'neoKred2',
-                status: false,
-                title: 'Pay By UPI INTENT2',
-                // icon: './assets/images/payment/pay_by_qr.png',
-              },
-              {
-                name: 'deluxe_pay',
                 status: true,
-                title: 'Pay By Rush',
+                title: 'Cash Free',
+                // icon: './assets/images/cash_free.jpg',
               },
+
 
             ];
             customValue.payment_methods = customPayments //[result.values.payment_methods[0]];

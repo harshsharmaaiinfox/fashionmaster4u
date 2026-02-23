@@ -12,26 +12,18 @@
 
                         <!-- Logo -->
                         <a [routerLink]="['/']" class="web-logo nav-logo">
-                            <div class="logo-container">
-                                <div class="hexagon-logo">
-                                    <span class="logo-letter">F</span>
-                                </div>
-                                <span class="brand-name">Fashionmaster4u</span>
-                            </div>
+                            <img src="assets/images/fashionmaster.png" alt="Fashionmaster4u" class="header-logo-img">
                         </a>
 
                         <!-- Menu (Desktop) -->
                         <div class="header-menu d-none d-xl-block">
                             <div class="main-nav navbar navbar-expand-xl navbar-light">
                                 <ul class="navbar-nav">
-                                    <li class="nav-item">
-                                        <a class="nav-link" [routerLink]="['/']" routerLinkActive="active">MoveMode</a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link" [routerLink]="['/collections/mens']" routerLinkActive="active">The Men's Rack</a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link" [routerLink]="['/collections/womens']" routerLinkActive="active">Style For Her</a>
+                                    <li class="nav-item" *ngFor="let menu of menuOptions">
+                                        <a class="nav-link" href="javascript:void(0)" (click)="redirect(menu.path)"
+                                            routerLinkActive="active">
+                                            {{ menu.title | translate }}
+                                        </a>
                                     </li>
                                 </ul>
                             </div>

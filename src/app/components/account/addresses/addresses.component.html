@@ -1,118 +1,86 @@
 <div class="tab-pane fade show active">
     <div class="dashboard-home">
-        <!-- Full Width Menu Bar -->
+
+        <!-- 1. Global Account Navigation (Sticky) -->
         <div class="dashboard-menu-bar">
             <div class="menu-container">
                 <a class="menu-item" [routerLinkActive]="['active']" [routerLink]="['/account/dashboard']">
-                    <i class="ri-home-fill"></i>
+                    <i class="ri-dashboard-line"></i>
                     <span>{{ 'Dashboard' | translate }}</span>
                 </a>
-                <a class="menu-item" [routerLinkActive]="['active']" [routerLink]="['/account/notifications']">
-                    <i class="ri-notification-fill"></i>
-                    <span>{{ 'Notifications' | translate }}</span>
-                    <span class="notification-badge" *ngIf="unreadNotificationCount">{{ unreadNotificationCount
-                        }}</span>
-                </a>
-                <a class="menu-item" [routerLinkActive]="['active']" [routerLink]="['/account/bank-details']">
-                    <i class="ri-bank-fill"></i>
-                    <span>{{ 'Bank Details' | translate }}</span>
-                </a>
                 <a class="menu-item" [routerLinkActive]="['active']" [routerLink]="['/account/order']">
-
-                    <i class="ri-file-text-fill"></i>
+                    <i class="ri-shopping-bag-3-line"></i>
                     <span>{{ 'My Orders' | translate }}</span>
                 </a>
-
-                <a class="menu-item" [routerLinkActive]="['active']" [routerLink]="['/account/refund']">
-                    <i class="ri-money-rupee-circle-fill"></i>
-                    <span>{{ 'Refund History' | translate }}</span>
-                </a>
                 <a class="menu-item" [routerLinkActive]="['active']" [routerLink]="['/account/addresses']">
-                    <i class="ri-map-pin-fill"></i>
-                    <span>{{ 'Saved Address' | translate }}</span>
+                    <i class="ri-map-pin-2-line"></i>
+                    <span>{{ 'Addresses' | translate }}</span>
                 </a>
-
+                <a class="menu-item" [routerLinkActive]="['active']" [routerLink]="['/account/bank-details']">
+                    <i class="ri-bank-line"></i>
+                    <span>{{ 'Finances' | translate }}</span>
+                </a>
             </div>
         </div>
 
-        <!-- Dashboard Header -->
+        <!-- 2. Header -->
         <div class="dashboard-header">
-            <div class="header-content">
-                <div class="header-text">
-                    <h2 class="dashboard-title">{{ 'Saved Address' | translate }}</h2>
-                    <p class="dashboard-subtitle">{{ 'Hello' | translate }}, <strong>{{ (user$ | async)?.name! |
-                            titleCase }}</strong> - {{ "Welcome" | translate}}</p>
-                </div>
-            </div>
+            <h2 class="dashboard-title">{{ 'Saved Addresses' | translate }}</h2>
+            <p class="dashboard-subtitle">{{ 'Manage your shipping locations for a' | translate }} <strong>{{ 'Faster
+                    Checkout' | translate }}</strong></p>
         </div>
 
-        <!-- Address Content -->
+        <!-- 3. Address Content -->
         <div class="dashboard-content">
             <div class="dashboard-address">
                 <div class="title-header">
                     <div class="d-flex align-items-center w-100 justify-content-between">
-                        <h5>{{ 'Saved Address' | translate }}</h5>
-                        <app-button [class]="'btn theme-bg-color text-white btn-sm fw-bold mt-lg-0 ms-auto'"
-                            [type]="'button'" [spinner]="false" [id]="'add_address'" (click)="AddressModal.openModal()">
-                            <i class="ri-add-line"></i> {{ 'Add Address' | translate }}
-                        </app-button>
+                        <h5>{{ 'List of Addresses' | translate }}</h5>
+                        <button type="button" class="btn-add" (click)="AddressModal.openModal()">
+                            <i class="ri-add-line"></i> {{ 'New Address' | translate }}
+                        </button>
                     </div>
                 </div>
-                <div class="row g-sm-4 g-3" *ngIf="(user$ | async)?.address?.length">
-                    <div class="col-xxl-4 col-xl-6 col-lg-12 col-md-6"
-                        *ngFor="let address of (user$ | async)?.address; let i = index;">
+
+                <div class="row g-4" *ngIf="(user$ | async)?.address?.length">
+                    <div class="col-xl-4 col-md-6" *ngFor="let address of (user$ | async)?.address; let i = index;">
                         <div class="address-box">
-                            <div>
-                                <div class="label">
-                                    <label>{{ address?.title }}</label>
+                            <div class="label">
+                                <label>{{ address?.title }}</label>
+                            </div>
+
+                            <div class="address-details">
+                                <h4>{{ (user$ | async)?.name | titleCase }}</h4>
+
+                                <div class="info-item">
+                                    <i class="ri-map-pin-line"></i>
+                                    <span>{{ address?.street }}, {{ address?.city }}, {{ address?.area }}, {{
+                                        address?.country_id }} - {{ address?.pincode }}</span>
                                 </div>
-                                <div class="table-responsive address-table">
-                                    <table class="table">
-                                        <tbody>
-                                            <tr>
-                                                <td colspan="2">{{ (user$ | async)?.name | titleCase }}</td>
-                                            </tr>
-                                            <tr>
-                                                <td>{{ 'Address' | translate }} :</td>
-                                                <td>
-                                                    <p>
-                                                        {{ address?.street }}, {{ address?.city }}, {{ address?.area }},
-                                                        {{ address?.country_id }}
-                                                    </p>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>{{ 'Pin Code' | translate }} :</td>
-                                                <td>{{ address?.pincode }}</td>
-                                            </tr>
-                                            <tr>
-                                                <td>{{ 'Phone' | translate }} :</td>
-                                                <td>+{{ address?.country_code }} {{ address?.phone }}</td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
+
+                                <div class="info-item">
+                                    <i class="ri-phone-line"></i>
+                                    <span>{{ address?.country_code }} {{ address?.phone }}</span>
                                 </div>
                             </div>
+
                             <div class="button-group">
-                                <app-button [class]="'btn btn-sm add-button'" [type]="'button'" [spinner]="false"
-                                    [id]="'edit_address'+address.id" (click)="AddressModal.openModal(address)">
-                                    <i class="ri-edit-box-line"></i> {{ 'Edit' | translate }}
-                                </app-button>
-                                <app-button [class]="'btn btn-sm add-button'" [type]="'button'" [spinner]="false"
-                                    [id]="'remove_address'+address.id"
+                                <button class="btn-action" (click)="AddressModal.openModal(address)">
+                                    <i class="ri-edit-line"></i> {{ 'Edit' | translate }}
+                                </button>
+                                <button class="btn-action btn-remove"
                                     (click)="DeleteModal.openModal('delete', address)">
                                     <i class="ri-delete-bin-line"></i> {{ 'Remove' | translate }}
-                                </app-button>
+                                </button>
                             </div>
                         </div>
                     </div>
                 </div>
+
             </div>
         </div>
     </div>
 </div>
-<app-no-data [class]="'no-data-added'" *ngIf="!(user$ | async)?.address?.length">
-</app-no-data>
+
 <address-modal #addressModal></address-modal>
-<app-delete-modal #deleteModal (deleteItem)="delete($event.actionToPerform,$event.data)">
-</app-delete-modal>
+<app-delete-modal #deleteModal (deleteItem)="delete($event.actionToPerform,$event.data)"></app-delete-modal>

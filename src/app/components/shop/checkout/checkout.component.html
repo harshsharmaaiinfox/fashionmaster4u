@@ -1,668 +1,343 @@
-<app-breadcrumb [breadcrumb]="breadcrumb"></app-breadcrumb>
-
-<section class="checkout-section-2 section-b-space" id="mySubPaisa">
+<section class="checkout-section-2">
     <div class="container-fluid-lg">
         <div class="row g-sm-4 g-3">
+
+            <!-- Main Content Area -->
             <div class="col-xxl-8 col-xl-7">
                 <div class="left-sidebar-checkout">
-                    <div class="checkout-form-section"
+
+                    <!-- 1. Guest Account Details -->
+                    <div class="checkbox-main-box"
                         *ngIf="(setting$ | async)?.activation?.guest_checkout && !(accessToken$ | async)">
-                        <div class="checkbox-main-box">
-                            <div class="checkout-title1">
-                                <h2><i class="ri-user-line"></i> {{ 'Account Details' | translate }}</h2>
+                        <div class="checkout-section-title">
+                            <div class="step-number">1</div>
+                            <h2>{{ 'Account Details' | translate }}</h2>
+                        </div>
+
+                        <form [formGroup]="form" class="checkout-form row">
+                            <div class="col-md-6">
+                                <div class="form-box">
+                                    <label>{{ 'Full Name' | translate }}</label>
+                                    <input type="text" class="form-control" formControlName="name"
+                                        placeholder="{{ 'e.g. John Doe' | translate }}">
+                                    <div class="invalid-feedback"
+                                        *ngIf="form?.controls?.['name']?.touched && form.controls['name']?.errors?.['required']">
+                                        {{ 'Name Is Required' | translate }}
+                                    </div>
+                                </div>
                             </div>
-                            <form [formGroup]="form" class="checkout-form row">
-                                <div class="col-md-4">
-                                    <div class="mb-3 form-box">
-                                        <label for="name" class="form-label">{{ 'Name' | translate }}</label>
-                                        <input type="text" class="form-control" formControlName="name"
-                                            placeholder="{{ 'Enter Name' | translate }}" id="name">
-                                        <div class="invalid-feedback"
-                                            *ngIf="form?.controls?.['name']?.touched && form.controls['name']?.errors?.['required']">
-                                            {{ 'Name Is Required' | translate }}
-                                        </div>
+                            <div class="col-md-6">
+                                <div class="form-box">
+                                    <label>{{ 'Email Address' | translate }}</label>
+                                    <input type="email" class="form-control"
+                                        placeholder="{{ 'e.g. john@example.com' | translate }}" formControlName="email">
+                                    <div class="invalid-feedback"
+                                        *ngIf="form?.controls?.['email']?.touched && (form.controls['email']?.errors?.['required'] || form.controls['email']?.errors?.['email'])">
+                                        {{ 'Valid Email is Required' | translate }}
                                     </div>
                                 </div>
-                                <div class="col-md-4">
-                                    <div class="mb-3 form-box">
-                                        <label for="email" class="form-label">{{ 'Email' | translate }}</label>
-                                        <input type="email" class="form-control"
-                                            placeholder="{{ 'Enter Email Address' | translate }}"
-                                            formControlName="email" id="email">
-                                        <div class="invalid-feedback"
-                                            *ngIf="form?.controls?.['email']?.touched && form.controls['email']?.errors?.['required']">
-                                            {{ 'Email is Required' | translate }}
-                                        </div>
-                                        <div *ngIf="form.controls['email'].touched && form.controls['email'].errors?.['email']"
-                                            class="invalid-feedback">
-                                            {{ 'Invalid Email' | translate }}
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-4 phone-field">
-                                    <div class="form-box position-relative">
-                                        <label class="form-label" for="phoneno">{{ 'Phone Number' | translate }}</label>
-                                        <select2 class="custom-select intl-tel-input" [templates]="template"
-                                            [data]="codes" formControlName="country_code">
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-box">
+                                    <label>{{ 'Phone Number' | translate }}</label>
+                                    <div class="phone-field">
+                                        <select2 class="custom-select" [data]="codes" formControlName="country_code"
+                                            [templates]="template">
                                             <ng-template #template let-data="data">
-                                                <div class="country">
-                                                    <div class="flag-box">
-                                                        <div class="iti-flag {{data?.class}}"></div>
-                                                    </div>
-                                                    <span class="dial-code">{{data.code}}</span>
+                                                <div class="country d-flex align-items-center">
+                                                    <span class="iti-flag {{data?.class}} me-2"></span>
+                                                    <span>{{data.code}}</span>
                                                 </div>
                                             </ng-template>
                                         </select2>
-                                        <input type="number" class="form-control intl-input-padding"
-                                            formControlName="phone" placeholder="{{ 'enter_phone' | translate }}"
-                                            name="phone">
+                                        <input type="number" class="form-control" formControlName="phone"
+                                            placeholder="{{ '000 000 0000' | translate }}">
                                     </div>
                                     <div class="invalid-feedback"
                                         *ngIf="form?.controls?.['phone']?.touched && form.controls['phone']?.errors?.['required']">
                                         {{ 'Phone is Required' | translate }}
                                     </div>
                                 </div>
-                                <div class="col-md-12">
-                                    <div class="mb-3 form-box form-checkbox">
-                                        <input type="checkbox" class="form-check-input checkbox_animated" id="account"
-                                            formControlName="create_account">
-                                        <label class="form-check-label" for="account">{{ 'Create an Account?' |
-                                            translate }}</label>
-                                    </div>
-                                </div>
-                                <div class="col-md-6" *ngIf="form.controls['create_account'].value">
-                                    <div class="mb-3 form-box">
-                                        <label for="pass" class="form-label">{{ 'Password' | translate }}</label>
-                                        <input type="password" class="form-control" formControlName="password"
-                                            placeholder="{{ 'Enter Password' | translate }}" id="pass">
-                                        <div class="invalid-feedback"
-                                            *ngIf="form?.controls?.['password']?.touched && form.controls['password']?.errors?.['required']">
-                                            {{ 'Password is Required' | translate }}
-                                        </div>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
-                        <div class="checkbox-main-box">
-                            <div class="checkout-title1">
-                                <h2><i class="ri-map-pin-line"></i> {{ 'Shipping Details' | translate }}</h2>
                             </div>
-                            <form [formGroup]="form" class="checkout-form">
-                                <div class="row" formGroupName="shipping_address">
-                                    <div class="col-md-12">
-                                        <div class="mb-3 form-box">
-                                            <label for="sname" class="form-label">{{ 'Title' | translate }}</label>
-                                            <input type="text" class="form-control" formControlName="title" id="sname"
-                                                placeholder="{{ 'Enter Name' | translate }}">
-                                            <div *ngIf="form.get('shipping_address.title')?.touched && form.get('shipping_address.title')?.errors?.['required']"
-                                                class="invalid-feedback">
-                                                {{ 'Title is Required' | translate }}
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-12">
-                                        <div class="mb-3 form-box">
-                                            <label for="saddress" class="form-label">{{ 'Address' | translate }}</label>
-                                            <input type="text" class="form-control" formControlName="street"
-                                                id="saddress" placeholder="{{ 'Enter Address' | translate }}">
-                                            <div *ngIf="form.get('shipping_address.street')?.touched && form.get('shipping_address.street')?.errors?.['required']"
-                                                class="invalid-feedback">
-                                                {{ 'Address is Required' | translate }}
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="mb-3 form-box">
-                                            <label for="scountry" class="form-label">{{ 'Country' | translate }}</label>
-                                            <select2 class="custom-select"
-                                                [data]="(countries$ | async) ? (countries$ | async)! : []"
-                                                [placeholder]="'Select Country' | translate"
-                                                (update)="shippingCountryChange($event)" formControlName="country_id"
-                                                resettable>
-                                            </select2>
-                                            <div *ngIf="form.get('shipping_address.country_id')?.touched && form.get('shipping_address.country_id')?.errors?.['required']"
-                                                class="invalid-feedback">
-                                                {{ 'Country is Required' | translate }}
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="mb-3 form-box">
-                                            <label for="sstate" class="form-label">{{ 'State' | translate }}</label>
-                                            <select2 class="custom-select"
-                                                [data]="(shippingStates$ | async) ? (shippingStates$ | async)! : []"
-                                                [placeholder]="'Select State' | translate" formControlName="state_id">
-                                                <div *ngIf="form.get('shipping_address.state_id')?.touched && form.get('shipping_address.state_id')?.errors?.['required']"
-                                                    class="invalid-feedback">
-                                                    {{ 'State is Required' | translate }}
-                                                </div>
-                                            </select2>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="mb-3 form-box">
-                                            <label for="scity" class="form-label">{{ 'City' | translate }}</label>
-                                            <input type="text" class="form-control" formControlName="city" id="scity"
-                                                placeholder="{{ 'Enter City' | translate }}">
-                                            <div *ngIf="form.get('shipping_address.city')?.touched && form.get('shipping_address.city')?.errors?.['required']"
-                                                class="invalid-feedback">
-                                                {{ 'City is Required' | translate }}
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!-- <div class="col-md-6">
-                                        <div class="mb-3 form-box">
-                                            <label for="spincode" class="form-label">{{ 'Pincode' | translate }}</label>
-                                            <input type="text" class="form-control" formControlName="pincode"  id="spincode" placeholder="{{ 'Enter Pincode' | translate }}">
-                                            <div *ngIf="form.get('shipping_address.pincode')?.touched && form.get('shipping_address.pincode')?.errors?.['required']" class="invalid-feedback">
-                                                {{ 'Pincode is Required' | translate }}
-                                            </div>
-                                        </div>
-                                    </div> -->
-                                    <div class="col-md-12 phone-field">
-                                        <div class="form-box position-relative">
-                                            <label class="form-label" for="phone">{{ 'Phone Number' | translate
-                                                }}</label>
-                                            <select2 class="custom-select intl-tel-input" [templates]="template"
-                                                [data]="codes" formControlName="country_code">
-                                                <ng-template #template let-data="data">
-                                                    <div class="country">
-                                                        <div class="flag-box">
-                                                            <div class="iti-flag {{data?.class}}"></div>
-                                                        </div>
-                                                        <span class="dial-code">{{data.code}}</span>
-                                                    </div>
-                                                </ng-template>
-                                            </select2>
-                                            <input type="number" class="form-control intl-input-padding"
-                                                formControlName="phone" placeholder="{{ 'Enter Phone' | translate }}"
-                                                name="phone">
-                                        </div>
-                                        <div *ngIf="form.get('shipping_address.phone')?.touched && form.get('shipping_address.phone')?.errors?.['required']"
-                                            class="invalid-feedback">
-                                            {{ 'Phone is Required' | translate }}
-                                        </div>
-                                    </div>
+                            <div class="col-md-12 mb-3">
+                                <div class="form-checkbox">
+                                    <input type="checkbox" class="form-check-input" id="account"
+                                        formControlName="create_account">
+                                    <label class="form-check-label" for="account">{{ 'Create an Account for later?' |
+                                        translate }}</label>
                                 </div>
-                            </form>
-                        </div>
-                        <div class="checkbox-main-box">
-                            <div class="checkout-title1">
-                                <h2><i class="ri-bill-line"></i> {{ 'Billing Details' | translate }}</h2>
                             </div>
-                            <form [formGroup]="form" class="checkout-form">
-                                <div class="row" formGroupName="billing_address">
-                                    <div class="col-md-12" *ngIf="form.controls['shipping_address']?.valid">
-                                        <div class="mb-3 form-box form-checkbox">
-                                            <input type="checkbox" class="form-check-input checkbox_animated"
-                                                id="same_shipping" formControlName="same_shipping">
-                                            <label class="form-check-label" for="same_shipping">{{ 'Same as Shipping' |
-                                                translate }}</label>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-12">
-                                        <div class="mb-3 form-box">
-                                            <label for="name" class="form-label">{{ 'Title' | translate }}</label>
-                                            <input type="text" class="form-control" formControlName="title" id="name"
-                                                placeholder="{{ 'Enter Name' | translate }}">
-                                            <div *ngIf="form.get('billing_address.title')?.touched && form.get('billing_address.title')?.errors?.['required']"
-                                                class="invalid-feedback">
-                                                {{ 'Title is Required' | translate }}
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-12">
-                                        <div class="mb-3 form-box">
-                                            <label for="address" class="form-label">{{ 'Address' | translate }}</label>
-                                            <input type="text" class="form-control" formControlName="street"
-                                                id="address" placeholder="{{ 'Enter Address' | translate }}">
-                                            <div *ngIf="form.get('billing_address.street')?.touched && form.get('billing_address.street')?.errors?.['required']"
-                                                class="invalid-feedback">
-                                                {{ 'Address is Required' | translate }}
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="mb-3 form-box">
-                                            <label for="country" class="form-label">{{ 'Country' | translate }}</label>
-                                            <select2 class="custom-select"
-                                                [data]="(countries$ | async) ? (countries$ | async)! : []"
-                                                [placeholder]="'Select Country' | translate"
-                                                (update)="billingCountryChange($event)" formControlName="country_id"
-                                                resettable>
-                                            </select2>
-                                            <div *ngIf="form.get('billing_address.country_id')?.touched && form.get('billing_address.country_id')?.errors?.['required']"
-                                                class="invalid-feedback">
-                                                {{ 'Country is Required' | translate }}
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="mb-3 form-box">
-                                            <label for="state" class="form-label">{{ 'State' | translate }}</label>
-                                            <select2 class="custom-select"
-                                                [data]="(billingStates$ | async) ? (billingStates$ | async)! : []"
-                                                formControlName="state_id" [placeholder]="'Select State' | translate">
-                                            </select2>
-                                            <div *ngIf="form.get('billing_address.state_id')?.touched && form.get('billing_address.state_id')?.errors?.['required']"
-                                                class="invalid-feedback">
-                                                {{ 'State is Required' | translate }}
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="mb-3 form-box">
-                                            <label for="city" class="form-label">{{ 'City' | translate }}</label>
-                                            <input type="text" class="form-control" formControlName="city" id="city"
-                                                placeholder="{{ 'Enter City' | translate }}">
-                                            <div *ngIf="form.get('billing_address.city')?.touched && form.get('billing_address.city')?.errors?.['required']"
-                                                class="invalid-feedback">
-                                                {{ 'City is Required' | translate }}
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!-- <div class="col-md-6">
-                                        <div class="mb-3 form-box">
-                                            <label for="pincode" class="form-label">{{ 'Pincode' | translate }}</label>
-                                            <input type="text" class="form-control" formControlName="pincode" id="pincode" placeholder="{{ 'Enter Pincode' | translate }}">
-                                            <div *ngIf="form.get('billing_address.pincode')?.touched && form.get('billing_address.pincode')?.errors?.['required']" class="invalid-feedback">
-                                                {{ 'Pincode is Required' | translate }}
-                                            </div>
-                                        </div>
-                                    </div> -->
-                                    <div class="col-md-12 phone-field">
-                                        <div class="form-box position-relative">
-                                            <label class="form-label" for="phone">{{ 'Phone Number' | translate
-                                                }}</label>
-                                            <select2 class="custom-select intl-tel-input" [templates]="template"
-                                                [data]="codes" formControlName="country_code">
-                                                <ng-template #template let-data="data">
-                                                    <div class="country">
-                                                        <div class="flag-box">
-                                                            <div class="iti-flag {{data?.class}}"></div>
-                                                        </div>
-                                                        <span class="dial-code">{{data.code}}</span>
-                                                    </div>
-                                                </ng-template>
-                                            </select2>
-                                            <input type="number" class="form-control intl-input-padding"
-                                                formControlName="phone" placeholder="{{ 'Enter Phone' | translate }}"
-                                                name="phone" maxlength="10" minlength="10">
-                                        </div>
-                                        <div *ngIf="form.get('billing_address.phone')?.touched && form.get('billing_address.phone')?.errors?.['required']"
-                                            class="invalid-feedback">
-                                            {{ 'Phone is Required' | translate }}
-                                        </div>
-                                    </div>
+                            <div class="col-md-6" *ngIf="form.controls['create_account'].value">
+                                <div class="form-box">
+                                    <label>{{ 'Set Password' | translate }}</label>
+                                    <input type="password" class="form-control" formControlName="password"
+                                        placeholder="{{ '••••••••' | translate }}">
                                 </div>
-                            </form>
-                        </div>
-                        <div class="checkbox-main-box">
-                            <div class="checkout-title1">
-                                <h2><i class="ri-truck-line"></i> {{ 'Delivery Options' | translate }}</h2>
                             </div>
-                            <app-delivery-block [setting]="(setting$ | async)!"
-                                (selectDelivery)="selectDelivery($event)">
-                            </app-delivery-block>
-                        </div>
-                        <!-- Payment Options Removed from Left Sidebar -->
+                        </form>
                     </div>
+
+                    <!-- 2. Shipping Details (Guest) -->
+                    <div class="checkbox-main-box"
+                        *ngIf="(setting$ | async)?.activation?.guest_checkout && !(accessToken$ | async)">
+                        <div class="checkout-section-title">
+                            <div class="step-number">2</div>
+                            <h2>{{ 'Shipping Destination' | translate }}</h2>
+                        </div>
+
+                        <form [formGroup]="form" class="checkout-form">
+                            <div class="row" formGroupName="shipping_address">
+                                <div class="col-md-12">
+                                    <div class="form-box">
+                                        <label>{{ 'Address Label' | translate }}</label>
+                                        <input type="text" class="form-control" formControlName="title"
+                                            placeholder="{{ 'e.g. Home, Office' | translate }}">
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="form-box">
+                                        <label>{{ 'Street Address' | translate }}</label>
+                                        <input type="text" class="form-control" formControlName="street"
+                                            placeholder="{{ 'House No, Building Name, Street' | translate }}">
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="form-box">
+                                        <label>{{ 'Country' | translate }}</label>
+                                        <select2 class="custom-select" [data]="(countries$ | async) || []"
+                                            [placeholder]="'Select Country' | translate"
+                                            (update)="shippingCountryChange($event)" formControlName="country_id"
+                                            resettable></select2>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="form-box">
+                                        <label>{{ 'State' | translate }}</label>
+                                        <select2 class="custom-select" [data]="(shippingStates$ | async) || []"
+                                            [placeholder]="'Select State' | translate" formControlName="state_id">
+                                        </select2>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-box">
+                                        <label>{{ 'City' | translate }}</label>
+                                        <input type="text" class="form-control" formControlName="city"
+                                            placeholder="{{ 'City Name' | translate }}">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-box">
+                                        <label>{{ 'Phone for Shipping' | translate }}</label>
+                                        <input type="number" class="form-control" formControlName="phone"
+                                            placeholder="{{ 'Phone' | translate }}">
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+
+                    <!-- Logged In User Sections -->
                     <div class="checkout-detail-box" *ngIf="(accessToken$ | async)">
                         <ul>
+                            <!-- Shipping Address -->
                             <li *ngIf="!(cartDigital$ | async)">
-                                <div class="checkout-icon">
-                                    <i class="ri-map-pin-line"></i>
-                                </div>
-                                <div class="checkout-box">
-                                    <div class="checkout-title">
+                                <div class="checkout-title">
+                                    <div class="d-flex align-items-center gap-3">
+                                        <div class="step-number">1</div>
                                         <h4>{{ 'Shipping Address' | translate }}</h4>
-                                        <a href="javascript:void(0)" class="d-flex align-items-center fw-bold"
-                                            (click)="AddressModal.openModal()">
-                                            <i class="ri-add-line me-1"></i> {{ 'Add New' | translate }}
-                                        </a>
                                     </div>
-                                    <div class="checkout-detail">
-                                        <app-address-block [addresses]="(user$ | async)?.address" [type]="'shipping'"
-                                            (selectAddress)="selectShippingAddress($event)">
-                                        </app-address-block>
-                                    </div>
+                                    <a href="javascript:void(0)" (click)="AddressModal.openModal()">+ {{ 'Add New' |
+                                        translate }}</a>
                                 </div>
-                            </li>
-                            <li>
-                                <div class="checkout-icon">
-                                    <i class="ri-map-pin-line"></i>
-                                </div>
-                                <div class="checkout-box">
-                                    <div href="javascript:void(0)" class="checkout-title">
-                                        <h4>{{ 'Billing_address' | translate }}</h4>
-                                        <a href="javascript:void(0)" class="d-flex align-items-center fw-bold"
-                                            (click)="AddressModal.openModal()">
-                                            <i class="ri-add-line me-1"></i> {{ 'Add New' | translate }}
-                                        </a>
-                                    </div>
-                                    <div class="checkout-detail">
-                                        <app-address-block [addresses]="(user$ | async)?.address" [type]="'billing'"
-                                            (selectAddress)="selectBillingAddress($event)">
-                                        </app-address-block>
-                                    </div>
-                                </div>
-                            </li>
-                            <li *ngIf="!(cartDigital$ | async)">
-                                <div class="checkout-icon">
-                                    <i class="ri-truck-line"></i>
-                                </div>
-                                <div class="checkout-box">
-                                    <div class="checkout-title">
-                                        <h4>{{ 'Delivery Options' | translate }}</h4>
-                                    </div>
-                                    <div class="empty-box" *ngIf="!(user$ | async)">
-                                        <h2>{{ 'No Delivery Options Found' | translate }}</h2>
-                                    </div>
-                                    <app-delivery-block [setting]="(setting$ | async)!"
-                                        (selectDelivery)="selectDelivery($event)">
-                                    </app-delivery-block>
+                                <div class="checkout-detail">
+                                    <app-address-block [addresses]="(user$ | async)?.address" [type]="'shipping'"
+                                        (selectAddress)="selectShippingAddress($event)"></app-address-block>
                                 </div>
                             </li>
 
+                            <!-- Billing Address -->
+                            <li>
+                                <div class="checkout-title">
+                                    <div class="d-flex align-items-center gap-3">
+                                        <div class="step-number">2</div>
+                                        <h4>{{ 'Billing Address' | translate }}</h4>
+                                    </div>
+                                    <a href="javascript:void(0)" (click)="AddressModal.openModal()">+ {{ 'Add New' |
+                                        translate }}</a>
+                                </div>
+                                <div class="checkout-detail">
+                                    <app-address-block [addresses]="(user$ | async)?.address" [type]="'billing'"
+                                        (selectAddress)="selectBillingAddress($event)"></app-address-block>
+                                </div>
+                            </li>
+
+                            <!-- Delivery Options -->
+                            <li *ngIf="!(cartDigital$ | async)">
+                                <div class="checkout-title">
+                                    <div class="d-flex align-items-center gap-3">
+                                        <div class="step-number">3</div>
+                                        <h4>{{ 'Delivery Options' | translate }}</h4>
+                                    </div>
+                                </div>
+                                <app-delivery-block [setting]="(setting$ | async)!"
+                                    (selectDelivery)="selectDelivery($event)"></app-delivery-block>
+                            </li>
                         </ul>
+                    </div>
+
+                    <!-- Payment (Common for both) -->
+                    <div class="payment-options-card">
+                        <div class="checkout-section-title mb-4">
+                            <h2><i class="ri-bank-card-line"></i> {{ 'Payment Method' | translate }}</h2>
+                        </div>
+                        <app-payment-block [setting]="(setting$ | async)!"
+                            (selectPaymentMethod)="selectPaymentMethod($event)"></app-payment-block>
                     </div>
                 </div>
             </div>
+
+            <!-- Right Sidebar: Order Summary -->
             <div class="col-xxl-4 col-xl-5">
-                <div class="card pos-detail-card payment-options-card">
-                    <div class="card-body">
-                        <div class="title-header">
-                            <div class="d-flex align-items-center">
-                                <h5><i class="ri-bank-card-line me-2"></i>{{ 'Payment Options' | translate }}</h5>
-                            </div>
-                        </div>
-                        <div class="empty-box" *ngIf="!(setting$ | async)?.payment_methods?.length">
-                            <h2>{{ 'No Payment Options Found' | translate }}</h2>
-                        </div>
-                        <app-payment-block [setting]="(setting$ | async)!"
-                            (selectPaymentMethod)="selectPaymentMethod($event)">
-                        </app-payment-block>
+                <div class="checkout-summary-card">
+                    <div class="title-header">
+                        <h5>{{ 'Order Summary' | translate }}</h5>
                     </div>
-                </div>
-                <div class="card pos-detail-card checkout-summary-card">
-                    <div class="card-body">
-                        <div class="title-header">
-                            <div class="d-flex align-items-center">
-                                <h5>{{ 'Checkout' | translate }}</h5>
+
+                    <!-- Items List -->
+                    <div class="product-details mb-4">
+                        <app-no-data [class]="'empty-cart'" [text]="'No Items Cart'"
+                            *ngIf="!(cartItem$ | async)?.length && !localCartItems.length"></app-no-data>
+                        <ul class="cart-listing" *ngIf="(cartItem$ | async)?.length || localCartItems.length">
+                            <li *ngFor="let item of (cartItem$ | async)?.length ? (cartItem$ | async) : localCartItems">
+                                <img [src]="item?.variation && item?.variation?.variation_image ? item?.variation?.variation_image?.original_url : item?.product?.product_thumbnail ? item?.product?.product_thumbnail?.original_url : 'assets/images/product.png'"
+                                    alt="product">
+                                <div class="cart-content">
+                                    <h4>{{ item?.variation ? item?.variation?.name : item?.product?.name }}</h4>
+                                    <p class="text-theme">{{ ((item?.variation ? item.variation.sale_price :
+                                        (item?.product && item?.wholesale_price ? item.wholesale_price :
+                                        item?.product?.sale_price)) || 0) | currencySymbol }} × {{ item.quantity }}</p>
+                                    <h5 class="price">{{ (((item?.variation ? item.variation.sale_price : (item?.product
+                                        && item?.wholesale_price ? item.wholesale_price : item?.product?.sale_price)) ||
+                                        0) * (item.quantity || 0)) | currencySymbol }}</h5>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <form [formGroup]="form" (ngSubmit)="placeorder()">
+                        <div class="custom-box-loader">
+                            <div class="box-loader" *ngIf="loading">
+                                <app-loader [loaderClass]="'custom-loader-wrapper blur-bg'"></app-loader>
                             </div>
-                        </div>
-                        <div class="product-details">
-                            <app-no-data [class]="'empty-cart'" [text]="'No Items Cart'"
-                                *ngIf="!(cartItem$ | async)?.length && !localCartItems.length">
-                            </app-no-data>
-                            <ul class="cart-listing" *ngIf="(cartItem$ | async)?.length || localCartItems.length">
-                                <li
-                                    *ngFor="let item of (cartItem$ | async)?.length ? (cartItem$ | async) : localCartItems">
-                                    <img [src]="item?.variation && item?.variation?.variation_image
-                                                ? item?.variation?.variation_image?.original_url
-                                                : item?.product?.product_thumbnail
-                                                ? item?.product?.product_thumbnail?.original_url
-                                                : 'assets/images/product.png'" class="img-fluid" alt="product">
-                                    <div class="cart-content">
-                                        <h4>{{ item?.variation ? item?.variation?.name : item?.product?.name }}</h4>
-                                        <h5 class="text-theme">
-                                            {{ (item?.variation ? item.variation.sale_price : item?.product &&
-                                            item?.wholesale_price ? item?.wholesale_price : item?.product?.sale_price)!
-                                            | currencySymbol }} X {{ item.quantity }}
-                                        </h5>
-                                        <h5 class="price">
-                                            {{ (item?.variation ? item.variation.sale_price : item?.product &&
-                                            item?.wholesale_price ? item?.wholesale_price : item?.product?.sale_price)!
-                                            * item.quantity | currencySymbol }}
-                                        </h5>
+
+                            <ul class="summary-total">
+                                <li>
+                                    <h4>{{ 'Subtotal' | translate }}</h4>
+                                    <h4 class="price">{{ (checkoutTotal ? (checkoutTotal.total.sub_total || 0) :
+                                        (subTotal || 0)) | currencySymbol }}</h4>
+                                </li>
+                                <li *ngIf="!(cartDigital$ | async)">
+                                    <h4>{{ 'Shipping' | translate }}</h4>
+                                    <h4 class="price">{{ (checkoutTotal ? (checkoutTotal.total.shipping_total || 0) :
+                                        (0)) | currencySymbol }}</h4>
+                                </li>
+                                <li>
+                                    <h4>{{ 'Tax' | translate }}</h4>
+                                    <h4 class="price">{{ (checkoutTotal ? (checkoutTotal.total.tax_total || 0) : (0)) |
+                                        currencySymbol }}</h4>
+                                </li>
+
+                                <!-- Points & Wallet (Logged In) -->
+                                <ng-container *ngIf="(user$ | async) && checkoutTotal">
+                                    <li *ngIf="(user$ | async)?.point?.balance">
+                                        <h4 [class.text-dark]="form.controls['points_amount'].value">{{ 'Points' |
+                                            translate }}</h4>
+                                        <h4 class="price">{{ (checkoutTotal.total.convert_point_amount || 0) |
+                                            currencySymbol }}</h4>
+                                    </li>
+                                    <li class="border-cls" *ngIf="(user$ | async)?.point?.balance">
+                                        <label class="form-check-label">{{ 'Use Reward Points' | translate }}</label>
+                                        <input class="checkbox_animated" type="checkbox" (change)="togglePoint($event)">
+                                    </li>
+
+                                    <li *ngIf="(user$ | async)?.wallet?.balance">
+                                        <h4 [class.text-dark]="form.controls['wallet_balance'].value">{{ 'Wallet
+                                            Balance' | translate }}</h4>
+                                        <h4 class="price">{{ (checkoutTotal.total.convert_wallet_balance || 0) |
+                                            currencySymbol }}</h4>
+                                    </li>
+                                    <li class="border-cls" *ngIf="(user$ | async)?.wallet?.balance">
+                                        <label class="form-check-label">{{ 'Use Wallet Balance' | translate }}</label>
+                                        <input class="checkbox_animated" type="checkbox"
+                                            (change)="toggleWallet($event)">
+                                    </li>
+                                </ng-container>
+
+                                <!-- Coupon Section -->
+                                <li class="coupon-sec" *ngIf="checkoutTotal">
+                                    <a class="promocode-title" (click)="showCoupon()" *ngIf="!coupon && !appliedCoupon">
+                                        <h4>{{ 'Have a Promo Code?' | translate }}</h4>
+                                    </a>
+                                    <div class="coupon-box" *ngIf="coupon && !appliedCoupon">
+                                        <div class="input-group">
+                                            <input type="text" #cpn placeholder="{{ 'Code' | translate }}">
+                                            <button type="button" class="btn-apply"
+                                                (click)="cpn.value && setCoupon(cpn.value)">
+                                                {{ 'Apply' | translate }}
+                                            </button>
+                                        </div>
+                                        <div class="invalid-feedback d-block mt-2" *ngIf="couponError">{{ couponError }}
+                                        </div>
+                                    </div>
+                                    <div class="apply-sec mt-3" *ngIf="appliedCoupon">
+                                        <div>
+                                            <h4 class="m-0">🎉 {{ 'Saved' | translate }} <span>{{
+                                                    (checkoutTotal.total.coupon_total_discount || 0) | currencySymbol
+                                                    }}</span></h4>
+                                        </div>
+                                        <a href="javascript:void(0)" (click)="couponRemove()">{{ 'Remove' | translate
+                                            }}</a>
                                     </div>
                                 </li>
+
+                                <!-- Grand Total -->
+                                <li class="list-total">
+                                    <h4>{{ 'Total Total' | translate }}</h4>
+                                    <h4 class="price">{{ (checkoutTotal ? (checkoutTotal.total.total || 0) :
+                                        (subTotal || 0)) | currencySymbol }}</h4>
+                                </li>
                             </ul>
+
+                            <button type="submit" class="btn theme-bg-color mt-4"
+                                [disabled]="loading || !(form.valid && checkoutTotal)">
+                                {{ 'Confirm Order' | translate }}
+                            </button>
                         </div>
-                        <ng-container *ngIf="(cartItem$ | async)?.length || localCartItems.length">
-                            <form [formGroup]="form" (ngSubmit)="placeorder()">
-                                <div class="custom-box-loader">
-                                    <div class="box-loader" *ngIf="loading">
-                                        <app-loader [loaderClass]="'custom-loader-wrapper blur-bg'"></app-loader>
-                                    </div>
-                                    <ul class="summary-total">
-                                        <li>
-                                            <h4>{{ 'Subtotal' | translate }}</h4>
-                                            <h4 class="price">
-                                                {{ (checkoutTotal ? (checkoutTotal.total.sub_total | currencySymbol) :
-                                                (subTotal | currencySymbol)) }}
-                                            </h4>
-                                        </li>
-                                        <li *ngIf="!(cartDigital$ | async)">
-                                            <h4>{{ 'Shipping' | translate }}</h4>
-                                            <h4 class="price">
-                                                {{ (checkoutTotal ? (checkoutTotal.total.shipping_total |
-                                                currencySymbol) : (0 | currencySymbol)) }}
-                                            </h4>
-                                        </li>
-                                        <li>
-                                            <h4>{{ 'Tax' | translate }}</h4>
-                                            <h4 class="price">
-                                                {{ (checkoutTotal ? (checkoutTotal.total.tax_total | currencySymbol) :
-                                                (0 | currencySymbol)) }}
-                                            </h4>
-                                        </li>
-                                        <li *ngIf="(user$ | async) && checkoutTotal && (user$ | async)?.point?.balance">
-                                            <h4
-                                                [class]="form.controls['points_amount'].value ? 'txt-primary fw-bold' : 'text-muted'">
-                                                {{ 'Points' | translate }}
-                                            </h4>
-                                            <h4
-                                                [class]="form.controls['points_amount'].value ? 'txt-primary fw-bold price' : 'text-muted price'">
-                                                {{ (checkoutTotal ? (checkoutTotal.total.convert_point_amount! |
-                                                currencySymbol) : 'Not Calculated Yet' | translate ) }}
-                                            </h4>
-                                        </li>
-                                        <li class="border-cls"
-                                            *ngIf="(user$ | async) && checkoutTotal && (user$ | async)?.point?.balance">
-                                            <label class="form-check-label m-0" for="ponts">{{ 'Point Text' | translate
-                                                }}</label>
-                                            <input class="checkbox_animated check-it" type="checkbox" id="ponts"
-                                                (change)="togglePoint($event)">
-                                        </li>
-                                        <li
-                                            *ngIf="(user$ | async) && checkoutTotal && (user$ | async)?.wallet?.balance">
-                                            <h4
-                                                [class]="form.controls['wallet_balance'].value ? 'txt-primary fw-bold' : 'text-muted'">
-                                                {{ 'Wallet Balance' | translate }}
-                                            </h4>
-                                            <h4
-                                                [class]="form.controls['wallet_balance'].value ? 'txt-primary fw-bold price' : 'text-muted price'">
-                                                {{ (checkoutTotal ? (checkoutTotal.total.convert_wallet_balance! |
-                                                currencySymbol) : 'Not Calculated Yet' | translate ) }}
-                                            </h4>
-                                        </li>
-                                        <li class="border-cls"
-                                            *ngIf="(user$ | async) && checkoutTotal && (user$ | async)?.wallet?.balance">
-                                            <label class="form-check-label m-0" for="wallet">{{ 'Wallet Text' |
-                                                translate }}</label>
-                                            <input class="checkbox_animated check-it" type="checkbox" id="wallet"
-                                                (change)="toggleWallet($event)">
-                                        </li>
-                                        <li class="coupon-sec" *ngIf="(user$ | async) && checkoutTotal">
-                                            <a class="promocode-title" (click)="showCoupon()"
-                                                *ngIf="!coupon && !appliedCoupon">
-                                                <h4>{{ 'Have a Promo Code?' | translate }}</h4>
-                                            </a>
-                                            <div class="w-100" *ngIf="coupon && !appliedCoupon">
-                                                <div class="coupon-box mt-2 d-flex w-100">
-                                                    <div class="input-group" [class.coupon-error]="couponError">
-                                                        <input type="text" [class]="'form-control'"
-                                                            [class.is-invalid]="couponError" id="coupon" #cpn
-                                                            placeholder="{{ 'Enter Promo Code Here'  | translate  }}...">
-                                                        <app-button [class]="'btn-apply'" [type]="'button'"
-                                                            [id]="'coupon_apply'"
-                                                            (click)="cpn.value && setCoupon(cpn.value)">
-                                                            {{ 'Apply' | translate }}
-                                                        </app-button>
-                                                        <div class="invalid-feedback" *ngIf="couponError">
-                                                            {{ couponError }}
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="apply-sec mb-3" *ngIf="appliedCoupon">
-                                                <div>
-                                                    <img src="assets/images/offer.gif" class="img-fluid"
-                                                        alt="offer gif">
-                                                    <h4>
-                                                        {{ 'You Saved' | translate }}
-                                                        <span>{{ checkoutTotal.total.coupon_total_discount |
-                                                            currencySymbol }}</span>
-                                                        {{ 'With This Code' | translate }} 🎉 <p>{{ 'Coupon Applied' |
-                                                            translate }}</p>
-                                                    </h4>
-                                                </div>
-                                                <a href="javascript:void(0)" (click)="couponRemove()">{{ 'Remove' |
-                                                    translate}}</a>
-                                            </div>
-                                        </li>
-                                        <li class="list-total">
-                                            <h4>{{ 'Total' | translate }}</h4>
-                                            <h4 class="price">
-                                                {{ (checkoutTotal ? (checkoutTotal.total.total | currencySymbol) : 'Not
-                                                Calculated Yet' | translate ) }}
-                                            </h4>
-                                        </li>
-                                    </ul>
-                                    <div class="checkout-minimum-order-alert"
-                                        *ngIf="(checkoutTotal?.total?.total || 0) <= 400">
-                                        <div class="alert-icon">
-                                            <i class="ri-error-warning-line"></i>
-                                        </div>
-                                        <div class="alert-content">
-                                            <h4>{{ 'Minimum Order Required' | translate }}</h4>
-                                            <p>{{ 'please order above 400' | translate }}</p>
-                                        </div>
-                                    </div>
-                                    <app-button [class]="'btn theme-bg-color text-white btn-md w-100 mt-2 fw-bold'"
-                                        [id]="'place_order'"
-                                        [disabled]="loading || !(form.valid && checkoutTotal) || (checkoutTotal?.total?.total || 0) <= 400">
-                                        {{ 'Order Now' | translate }}
-                                    </app-button>
-                                </div>
-                            </form>
-                        </ng-container>
-                    </div>
+                    </form>
                 </div>
             </div>
         </div>
     </div>
 </section>
-<address-modal #addressModal></address-modal>
+
+<address-modal #AddressModal></address-modal>
 <div id="paymentContainer" style="visibility: hidden;"></div>
+
+<!-- Pay By QR Modal Template -->
 <ng-template #payByQRModal let-data="data">
-    <div class="dashboard-address p-5">
-        <div class="title-header">
-            <div class="d-flex align-items-center w-100 justify-content-between">
-                <h5>{{ 'Payment By QR' }}</h5>
-            </div>
+    <div class="dashboard-address p-4">
+        <div class="text-center mb-4">
+            <h5 class="fw-bold">{{ 'Scan to Pay' | translate }}</h5>
         </div>
-        <div class="row g-sm-4 g-3">
-            <div class="col-12">
-                <div class="address-box p3">
-                    <!DOCTYPE html>
-                    <html lang="en">
-
-                    <head>
-                        <meta charset="UTF-8">
-                        <meta name="viewport" content="width=device-width, initial-scale=1">
-                        <title>UPI Payment Modal</title>
-                        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
-                            rel="stylesheet">
-                        <style>
-                            .modal-header {
-                                background-color: #007bff;
-                                color: white;
-                                border-bottom: none;
-                            }
-
-                            .modal-body {
-                                text-align: center;
-                            }
-
-                            .qr-container {
-                                border: 1px solid #ddd;
-                                padding: 10px;
-                                border-radius: 5px;
-                            }
-
-                            .payment-icons img {
-                                /* width: 40px; */
-                                margin: 5px;
-                            }
-
-                            .upi-id {
-                                font-weight: bold;
-                                background-color: #f8f9fa;
-                                padding: 5px;
-                                border-radius: 5px;
-                                display: inline-block;
-                            }
-                        </style>
-                    </head>
-
-                    <body>
-
-                        <!-- Payment Modal -->
-                        <div>
-                            <div class="modal-dialog modal-dialog-centered">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title">Order ID: <span
-                                                class="badge bg-light text-dark">#9990</span></h5>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                            aria-label="Close"></button>
-                                    </div>
-                                    <div class="modal-body payByNeoKred">
-                                        <app-loader *ngIf="loading"></app-loader>
-                                        <ng-container *ngIf="!payByNeoStep">
-                                            <div class="qr-container">
-                                                <img src="assets/images/QR_Code.png" alt="QR Code" class="img-fluid">
-                                            </div>
-                                            <p class="mt-2 upi-id">9643790758&amp;YESBANK</p>
-                                            <p class="text-muted">
-                                                Please scan the QR code with any UPI app to pay for your order.
-                                                After payment, enter the UPI Reference ID or Transaction Number (e.g.
-                                                401422121258) on the next screen.
-                                                We’ll manually verify your payment using the provided information.
-                                            </p>
-                                            <div class="payment-icons">
-                                                <img src="assets/images/payments.png" alt="UPI">
-                                                <ul class="upi_bar">
-                                                    <!-- <li><a [href]="payByNeoKredIntentSaveDataUpiIntentString('gpay_upi')" (click)="checkTransectionStatusNeoKred()"></a></li>
-                                                    <li><a [href]="payByNeoKredIntentSaveDataUpiIntentString('phone_pay_upi')" (click)="checkTransectionStatusNeoKred()"></a></li>
-                                                    <li><a [href]="payByNeoKredIntentSaveDataUpiIntentString('paytm_upi')" (click)="checkTransectionStatusNeoKred()"></a></li>
-                                                    <li><a [href]="payByNeoKredIntentSaveDataUpiIntentString('bhim_upi')" (click)="checkTransectionStatusNeoKred()"></a></li> -->
-                                                </ul>
-                                            </div>
-                                        </ng-container>
-                                        <ng-container *ngIf="payByNeoStep">
-                                            <p>Enter 14 Digits Number</p>
-                                        </ng-container>
-                                    </div>
-                                    <div class="modal-footer">
-                                        <h5 class="me-auto">₹ 1100.00</h5>
-                                        <button type="button" class="btn btn-primary" (click)="paybyNeoNext()"
-                                            *ngIf="!payByNeoStep">Next</button>
-                                        <button type="button" class="btn btn-primary" (click)="paybyNeoDone()"
-                                            *ngIf="payByNeoStep">Close</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </body>
-
-                    </html>
-
-                </div>
-            </div>
+        <div class="qr-container text-center p-3 bg-white border rounded">
+            <img src="assets/images/QR_Code.png" alt="QR Code" class="img-fluid" style="max-height: 250px;">
+        </div>
+        <div class="text-center mt-3 upi-id bg-light p-2 rounded fw-bold">9643790758&#64;YESBANK</div>
+        <p class="text-muted text-center mt-3 small">
+            {{ 'Scan with GPay, PhonePe, or Paytm. Enter Transaction ID on next screen.' | translate }}
+        </p>
+        <div class="d-grid mt-4">
+            <button type="button" class="btn btn-dark py-3" (click)="paybyNeoNext()">{{ 'Next' | translate }}</button>
         </div>
     </div>
-
 </ng-template>

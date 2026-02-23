@@ -1,34 +1,92 @@
-<app-breadcrumb [breadcrumb]="breadcrumb"></app-breadcrumb>
-<section class="log-in-section otp-section section-b-space">
-  <div class="container-fluid-lg w-100">
-    <div class="row align-items-center">
-      <div class="col-xxl-6 col-xl-5 col-lg-6 d-lg-block d-none ms-auto">
-        <div class="image-contain">
-          <img src="assets/images/inner-page/otp.png" class="img-fluid" alt="OTP verification illustration">
-        </div>
-      </div>
-      <div class="col-xxl-4 col-xl-5 col-lg-6 col-sm-8 mx-auto">
-        <app-alert></app-alert>
-        <div class="log-in-box">
-          <div class="log-in-title">
-            <h3 class="text-title">{{ 'please_enter_the_one_time_password_to_verify_your_account' | translate }}</h3>
-            <h5 class="text-content">{{ 'a_code_has_been_sent_to' | translate }} 
-              <span *ngIf="otpType === 'email'">{{ email }}</span>
-              <span *ngIf="otpType === 'number'">{{ number.phone }}</span>
-            </h5>
-          </div>
-          <form [formGroup]="form" (ngSubmit)="submit()">
-            <div class="outer-otp">
-              <div id="otp" class="inner-otp">
-                <input type="text" formControlName="otp" maxlength="5"
-                  oninput="this.value = this.value?.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"
-                  onKeyPress="if(this.value.length==5) return false;" />
+<div class="login-page-wrapper">
+  <section class="premium-login-section">
+    <div class="login-container">
+      <div class="split-layout">
+
+        <!-- Left Side: Brand Story -->
+        <div class="brand-side d-none d-lg-flex">
+          <div class="brand-content">
+            <div class="brand-logo-wrap animate-fade-in">
+              <img src="assets/images/fashionmaster.png" alt="Fashionmaster4u" class="brand-logo">
+            </div>
+            <div class="brand-text">
+              <h2 class="display-title animate-slide-up">Verify your <br><span>Identity.</span></h2>
+              <p class="brand-description animate-slide-up-delayed">We've sent a unique 5-digit verification code to
+                your {{ otpType === 'email' ? 'email' : 'mobile number' }}. Please enter it here to securely access your
+                account.</p>
+            </div>
+            <div class="brand-features animate-slide-up-further">
+              <div class="feature-item">
+                <div class="feature-icon"><i class="ri-shield-key-line"></i></div>
+                <span>One-time secure code</span>
+              </div>
+              <div class="feature-item">
+                <div class="feature-icon"><i class="ri-timer-2-line"></i></div>
+                <span>Code expires in 5 minutes</span>
+              </div>
+              <div class="feature-item">
+                <div class="feature-icon"><i class="ri-mail-check-line"></i></div>
+                <span>Encrypted verification</span>
               </div>
             </div>
-            <app-button [class]="'btn btn-animation w-100 mt-3'" [id]="'forgot_btn'">{{ 'validate' | translate }}</app-button>
-          </form>
+          </div>
+          <div class="decorative-blob"></div>
+          <div class="decorative-blob-2"></div>
+        </div>
+
+        <!-- Right Side: OTP Form -->
+        <div class="form-side">
+          <div class="login-glass-card shadow-2xl">
+            <app-alert></app-alert>
+
+            <div class="form-header text-center">
+              <div class="mobile-logo d-lg-none mb-4">
+                <img src="assets/images/fashionmaster.png" alt="Fashionmaster4u" class="img-fluid"
+                  style="max-height: 50px;">
+              </div>
+              <h3>{{ 'Verification' | translate }}</h3>
+              <p class="text-muted">
+                {{ 'Code sent to' | translate }}
+                <strong class="text-dark">
+                  {{ otpType === 'email' ? email : ('+' + number.phone) }}
+                </strong>
+              </p>
+            </div>
+
+            <form [formGroup]="form" (ngSubmit)="submit()" class="auth-form mt-5">
+              <div class="otp-input-container">
+                <div class="otp-field-wrap">
+                  <input type="text" formControlName="otp" maxlength="5" class="premium-otp-input"
+                    placeholder="· · · · ·"
+                    oninput="this.value = this.value?.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"
+                    onKeyPress="if(this.value.length==5) return false;" />
+                </div>
+                <p class="otp-hint mt-3">{{ 'Enter the 5-digit code' | translate }}</p>
+              </div>
+
+              <!-- Submit Button -->
+              <button type="submit" class="premium-submit-btn mt-5" [disabled]="form.invalid || isLoading">
+                <span *ngIf="!isLoading" class="btn-text">
+                  {{ 'Verify Code' | translate }}
+                  <i class="ri-checkbox-circle-line ms-2"></i>
+                </span>
+                <div *ngIf="isLoading" class="loader-wrap">
+                  <span class="loader"></span>
+                  <span>{{ 'Verifying...' | translate }}</span>
+                </div>
+              </button>
+            </form>
+
+            <div class="signup-footer mt-5 text-center border-top pt-4">
+              <p>{{ "Didn't receive code" | translate }}?</p>
+              <a href="javascript:void(0)" class="register-cta">
+                {{ 'Resend Code' | translate }}
+                <i class="ri-refresh-line"></i>
+              </a>
+            </div>
+          </div>
         </div>
       </div>
     </div>
-  </div>
-</section>
+  </section>
+</div>

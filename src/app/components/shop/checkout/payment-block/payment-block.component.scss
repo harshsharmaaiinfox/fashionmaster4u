@@ -14,8 +14,8 @@
         background: white;
 
         &:hover {
-            border-color: #1B4B45;
-            box-shadow: 0 4px 16px rgba(27, 75, 69, 0.15);
+            border-color: #0F172A;
+            box-shadow: 0 4px 16px rgba(15, 23, 42, 0.1);
         }
 
         .form-check {
@@ -28,12 +28,12 @@
                 cursor: pointer;
 
                 &:checked {
-                    background-color: #1B4B45;
-                    border-color: #1B4B45;
+                    background-color: #0F172A;
+                    border-color: #0F172A;
                 }
 
                 &:focus {
-                    box-shadow: 0 0 0 4px rgba(27, 75, 69, 0.1);
+                    box-shadow: 0 0 0 4px rgba(15, 23, 42, 0.1);
                 }
             }
 
@@ -51,8 +51,8 @@
     }
 
     .payment-category:has(.form-check-input:checked) {
-        border-color: #1B4B45;
-        background: rgba(27, 75, 69, 0.05);
-        box-shadow: 0 4px 16px rgba(27, 75, 69, 0.15);
+        border-color: #0F172A;
+        background: rgba(15, 23, 42, 0.05);
+        box-shadow: 0 4px 16px rgba(15, 23, 42, 0.15);
     }
 }

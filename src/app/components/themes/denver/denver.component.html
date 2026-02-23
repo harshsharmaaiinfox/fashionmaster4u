@@ -3,9 +3,14 @@
 <!-- Hero Banner Start -->
 <section class="hero-banner-section">
   <div class="hero-banner-container">
-    <img src="assets/images/banner.webp" alt="Hero Banner" class="hero-banner-image">
+    <owl-carousel-o [options]="heroSlider">
+      <ng-container *ngFor="let item of heroImages">
+        <ng-template carouselSlide>
+          <img [src]="item.image" alt="Hero Banner" class="hero-banner-image">
+        </ng-template>
+      </ng-container>
+    </owl-carousel-o>
   </div>
-
 </section>
 
 <!-- <section class="home-section-2 home-section-bg pt-md-0 pt-3 overflow-hidden" *ngIf="data?.content?.home_banner">

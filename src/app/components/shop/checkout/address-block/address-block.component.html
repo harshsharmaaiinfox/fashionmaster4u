@@ -8,37 +8,40 @@
                 <div class="delivery-address-box">
                     <div>
                         <div class="form-check">
-                            <input
-                                class="form-check-input"
-                                type="radio"
-                                value="{{address.id}}"
-                                name="adddress-{{type}}"
-                                id="adddress-{{type}}-{{i}}"
-                                [checked]="i === 0"
-                                (change)="set($event)">
+                            <input class="form-check-input" type="radio" value="{{address.id}}" name="adddress-{{type}}"
+                                id="adddress-{{type}}-{{i}}" [checked]="i === 0" (change)="set($event)">
                         </div>
-                        <ul class="delivery-address-detail">
-                            <li>
-                                <h4 class="fw-semibold">{{ address?.title }}</h4>
-                            </li>
-                            <li>
-                                <p class="text-content">
-                                    <span class="text-title">{{ 'address' | translate }}: </span>
+                        <div class="delivery-address-detail">
+                            <div class="address-header mb-2">
+                                <h4 class="fw-bold text-uppercase"
+                                    style="font-size: 13px; letter-spacing: 1px; color: #000;">{{ address?.title }}</h4>
+                            </div>
+
+                            <div class="address-body mb-3">
+                                <p class="text-content m-0" style="font-size: 14px; line-height: 1.5; color: #64748b;">
                                     {{ address?.street }}, {{ address?.city }}, {{ address?.area }},
                                     {{ address?.country_id }}
                                 </p>
-                            </li>
-                            <li *ngIf="address.pincode">
-                                <h6 class="text-content">
-                                    <span class="text-title">{{ 'pin_code' | translate }}:</span> {{ address?.pincode }}
-                                </h6>
-                            </li>
-                            <li *ngIf="address.phone">
-                                <h6 class="text-content mb-0">
-                                    <span class="text-title">{{ 'phone' | translate }} :</span> +{{ address?.country_code }} {{ address?.phone }}
-                                </h6>
-                            </li>
-                        </ul>
+                            </div>
+
+                            <div class="address-footer d-flex flex-wrap gap-3 mt-2"
+                                style="border-top: 1px solid #f1f5f9; padding-top: 12px;">
+                                <div *ngIf="address.pincode" class="info-tag">
+                                    <span class="text-title fw-bold text-uppercase"
+                                        style="font-size: 10px; color: #94a3b8; display: block;">{{ 'Pin Code' |
+                                        translate }}</span>
+                                    <span style="font-size: 13px; font-weight: 600; color: #000;">{{ address?.pincode
+                                        }}</span>
+                                </div>
+                                <div *ngIf="address.phone" class="info-tag ms-auto">
+                                    <span class="text-title fw-bold text-uppercase"
+                                        style="font-size: 10px; color: #94a3b8; display: block;">{{ 'Phone' | translate
+                                        }}</span>
+                                    <span style="font-size: 13px; font-weight: 600; color: #000;">{{
+                                        address?.country_code }} {{ address?.phone }}</span>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </label>

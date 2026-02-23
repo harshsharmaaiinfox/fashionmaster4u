@@ -25,6 +25,12 @@ export class DenverComponent implements OnInit {
 
   public categorySlider = data.categorySlider9;
   public productSlider6ItemMargin = data.productSlider6ItemMargin;
+  public heroSlider = data.heroSlider;
+
+  public heroImages = [
+    { image: 'assets/images/banner1.png' },
+    { image: 'assets/images/banner2.png' }
+  ];
 
   constructor(private store: Store,
     private route: ActivatedRoute,

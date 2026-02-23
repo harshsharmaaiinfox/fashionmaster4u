@@ -23,10 +23,11 @@ export class OtpComponent {
     title: "OTP",
     items: [{ label: 'OTP', active: true }]
   }
+  public isLoading: boolean = false;
 
   constructor(
-    public router: Router, 
-    public store: Store, 
+    public router: Router,
+    public store: Store,
     public authService: AuthService,
     public formBuilder: FormBuilder
   ) {
@@ -35,30 +36,31 @@ export class OtpComponent {
     });
   }
 
-  ngOnInit(){
+  ngOnInit() {
     this.otpType = this.authService.otpType;
-    if(this.otpType === 'email'){
+    if (this.otpType === 'email') {
       this.email = this.store.selectSnapshot(state => state.auth.email);
-      if(!this.email){
-        this.router.navigateByUrl('/auth/login'); 
+      if (!this.email) {
+        this.router.navigateByUrl('/auth/login');
       }
-    } else if(this.otpType === 'number'){
+    } else if (this.otpType === 'number') {
       this.number = this.store.selectSnapshot(state => state.auth.number);
-      if(!this.number.phone){
-        this.router.navigateByUrl('/auth/login'); 
+      if (!this.number.phone) {
+        this.router.navigateByUrl('/auth/login');
       }
     } else {
-      this.router.navigateByUrl('/auth/login'); 
+      this.router.navigateByUrl('/auth/login');
     }
   }
 
 
   submit() {
     this.form.markAllAsTouched();
-    if(this.form.valid){
+    if (this.form.valid) {
+      this.isLoading = true;
       var action;
       var value;
-      if(this.otpType === 'email') {
+      if (this.otpType === 'email') {
         value = {
           email: this.email,
           token: this.form.value.otp
@@ -66,7 +68,7 @@ export class OtpComponent {
         action = new VerifyEmailOtp(value)
       }
 
-      if(this.otpType === 'number') {
+      if (this.otpType === 'number') {
         value = {
           phone: this.number.phone,
           country_code: this.number.country_code,
@@ -77,11 +79,15 @@ export class OtpComponent {
 
       this.store.dispatch(action).subscribe({
         complete: () => {
-          if(this.otpType === 'email'){
-            this.router.navigateByUrl('/auth/update-password'); 
-          } else{
-            this.router.navigateByUrl('/account/dashboard'); 
+          this.isLoading = false;
+          if (this.otpType === 'email') {
+            this.router.navigateByUrl('/auth/update-password');
+          } else {
+            this.router.navigateByUrl('/account/dashboard');
           }
+        },
+        error: () => {
+          this.isLoading = false;
         }
       })
     }

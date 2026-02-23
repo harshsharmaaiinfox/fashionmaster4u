@@ -25,49 +25,43 @@
         <!-- Sidebar Header -->
         <div class="cart-sidebar-header">
             <div class="header-content">
-                <h3 class="cart-title">
-                    <i class="cil-cart me-2"></i>
-                    {{ 'Shopping Cart' | translate }}
-                </h3>
+                <h3 class="cart-title">{{ 'Shopping Cart' | translate }}</h3>
                 <button type="button" class="close-btn" (click)="cartToggle(false)" aria-label="Close cart">
                     <i class="cil-x"></i>
                 </button>
             </div>
+
+            <!-- Free Shipping Progress -->
+            <div class="shipping-progress-box" *ngIf="(cartItem$ | async)?.length">
+                <div class="progress-info">
+                    <span *ngIf="shippingFreeAmt > cartTotal">
+                        {{ 'Spend' | translate }} <strong>{{ (shippingFreeAmt - cartTotal) | currencySymbol }}</strong>
+                        {{ 'More And Enjoy' | translate }} <strong>{{ 'Free Shipping!' | translate }}</strong>
+                    </span>
+                    <span *ngIf="shippingFreeAmt <= cartTotal" class="success-text">
+                        {{ 'Congratulations! Free Shipping Unlocked' | translate }}
+                    </span>
+                </div>
+                <div class="progress-wrapper">
+                    <div class="progress-bar-modern" [ngStyle]="{ width: shippingCal+'%' }">
+                        <div class="truck-icon">
+                            <i class="cil-truck"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <div class="header-actions" *ngIf="(cartItem$ | async)?.length">
                 <p class="cart-subtitle">
-                    {{ (cartItem$ | async)?.length }} {{ ((cartItem$ | async)?.length == 1 ? 'item' : 'items') |
+                    {{ (cartItem$ | async)?.length }} {{ ((cartItem$ | async)?.length == 1 ? 'Product' : 'Products') |
                     translate }}
                 </p>
-                <button type="button" class="clear-cart-btn" (click)="clearCart()" title="Clear Cart">
-                    <i class="cil-trash"></i>
-                    <span>{{ 'Clear' | translate }}</span>
+                <button type="button" class="clear-cart-text" (click)="clearCart()">
+                    {{ 'Clear cart' | translate }}
                 </button>
             </div>
         </div>
 
-        <!-- Free Shipping Progress -->
-        <div class="shipping-progress-box" *ngIf="(cartItem$ | async)?.length">
-            <div class="progress-info">
-                <i class="cil-truck me-2"></i>
-                <span *ngIf="shippingFreeAmt > cartTotal">
-                    {{ 'Spend' | translate }} <strong>{{ (shippingFreeAmt - cartTotal) | currencySymbol }}</strong> {{
-                    'More For Free Shipping' | translate }}
-                </span>
-                <span *ngIf="shippingFreeAmt <= cartTotal" class="success-text">
-                    <i class="cil-check-circle me-1"></i>
-                    {{ 'Congratulations! Free Shipping Unlocked' | translate }}
-                </span>
-            </div>
-            <div class="progress-wrapper">
-                <div class="progress-bar-modern" [ngClass]="{ 
-                        'danger': shippingCal <= 30, 
-                        'warning': shippingCal >= 31 && shippingCal <= 80,
-                        'success': shippingCal > 80
-                    }" [ngStyle]="{ width: shippingCal+'%' }">
-                    <span class="progress-text">{{ shippingCal | number:'1.0-0' }}%</span>
-                </div>
-            </div>
-        </div>
 
         <!-- Cart Items List -->
         <div class="cart-items-container" *ngIf="(cartItem$ | async)?.length">
@@ -82,41 +76,39 @@
                     </div>
 
                     <div class="item-details">
-                        <h5 class="item-name">
-                            {{ item?.variation ? item?.variation?.name : item?.product?.name }}
-                        </h5>
-                        <p class="item-variation" *ngIf="item?.variation">
-                            {{ item?.variation?.selected_variation }}
-                        </p>
+                        <div class="name-edit">
+                            <h5 class="item-name">
+                                {{ item?.variation ? item?.variation?.name : item?.product?.name }}
+                            </h5>
+                            <div class="mini-actions">
+                                <button type="button" class="mini-btn" (click)="VariationModal.openModal(item)"
+                                    *ngIf="item?.variation">
+                                    <i class="cil-pencil"></i>
+                                </button>
+                                <button type="button" class="mini-btn" (click)="delete(item.id)">
+                                    <i class="cil-trash"></i>
+                                </button>
+                            </div>
+                        </div>
+
                         <div class="item-price">
                             {{ (item?.variation ? item.variation.sale_price : item?.product && item?.wholesale_price ?
                             item?.wholesale_price : item?.product?.sale_price)! | currencySymbol }}
                         </div>
 
-                        <div class="item-actions">
-                            <div class="quantity-controls">
-                                <button type="button" class="qty-btn" [id]="'decrease-qty-'+item.product.id"
-                                    (click)="updateQuantity(item, -1)">
-                                    <i class="cil-minus" *ngIf="item.quantity > 1"></i>
-                                    <i class="cil-trash" *ngIf="item.quantity <= 1"></i>
-                                </button>
-                                <input type="number" class="qty-input" [value]="item?.quantity" readonly>
-                                <button type="button" class="qty-btn" [id]="'increase-qty-'+item.product.id"
-                                    (click)="updateQuantity(item, 1)">
-                                    <i class="cil-plus"></i>
-                                </button>
-                            </div>
+                        <div class="variation-qty">
+                            <p class="item-variation" *ngIf="item?.variation">
+                                <span>{{ item?.variation?.selected_variation }}</span>
+                            </p>
 
-                            <div class="item-action-buttons">
-                                <button type="button" class="action-btn edit-btn"
-                                    [id]="'cart_item_edit_btn'+item.product.id" (click)="VariationModal.openModal(item)"
-                                    *ngIf="item?.variation" title="Edit">
-                                    <i class="cil-pencil"></i>
+                            <div class="quantity-controls-mini">
+                                <button type="button" class="qty-btn" (click)="updateQuantity(item, -1)">
+                                    <i class="cil-trash" *ngIf="item.quantity <= 1"></i>
+                                    <i class="cil-minus" *ngIf="item.quantity > 1"></i>
                                 </button>
-                                <button type="button" class="action-btn delete-btn"
-                                    [id]="'cart_item_delete_btn'+item.product.id" (click)="delete(item.id)"
-                                    title="Remove">
-                                    <i class="cil-trash"></i>
+                                <span class="qty-number">{{ item?.quantity }}</span>
+                                <button type="button" class="qty-btn" (click)="updateQuantity(item, 1)">
+                                    <i class="cil-plus"></i>
                                 </button>
                             </div>
                         </div>
@@ -138,32 +130,27 @@
         <!-- Cart Footer -->
         <div class="cart-sidebar-footer" *ngIf="(cartItem$ | async)?.length">
             <div class="cart-total-section">
+                <p class="shipping-note">
+                    {{ 'Shipping And Taxes Are Calculated At Checkout' | translate }}
+                </p>
                 <div class="total-row">
-                    <span class="total-label">{{ 'Subtotal' | translate }}:</span>
+                    <span class="total-label">{{ 'Total' | translate }}:</span>
                     <span class="total-value">{{ (cartTotal$ | async)! | currencySymbol }}</span>
                 </div>
-                <p class="shipping-note">
-                    <i class="cil-info me-1"></i>
-                    {{ 'Shipping and taxes calculated at checkout' | translate }}
-                </p>
             </div>
 
             <div class="cart-action-buttons">
                 <a [routerLink]="['/cart']" class="btn btn-view-cart" (click)="cartToggle(false)">
-                    <i class="cil-eye me-2"></i>
                     {{ 'View Cart' | translate }}
                 </a>
                 <a [routerLink]="['/checkout']" class="btn btn-checkout" (click)="cartToggle(false)">
-                    <i class="cil-credit-card me-2"></i>
                     {{ 'Checkout' | translate }}
                 </a>
             </div>
         </div>
     </div>
 
-    <!-- Backdrop Overlay -->
-    <div class="cart-backdrop" [class.show]="cartStyle == 'cart_sidebar' && (sidebarCartOpen$ | async)"
-        (click)="cartStyle == 'cart_sidebar' && cartToggle(false)"></div>
+
 </ng-container>
 
 <!-- Variation Customize Modal -->

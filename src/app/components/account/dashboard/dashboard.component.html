@@ -1,114 +1,103 @@
 <div class="tab-pane fade show active">
     <div class="dashboard-home">
-        <!-- Full Width Menu Bar -->
+
+        <!-- 1. Global Account Navigation (Sticky) -->
         <div class="dashboard-menu-bar">
             <div class="menu-container">
                 <a class="menu-item" [routerLinkActive]="['active']" [routerLink]="['/account/dashboard']">
-                    <i class="ri-home-fill"></i>
+                    <i class="ri-dashboard-line"></i>
                     <span>{{ 'Dashboard' | translate }}</span>
                 </a>
-                <a class="menu-item" [routerLinkActive]="['active']" [routerLink]="['/account/notifications']">
-                    <i class="ri-notification-fill"></i>
-                    <span>{{ 'Notifications' | translate }}</span>
-                    <span class="notification-badge" *ngIf="unreadNotificationCount">{{ unreadNotificationCount
-                        }}</span>
-                </a>
-                <a class="menu-item" [routerLinkActive]="['active']" [routerLink]="['/account/bank-details']">
-                    <i class="ri-bank-fill"></i>
-                    <span>{{ 'Bank Details' | translate }}</span>
-                </a>
-
-
                 <a class="menu-item" [routerLinkActive]="['active']" [routerLink]="['/account/order']">
-                    <i class="ri-file-text-fill"></i>
+                    <i class="ri-shopping-bag-3-line"></i>
                     <span>{{ 'My Orders' | translate }}</span>
                 </a>
-
-                <a class="menu-item" [routerLinkActive]="['active']" [routerLink]="['/account/refund']">
-                    <i class="ri-money-rupee-circle-fill"></i>
-                    <span>{{ 'Refund History' | translate }}</span>
-                </a>
                 <a class="menu-item" [routerLinkActive]="['active']" [routerLink]="['/account/addresses']">
-                    <i class="ri-map-pin-fill"></i>
-                    <span>{{ 'Saved Address' | translate }}</span>
+                    <i class="ri-map-pin-2-line"></i>
+                    <span>{{ 'Addresses' | translate }}</span>
                 </a>
-
+                <a class="menu-item" [routerLinkActive]="['active']" [routerLink]="['/account/bank-details']">
+                    <i class="ri-bank-line"></i>
+                    <span>{{ 'Finances' | translate }}</span>
+                </a>
             </div>
         </div>
 
-        <!-- Dashboard Header -->
+        <!-- 2. Dashboard Welcome Header -->
         <div class="dashboard-header">
             <div class="header-content">
                 <div class="header-text">
                     <h2 class="dashboard-title">{{ 'My Dashboard' | translate }}</h2>
-                    <p class="dashboard-subtitle">{{ 'Hello' | translate }}, <strong>{{ (user$ | async)?.name! |
-                            titleCase }}</strong> - {{ "Welcome" | translate}}</p>
+                    <p class="dashboard-subtitle">{{ 'Welcome back' | translate }}, <strong>{{ (user$ | async)?.name! |
+                            titleCase }}</strong>. {{ "Here is what's happening today." | translate}}</p>
                 </div>
             </div>
         </div>
-        <!-- Stats Cards -->
+
+        <!-- 3. Key Performance Indicators (Stats) -->
         <div class="dashboard-stats">
             <div class="row g-4">
-                <div class="col-md-4">
-                    <div class="stat-card balance-card">
+                <div class="col-xl-4 col-md-6">
+                    <div class="stat-card">
                         <div class="stat-icon">
-                            <i class="ri-wallet-line"></i>
+                            <i class="ri-wallet-3-line"></i>
                         </div>
                         <div class="stat-content">
-                            <h6 class="stat-label">{{ 'Balance'| translate}}</h6>
+                            <h6 class="stat-label">{{ 'Wallet Balance'| translate}}</h6>
                             <h3 class="stat-value">{{ ((user$ | async)?.wallet ? (user$ | async)?.wallet?.balance : 0) |
                                 currencySymbol }}</h3>
                         </div>
                     </div>
                 </div>
-                <div class="col-md-4">
-                    <div class="stat-card points-card">
+                <div class="col-xl-4 col-md-6">
+                    <div class="stat-card">
                         <div class="stat-icon">
-                            <i class="ri-coin-line"></i>
+                            <i class="ri-copper-coin-line"></i>
                         </div>
                         <div class="stat-content">
-                            <h6 class="stat-label">{{ 'Total Points'| translate}}</h6>
+                            <h6 class="stat-label">{{ 'Reward Points'| translate}}</h6>
                             <h3 class="stat-value">{{ (user$ | async)?.point ? (user$ | async)?.point?.balance : 0 }}
                             </h3>
                         </div>
                     </div>
                 </div>
-                <div class="col-md-4">
-                    <div class="stat-card orders-card">
+                <div class="col-xl-4 col-md-12">
+                    <div class="stat-card">
                         <div class="stat-icon">
-                            <i class="ri-shopping-bag-line"></i>
+                            <i class="ri-package-2-line"></i>
                         </div>
                         <div class="stat-content">
                             <h6 class="stat-label">{{ 'Total Orders'| translate}}</h6>
-                            <h3 class="stat-value">{{ (user$ | async)?.orders_count ? (user$ | async)?.orders_count : 0
-                                }}</h3>
+                            <h3 class="stat-value">{{ (user$ | async)?.orders_count || 0 }}</h3>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <!-- Profile Information Section -->
+
+        <!-- 4. Profile & Security Sections -->
         <div class="dashboard-content">
             <div class="row g-4">
+                <!-- Profile Block -->
                 <div class="col-lg-6">
                     <div class="info-card">
                         <div class="card-header">
                             <h4 class="card-title">
-                                <i class="ri-user-line"></i>
-                                {{ 'Profile Information'| translate}}
+                                <i class="ri-user-settings-line"></i>
+                                {{ 'Identity Settings'| translate}}
                             </h4>
                         </div>
                         <div class="card-body">
                             <div class="info-row">
                                 <div class="info-label">
-                                    <i class="ri-user-3-line"></i>
-                                    <span>{{ 'Name'| translate}}</span>
+                                    <i class="ri-user-line"></i>
+                                    <span>{{ 'Full Name'| translate}}</span>
                                 </div>
                                 <div class="info-value">{{ (user$ | async)?.name | titleCase }}</div>
                             </div>
                             <div class="info-row">
                                 <div class="info-label">
-                                    <i class="ri-phone-line"></i>
+                                    <i class="ri-smartphone-line"></i>
                                     <span>{{ 'Phone'| translate}}</span>
                                 </div>
                                 <div class="info-value">
@@ -117,47 +106,48 @@
                             </div>
                             <div class="info-row" *ngIf="address">
                                 <div class="info-label">
-                                    <i class="ri-map-pin-line"></i>
-                                    <span>{{ 'Address'| translate}}</span>
+                                    <i class="ri-navigation-line"></i>
+                                    <span>{{ 'Primary'| translate}}</span>
                                 </div>
                                 <div class="info-value">
-                                    {{ address.street }}, {{ address.city }}, {{ address.area }}, {{ address.country_id
-                                    }} {{ address.pincode }}
+                                    {{ address.street }}, {{ address.city }}, {{ address.pincode }}
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
+
+                <!-- Security Block -->
                 <div class="col-lg-6">
                     <div class="info-card">
                         <div class="card-header">
                             <h4 class="card-title">
-                                <i class="ri-lock-line"></i>
-                                {{ 'Login Details'| translate}}
+                                <i class="ri-shield-user-line"></i>
+                                {{ 'Security & Login'| translate}}
                             </h4>
                         </div>
                         <div class="card-body">
                             <div class="info-row">
                                 <div class="info-label">
-                                    <i class="ri-mail-line"></i>
-                                    <span>{{ 'Email'| translate}}</span>
+                                    <i class="ri-at-line"></i>
+                                    <span>{{ 'E-mail'| translate}}</span>
                                 </div>
                                 <div class="info-value">
                                     {{ (user$ | async)?.email }}
                                     <a href="javascript:void(0)" class="edit-link" (click)="ProfileModal.openModal()">
-                                        <i class="ri-edit-line"></i> {{ 'Edit' | translate }}
+                                        {{ 'Update' | translate }}
                                     </a>
                                 </div>
                             </div>
                             <div class="info-row">
                                 <div class="info-label">
-                                    <i class="ri-lock-password-line"></i>
-                                    <span>{{ 'Password'| translate}}</span>
+                                    <i class="ri-key-2-line"></i>
+                                    <span>{{ 'Access'| translate}}</span>
                                 </div>
                                 <div class="info-value">
                                     ●●●●●●
                                     <a href="javascript:void(0)" class="edit-link" (click)="PasswordModal.openModal()">
-                                        <i class="ri-edit-line"></i> {{ 'Edit' | translate }}
+                                        {{ 'Secure' | translate }}
                                     </a>
                                 </div>
                             </div>
@@ -168,6 +158,7 @@
         </div>
     </div>
 </div>
+
 <app-edit-profile-modal #profileModal></app-edit-profile-modal>
 <app-change-password-modal #passwordModal></app-change-password-modal>
 <app-confirmation-modal #confirmationModal (confirmed)="onLogoutConfirmed()"></app-confirmation-modal>

@@ -1,24 +1,31 @@
-// My Account Component - Modern Professional Design
+// My Account Component - Premium Professional Design
+
+.my-account-wrapper {
+  position: relative;
+  display: inline-block;
+}
 
 // User Icon/Profile
 .delivery-login-box {
   .delivery-icon {
     .user-box {
-      width: 44px;
-      height: 44px;
+      width: 42px;
+      height: 42px;
       border-radius: 50%;
       background: #ffffff;
       display: flex;
       align-items: center;
       justify-content: center;
       overflow: hidden;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-      transition: all 0.3s ease;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
       cursor: pointer;
+      border: 2px solid transparent;
 
       &:hover {
-        transform: scale(1.05);
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        transform: scale(1.08) translateY(-2px);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+        border-color: #20c997;
       }
 
       img {
@@ -27,11 +34,10 @@
         object-fit: cover;
       }
 
-      h3 {
-        margin: 0;
-        font-size: 18px;
+      .initials {
+        font-size: 16px;
         font-weight: 700;
-        color: #1b4b45;
+        color: #1a3a3a;
         text-transform: uppercase;
         letter-spacing: 0.5px;
       }
@@ -42,6 +48,7 @@
       color: #ffffff;
       cursor: pointer;
       transition: all 0.3s ease;
+      filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
 
       &:hover {
         color: #20c997;
@@ -51,34 +58,77 @@
   }
 }
 
-// Dropdown Menu - Modern Professional Design
+// Dropdown Menu - Ultra Modern Design
 .onhover-div-login {
   position: absolute;
-  top: calc(100% + 16px);
+  top: calc(100% + 20px);
   right: 0;
   background: #ffffff;
-  border-radius: 12px;
-  padding: 8px;
-  min-width: 240px;
-  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+  border-radius: 16px;
+  padding: 12px;
+  min-width: 260px;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
   z-index: 999999 !important;
   opacity: 0;
   visibility: hidden;
-  transform: translateY(-8px);
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  border: 1px solid rgba(0, 0, 0, 0.08);
-  backdrop-filter: blur(20px);
-  overflow: hidden;
+  transform: translateY(15px) scale(0.95);
+  transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  backdrop-filter: blur(15px);
+  overflow: visible;
 
-  // Ensure visibility on laptop screens
-  @media (min-width: 1200px) {
-    display: block !important;
+  &::before {
+    content: '';
+    position: absolute;
+    top: -8px;
+    right: 15px;
+    width: 16px;
+    height: 16px;
+    background: #ffffff;
+    transform: rotate(45deg);
+    border-top: 1px solid rgba(0, 0, 0, 0.05);
+    border-left: 1px solid rgba(0, 0, 0, 0.05);
+    z-index: -1;
   }
 
   html.dark & {
-    background: #1e1e1e;
+    background: #1a1a1a;
     border-color: rgba(255, 255, 255, 0.1);
-    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
+
+    &::before {
+      background: #1a1a1a;
+      border-color: rgba(255, 255, 255, 0.1);
+    }
+  }
+
+  .dropdown-header {
+    padding: 12px 16px 16px;
+    border-bottom: 1px solid #f0f0f0;
+    margin-bottom: 12px;
+
+    html.dark & {
+      border-color: rgba(255, 255, 255, 0.1);
+    }
+
+    .welcome-text {
+      font-size: 12px;
+      color: #888;
+      margin: 0;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .user-name {
+      font-size: 16px;
+      font-weight: 700;
+      color: #1a3a3a;
+      margin: 4px 0 0;
+
+      html.dark & {
+        color: #e0e0e0;
+      }
+    }
   }
 
   .user-box-name {
@@ -87,110 +137,151 @@
     margin: 0;
     display: flex;
     flex-direction: column;
-    gap: 4px;
+    gap: 6px;
 
     li {
       display: block;
       width: 100%;
       margin: 0;
-      padding: 0;
 
-      a {
+      .dropdown-item {
         display: flex;
         align-items: center;
-        padding: 14px 16px;
-        color: #1a1a1a;
+        padding: 12px;
+        color: #444;
         text-decoration: none;
         font-size: 15px;
         font-weight: 600;
-        transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-        position: relative;
-        border-radius: 8px;
-        gap: 14px;
+        transition: all 0.3s ease;
+        border-radius: 12px;
+        gap: 15px;
         background: transparent;
 
         html.dark & {
-          color: #e0e0e0;
+          color: #ccc;
         }
 
-        // Remove moving line effect
-        &::after {
-          display: none !important;
-          content: none !important;
-        }
-
-        i {
-          font-size: 20px;
-          width: 28px;
-          height: 28px;
+        .icon-box {
+          width: 38px;
+          height: 38px;
           display: flex;
           align-items: center;
           justify-content: center;
-          color: #666;
-          transition: all 0.25s ease;
-          border-radius: 6px;
-          background: #f5f5f5;
-
-          html.dark & {
-            color: #999;
-            background: #2a2a2a;
-          }
-        }
-
-        &:hover {
-          color: #ffffff;
-          background: linear-gradient(135deg, #0a1a1a 0%, #1a3a3a 50%, #20c997 100%);
-          box-shadow: 0 4px 12px rgba(32, 201, 151, 0.3);
-
-          html.dark & {
-            background: linear-gradient(135deg, #0a1a1a 0%, #1a3a3a 50%, #20c997 100%);
-          }
+          border-radius: 10px;
+          background: #f8f9fa;
+          transition: all 0.3s ease;
 
           i {
-            color: #ffffff;
-            background: rgba(255, 255, 255, 0.2);
-            transform: scale(1.1);
+            font-size: 18px;
+            color: #666;
+            transition: all 0.3s ease;
+          }
 
-            html.dark & {
-              background: rgba(255, 255, 255, 0.2);
+          html.dark & {
+            background: #252525;
+
+            i {
+              color: #aaa;
             }
           }
         }
 
-        &:active {
-          transform: scale(0.98);
-        }
-      }
-
-      // Logout specific styling
-      &:last-child a {
-        color: #1a1a1a;
-
-        html.dark & {
-          color: #e0e0e0;
-        }
-
-        i {
-          color: #dc3545;
-          background: rgba(220, 53, 69, 0.1);
-
-          html.dark & {
-            background: rgba(220, 53, 69, 0.2);
-          }
+        .item-text {
+          flex: 1;
         }
 
         &:hover {
-          color: #ffffff;
-          background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
-          box-shadow: 0 4px 12px rgba(220, 53, 69, 0.4);
+          background: #f8f9fa;
+          color: #1a1a1a;
+          transform: translateX(5px);
 
-          html.dark & {
-            background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+          .icon-box {
+            background: #ffffff;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+
+            i {
+              color: #20c997;
+            }
           }
 
-          i {
+          html.dark & {
+            background: #252525;
             color: #ffffff;
-            background: rgba(255, 255, 255, 0.2);
+
+            .icon-box {
+              background: #333;
+            }
+          }
+        }
+
+        // Login Item Specific Hover
+        &.login-item:hover {
+          background: linear-gradient(135deg, #0a1b1b 0%, #1a3a3a 100%);
+          color: #ffffff !important;
+          box-shadow: 0 8px 20px rgba(26, 58, 58, 0.3);
+
+          .icon-box {
+            background: rgba(255, 255, 255, 0.15);
+
+            i {
+              color: #ffffff;
+            }
+          }
+        }
+
+        // Register Item Specific Hover
+        &.register-item:hover {
+          background: linear-gradient(135deg, #fff5f6 0%, #ffeef0 100%);
+          color: #ff4d6d;
+
+          .icon-box {
+            background: rgba(121, 10, 10, 0.1);
+
+            i {
+              color: #ff4d6d;
+            }
+          }
+
+          html.dark & {
+            background: linear-gradient(135deg, #2a1a1d 0%, #3a1a1e 100%);
+
+            .icon-box {
+              background: rgba(255, 77, 109, 0.1);
+            }
+          }
+        }
+
+        // Logout Item Specific
+        &.logout-item {
+          margin-top: 8px;
+          border-top: 1px solid #f0f0f0;
+          padding-top: 18px;
+          border-radius: 0 0 12px 12px;
+
+          html.dark & {
+            border-color: rgba(255, 255, 255, 0.05);
+          }
+
+          .icon-box {
+            background: rgba(220, 53, 69, 0.05);
+
+            i {
+              color: #dc3545;
+            }
+          }
+
+          &:hover {
+            background: linear-gradient(135deg, #dc3545 0%, #b02a37 100%);
+            color: #ffffff;
+            box-shadow: 0 8px 20px rgba(220, 53, 69, 0.3);
+
+            .icon-box {
+              background: rgba(255, 255, 255, 0.2);
+
+              i {
+                color: #ffffff;
+              }
+            }
           }
         }
       }
@@ -198,79 +289,22 @@
   }
 }
 
-// Parent container z-index
-.onhover-dropdown {
-  position: relative;
-  z-index: 999998;
-}
-
-// Show dropdown on hover
-.onhover-dropdown:hover .onhover-div-login {
+// Show dropdown on hover (for both internal wrapper and parent onhover-dropdown)
+.my-account-wrapper:hover .onhover-div-login,
+:host-context(.onhover-dropdown):hover .onhover-div-login {
   opacity: 1;
   visibility: visible;
-  transform: translateY(0);
+  transform: translateY(0) scale(1);
 }
 
 // Responsive adjustments
 @media (max-width: 768px) {
   .onhover-div-login {
-    min-width: 220px;
-    padding: 8px;
+    min-width: 240px;
+    right: -10px;
 
-    .user-box-name li a {
-      padding: 12px 14px;
-      font-size: 14px;
-      gap: 12px;
-
-      i {
-        font-size: 18px;
-        width: 24px;
-        height: 24px;
-      }
-    }
-  }
-}
-
-// Ultra-small screens (max 363px) - Prevent dropdown cutoff
-@media (max-width: 363px) {
-  .onhover-div-login {
-    min-width: 200px;
-    max-width: calc(100vw - 32px);
-    right: -8px;
-    padding: 6px;
-    top: calc(100% + 12px);
-
-    .user-box-name {
-      gap: 3px;
-
-      li a {
-        padding: 10px 12px;
-        font-size: 13px;
-        gap: 10px;
-
-        i {
-          font-size: 16px;
-          width: 22px;
-          height: 22px;
-        }
-      }
-    }
-  }
-
-  .delivery-login-box {
-    .delivery-icon {
-      .user-box {
-        width: 38px;
-        height: 38px;
-
-        h3 {
-          font-size: 16px;
-        }
-      }
-
-      i {
-        font-size: 22px;
-      }
+    &::before {
+      right: 25px;
     }
   }
 }

@@ -21,24 +21,25 @@ export class ForgotPasswordComponent {
 
   @Select(ThemeOptionState.themeOptions) themeOption$: Observable<Option>;
   @Select(SettingState.setting) setting$: Observable<Values>;
-  
+
   public form: FormGroup;
   public breadcrumb: Breadcrumb = {
     title: "Forgot Password",
     items: [{ label: 'Forgot Password', active: true }]
   }
   public reCaptcha: boolean = true;
+  public isLoading: boolean = false;
 
-  constructor(private store: Store, 
-    public router: Router, 
-    public authService: AuthService, 
-    public formBuilder: FormBuilder ) {
+  constructor(private store: Store,
+    public router: Router,
+    public authService: AuthService,
+    public formBuilder: FormBuilder) {
     this.form = this.formBuilder.group({
       email: ["", [Validators.required, Validators.email]],
       recaptcha: ["", [Validators.required]]
     });
     this.setting$.subscribe(setting => {
-      if((setting?.google_reCaptcha && !setting?.google_reCaptcha?.status) || !setting?.google_reCaptcha) {
+      if ((setting?.google_reCaptcha && !setting?.google_reCaptcha?.status) || !setting?.google_reCaptcha) {
         this.form.removeControl('recaptcha');
         this.reCaptcha = false;
       } else {
@@ -50,12 +51,17 @@ export class ForgotPasswordComponent {
 
   submit() {
     this.form.markAllAsTouched();
-    if(this.form.valid) {
+    if (this.form.valid) {
+      this.isLoading = true;
       this.store.dispatch(new ForgotPassWord(this.form.value)).subscribe({
-        complete: () => { 
+        complete: () => {
+          this.isLoading = false;
           this.authService.otpType = 'email';
-          this.router.navigateByUrl('/auth/otp'); 
-        }     
+          this.router.navigateByUrl('/auth/otp');
+        },
+        error: () => {
+          this.isLoading = false;
+        }
       });
     }
   }

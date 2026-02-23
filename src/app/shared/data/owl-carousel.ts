@@ -301,9 +301,9 @@ export const productMainThumbSlider: OwlOptions = {
   items: 1,
   nav: true,
   autoplay: false,
-  autoHeight:true,
-  autoplayTimeout:5000,
-  autoplayHoverPause:true,
+  autoHeight: true,
+  autoplayTimeout: 5000,
+  autoplayHoverPause: true,
   navSpeed: 300,
   responsive: {
     0: {
@@ -351,4 +351,13 @@ export const productSliderLayout: OwlOptions = {
       items: 4,
     },
   },
+};
+
+export const heroSlider: OwlOptions = {
+  items: 1,
+  loop: true,
+  dots: true,
+  nav: false,
+  autoplay: true,
+  autoplayTimeout: 5000,
 };

@@ -3,6 +3,7 @@ import { NavigationEnd, Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
 import { Option } from '../../../interface/theme-option.interface';
+import { menuOptions } from '../../../data/menuOptions';
 
 @Component({
   selector: 'app-basic-header',
@@ -16,13 +17,20 @@ export class BasicHeaderComponent implements OnInit, OnDestroy {
   @Input() sticky: boolean | number | undefined; // Default false
   @Input() class: string | undefined;
 
+  public menuOptions = menuOptions;
   public stick: boolean = false;
   public active: boolean = false;
   public isHomePage: boolean = false;
 
   private destroy$ = new Subject<void>();
 
-  constructor(private router: Router) {}
+  constructor(public router: Router) { }
+
+  redirect(path: string) {
+    if (path) {
+      this.router.navigateByUrl(path);
+    }
+  }
 
   ngOnInit(): void {
     this.updateHomeState(this.router.url);
@@ -44,14 +52,14 @@ export class BasicHeaderComponent implements OnInit, OnDestroy {
   @HostListener("window:scroll", [])
   onWindowScroll() {
     let number = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
-  	if (number >= 150 && window.innerWidth > 400) {
-  	  this.stick = true;
-  	} else {
-  	  this.stick = false;
-  	}
+    if (number >= 150 && window.innerWidth > 400) {
+      this.stick = true;
+    } else {
+      this.stick = false;
+    }
   }
 
-  toggle(val: boolean){
+  toggle(val: boolean) {
     this.active = val;
   }
 
