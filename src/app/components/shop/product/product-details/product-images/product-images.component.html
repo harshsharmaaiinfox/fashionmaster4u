@@ -1,7 +1,7 @@
 <div class="container-fluid-lg py-4 product-images-layout">
   <div class="row justify-content-center g-4">
-    <!-- Details LEFT (card style) -->
-    <div class="col-12 col-lg-5 order-lg-1">
+    <!-- Details RIGHT (card style) -->
+    <div class="col-12 col-lg-6 order-lg-2">
       <div class="product-details-card shadow-sm">
         <div class="product-details-card__header">
           <div>
@@ -37,8 +37,8 @@
       </div>
     </div>
 
-    <!-- Image gallery RIGHT (modern grid) -->
-    <div class="col-12 col-lg-7 order-lg-2">
+    <!-- Image gallery LEFT (modern grid) -->
+    <div class="col-12 col-lg-6 order-lg-1">
       <div class="product-gallery-card">
         <div class="product-gallery-card__label-group" *ngIf="product">
           <div class="product-label-tag" *ngIf="product?.is_sale_enable else featured">
