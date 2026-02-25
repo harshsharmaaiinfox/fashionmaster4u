@@ -74,31 +74,6 @@ export const menuOptions: any[] = [
         "item_image": null,
         "banner_image": null,
         "child": []
-    },
-
-    {
-        "id": 166,
-        "title": "Winter Collections",
-        "sort": null,
-        "link_type": "sub",
-        "mega_menu": 1,
-        "mega_menu_type": "simple",
-        "slug": "winter-collections",
-        "path": null,
-        "badge_text": null,
-        "badge_color": null,
-        "content_item": null,
-        "item_image_id": null,
-        "banner_image_id": null,
-        "parent_id": null,
-        "is_target_blank": 0,
-        "status": 1,
-        "created_by_id": 1,
-        "created_at": "2025-12-15T09:05:57.000000Z",
-        "product_ids": [],
-        "blog_ids": [],
-        "item_image": null,
-        "banner_image": null,
-        "child": []
     }
+
 ]
