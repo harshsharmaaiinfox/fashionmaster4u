@@ -14,45 +14,39 @@ export class CollectionPriceFilterComponent {
   public prices = [
     {
       id: 1,
-      price: 100,
-      text: 'Below',
-      value: '0-99'
+      minPrice: 300,
+      maxPrice: 500,
+      value: '300-500'
     },
     {
       id: 2,
-      minPrice: 100,
-      maxPrice: 200,
-      value: '100-200'
+      minPrice: 500,
+      maxPrice: 700,
+      value: '500-700'
     },
     {
       id: 3,
-      minPrice: 200,
-      maxPrice: 400,
-      value: '200-400'
+      minPrice: 700,
+      maxPrice: 900,
+      value: '700-900'
     },
     {
       id: 4,
-      minPrice: 400,
-      maxPrice: 600,
-      value: '400-600'
+      minPrice: 900,
+      maxPrice: 1100,
+      value: '900-1100'
     },
     {
       id: 5,
-      minPrice: 600,
-      maxPrice: 800,
-      value: '600-800'
+      minPrice: 1100,
+      maxPrice: 1300,
+      value: '1100-1300'
     },
     {
       id: 6,
-      minPrice: 800,
-      maxPrice: 1000,
-      value: '800-1000'
-    },
-    {
-      id: 7,
-      price: 1000,
+      price: 1300,
       text: 'Above',
-      value: '1000'
+      value: '1300'
     }
   ]
 
