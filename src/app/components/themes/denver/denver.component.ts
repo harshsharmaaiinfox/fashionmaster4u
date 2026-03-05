@@ -38,7 +38,7 @@ export class DenverComponent implements OnInit {
     middle: [12308, 12061, 12145, 12118],
     bottom: [12322, 12142, 12116, 12325]
   };
-  public allFeaturedProductIds = [ 12308, 12061, 12145, 12118, 12322, 12142, 12116, 12325];
+  public allFeaturedProductIds = [12308, 12061, 12145, 12118, 12322, 12142, 12116, 12325];
 
   /** Products for products_list_2 section (4 products) */
   public productsList2Ids = [12140, 12198, 12148, 12201];
@@ -52,7 +52,7 @@ export class DenverComponent implements OnInit {
 
   public exploreMoreItems = [
     {
-      image: 'assets/images/dress1.webp',
+      image: 'assets/images/dress-first.png',
       title: 'DRESS COLLECTION'
     },
     {
