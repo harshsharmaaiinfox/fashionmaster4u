@@ -959,3 +959,9 @@ ul.select-package {
     border-radius: 8px !important;
   }
 }
+
+@media(max-width:1200px) {
+  ul.navbar-nav {
+    margin-top: 50px !important;
+  }
+}

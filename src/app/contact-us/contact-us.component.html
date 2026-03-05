@@ -131,7 +131,8 @@
                   <label for="name">Full Name <span class="req">*</span></label>
                   <div class="input-wrap">
                     <i class="ri-user-line input-icon"></i>
-                    <input type="text" id="name" formControlName="name" placeholder="Your full name">
+                    <input type="text" id="name" formControlName="name" placeholder="Your full name"
+                      (keypress)="onlyAlphabets($event)">
                   </div>
                   <span class="field-error"
                     *ngIf="contactForm.get('name')?.invalid && contactForm.get('name')?.touched">
@@ -145,7 +146,8 @@
                   <label for="phone">Phone Number <span class="req">*</span></label>
                   <div class="input-wrap">
                     <i class="ri-phone-line input-icon"></i>
-                    <input type="tel" id="phone" formControlName="phone" placeholder="10-digit mobile number">
+                    <input type="tel" id="phone" formControlName="phone" placeholder="10-digit mobile number"
+                      (keypress)="onlyNumbers($event)" maxlength="10">
                   </div>
                   <span class="field-error"
                     *ngIf="contactForm.get('phone')?.invalid && contactForm.get('phone')?.touched">

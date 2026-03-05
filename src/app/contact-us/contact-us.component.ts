@@ -21,6 +21,22 @@ export class ContactUsComponent {
     });
   }
 
+  onlyAlphabets(event: any) {
+    const pattern = /[A-Za-z ]/;
+    const inputChar = String.fromCharCode(event.charCode);
+    if (!pattern.test(inputChar)) {
+      event.preventDefault();
+    }
+  }
+
+  onlyNumbers(event: any) {
+    const pattern = /[0-9]/;
+    const inputChar = String.fromCharCode(event.charCode);
+    if (!pattern.test(inputChar)) {
+      event.preventDefault();
+    }
+  }
+
   onSubmit() {
     if (this.contactForm.valid) {
       console.log('Form submitted', this.contactForm.value);
