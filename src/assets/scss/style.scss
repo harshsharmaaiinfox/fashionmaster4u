@@ -912,11 +912,50 @@ button#search-btn {
   margin-left: -0.5em !important;
 }
 
-button#value_btn {
-  width: 20px !important;
-}
-
-ul.circle.select-package.ng-star-inserted {
+// Size/variant selector - enhanced design (product cards, modals)
+ul.select-package {
   display: flex !important;
-  gap: 10px !important;
+  flex-wrap: wrap !important;
+  gap: 12px !important;
+  list-style: none !important;
+  padding: 0 !important;
+  margin: 0 !important;
+
+  li {
+    button {
+      min-width: 42px !important;
+      min-height: 42px !important;
+      padding: 8px 16px !important;
+      font-weight: 600 !important;
+      font-size: 13px !important;
+      border-radius: 50% !important;
+      border: 2px solid #e2e8f0 !important;
+      background: #f8fafc !important;
+      color: #334155 !important;
+      transition: all 0.2s ease !important;
+      cursor: pointer;
+    }
+
+    &:hover:not(.disabled) button {
+      border-color: #94a3b8;
+      background: #f1f5f9;
+    }
+
+    &.active button {
+      background: #0f172a !important;
+      color: #ffffff !important;
+      border-color: #0f172a !important;
+      box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.4);
+    }
+
+    &.disabled button {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+  }
+
+  &.rectangle li button,
+  &:not(.circle) li button {
+    border-radius: 8px !important;
+  }
 }

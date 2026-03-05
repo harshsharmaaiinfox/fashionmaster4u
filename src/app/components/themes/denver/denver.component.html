@@ -32,7 +32,7 @@
 <!-- Category Section End -->
 
 <!-- Deal Section Start -->
-<section class="product-section product-section-3" *ngIf="data?.content?.products_list_1?.status">
+<!-- <section class="product-section product-section-3" *ngIf="data?.content?.products_list_1?.status">
   <div class="container-fluid-lg">
     <div>
       <div class="explore-header">
@@ -51,8 +51,43 @@
       </app-theme-product>
     </div>
   </div>
-</section>
+</section> -->
 <!-- Deal Section End -->
+
+<!-- Featured Products by ID: 4 top, 4 middle, 4 bottom -->
+<section class="product-section product-section-3 featured-products-by-id">
+  <div class="container-fluid-lg">
+    <div>
+      <div class="explore-header">
+        <div class="explore-header-line"></div>
+        <div class="explore-header-text">
+          <span class="explore-eyebrow">Curated Picks</span>
+          <h2 class="explore-title">FEATURED PRODUCTS</h2>
+        </div>
+        <div class="explore-header-line"></div>
+      </div>
+
+      <!-- Row 1: 4 products on top -->
+      <!-- <app-theme-product [productIds]="featuredProductIds.top" [style]="'horizontal'"
+        [slider]="false" [showItem]="4" [productStyle]="'product-solid'" [boxClass]="'product-box-bg'">
+      </app-theme-product> -->
+
+      <!-- Row 2: 4 products in middle -->
+      <div class="mt-4">
+        <app-theme-product [productIds]="featuredProductIds.middle" [style]="'horizontal'"
+          [slider]="false" [showItem]="4" [productStyle]="'product-solid'" [boxClass]="'product-box-bg'">
+        </app-theme-product>
+      </div>
+
+      <!-- Row 3: 4 products on bottom -->
+      <div class="mt-4">
+        <app-theme-product [productIds]="featuredProductIds.bottom" [style]="'horizontal'"
+          [slider]="false" [showItem]="4" [productStyle]="'product-solid'" [boxClass]="'product-box-bg'">
+        </app-theme-product>
+      </div>
+    </div>
+  </div>
+</section>
 
 <!-- Explore More Section Start -->
 <section class="explore-more-section section-b-space">
@@ -116,19 +151,19 @@
 <!-- Shop Now Banner Section End -->
 
 <!-- Top Selling Section Start -->
-<section class="product-section product-section-3" *ngIf="data?.content?.products_list_2?.status">
+<section class="product-section product-section-3" *ngIf="data?.content?.products_list_2?.status || productsList2Ids?.length">
   <div class="container-fluid-lg">
     <div class="title-header-main product-small">
       <!-- <app-title [title]="data?.content?.products_list_2?.title" [style]="'simple'">
-      </app-title>
-      <p class="p-text-main">Find your own signature styles with classic menswear from our premium collections. Whether
+      </app-title> -->
+      <!-- <p class="p-text-main">Find your own signature styles with classic menswear from our premium collections. Whether
         it is for work, the weekend, or just between the two, RaylomShop offers you stylish selections to ensure ultimate
         comfort and confidence. Shirts, trousers, casual wear, and more-all just about keeping you sharp.Shop the Latest
         in Men's Style from timeless classics to modern trends, we make online men's fashion shopping effortless. Browse
         our wide range of categories and shop men's clothing online — from casual essentials to formalwear, outerwear,
         and more.
-      </p> -->
-      <app-theme-product [productIds]="data?.content?.products_list_2?.product_ids || []" [style]="'horizontal'"
+      </p>  -->
+      <app-theme-product [productIds]="productsList2Ids" [style]="'horizontal'"
         [slider]="true" [sliderOption]="productSlider6ItemMargin" [productStyle]="'product-solid'"
         [boxClass]="'product-box-bg'">
       </app-theme-product>
@@ -189,7 +224,7 @@
 
 
 <!-- Top Selling Section Start -->
-<section class="product-section product-section-3" *ngIf="data?.content?.products_list_3?.status">
+<section class="product-section product-section-3" *ngIf="data?.content?.products_list_3?.status || productsList3Ids?.length">
   <div class="container-fluid-lg">
     <div>
       <!-- <app-title [title]="data?.content?.products_list_3?.title" [style]="'simple'">
@@ -197,7 +232,7 @@
       <p class="p-text-main">Our womenswear collection is Affordable, Stylish & On-Trend . From elegantly casual to
         eye-catching styles, explore unique womenswear for those who are always styled-up. Go ahead and combine
         fashion-forward with effortless chic for any occasion.</p> -->
-      <app-theme-product [productIds]="data?.content?.products_list_3?.product_ids || []" [style]="'horizontal'"
+      <app-theme-product [productIds]="productsList3Ids" [style]="'horizontal'"
         [slider]="true" [sliderOption]="productSlider6ItemMargin" [productStyle]="'product-solid'"
         [boxClass]="'product-box-bg'">
       </app-theme-product>

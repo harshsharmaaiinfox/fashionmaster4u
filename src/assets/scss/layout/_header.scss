@@ -99,7 +99,7 @@ header {
       left: 0;
       width: 100%;
       background-color: rgba(0, 0, 0, 0.95);
-      backdrop-filter: blur(10px);
+      /* backdrop-filter removed - breaks cart sidebar position:fixed when scrolling */
       color: #ffffff;
       box-shadow: 0 8px 10px rgba(0, 0, 0, 0.3);
       z-index: 1000;

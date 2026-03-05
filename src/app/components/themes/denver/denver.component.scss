@@ -455,6 +455,58 @@
 
 
 
+// Featured products: 4 visible cards per row + smaller card size
+.featured-products-by-id {
+  overflow: visible;
+
+  .container-fluid-lg {
+    overflow: visible;
+  }
+
+  ::ng-deep .row {
+    overflow: visible;
+    --bs-gutter-x: 0.5rem;
+    --bs-gutter-y: 0.5rem;
+    @media (min-width: 768px) {
+      --bs-columns: 4;
+    }
+    @media (min-width: 576px) and (max-width: 767px) {
+      --bs-columns: 2;
+    }
+    > div {
+      min-width: 0; // allow flex shrink so all 4 fit
+    }
+  }
+
+  // Reduce product card size
+  ::ng-deep .product-box,
+  ::ng-deep app-basic-product-box .product-box,
+  ::ng-deep app-premium-product-box .product-box,
+  ::ng-deep app-classic-product-box .product-box,
+  ::ng-deep app-standard-product-box .product-box,
+  ::ng-deep app-digital-product-box .product-box {
+    .product-image {
+      aspect-ratio: 4/5;
+    }
+    .product-detail {
+      padding: 12px 14px;
+      .name {
+        font-size: 14px;
+      }
+      .current-price {
+        font-size: 15px;
+      }
+      .add-to-cart-box {
+        min-height: 40px;
+        ::ng-deep .btn-add-cart {
+          height: 40px !important;
+          font-size: 12px !important;
+        }
+      }
+    }
+  }
+}
+
 .title-header-main .title {
   align-items: center;
   justify-content: center;

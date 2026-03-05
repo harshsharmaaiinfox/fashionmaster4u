@@ -38,7 +38,10 @@ export class ProductComponent {
   ngOnChanges() {
     if (Array.isArray(this.productIds) && this.productIds.length) {
       this.product$.subscribe(products => {
-        this.products = products.filter(product => this.productIds?.includes(product.id));
+        const ids = this.productIds?.map(id => Number(id)) ?? [];
+        this.products = products
+          .filter(product => ids.includes(Number(product.id)))
+          .sort((a, b) => ids.indexOf(Number(a.id)) - ids.indexOf(Number(b.id)));
       });
     }
   }

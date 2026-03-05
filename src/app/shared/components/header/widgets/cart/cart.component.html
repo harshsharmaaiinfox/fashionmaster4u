@@ -19,6 +19,9 @@
 
 <!-- Modern Cart Sidebar -->
 <ng-container *ngIf="!cartHide">
+    <!-- Backdrop - click to close -->
+    <div class="cart-sidebar-backdrop" [class.show]="(sidebarCartOpen$ | async) && cartStyle == 'cart_sidebar'"
+        (click)="cartToggle(false)" *ngIf="cartStyle == 'cart_sidebar'"></div>
     <div class="modern-cart-sidebar onhover-div" [ngClass]="{ 'fixed-cart': cartStyle == 'cart_sidebar' }"
         [class.show]="(sidebarCartOpen$ | async)">
 

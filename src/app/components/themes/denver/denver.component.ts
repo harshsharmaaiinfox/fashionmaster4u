@@ -32,6 +32,20 @@ export class DenverComponent implements OnInit {
     { image: 'assets/images/banner2.png' }
   ];
 
+  /** Featured products by ID: 4 top, 4 middle, 4 bottom */
+  public featuredProductIds = {
+    // top: [28098, 12301, 12304, 12321],
+    middle: [12308, 12061, 12145, 12118],
+    bottom: [12322, 12142, 12116, 12325]
+  };
+  public allFeaturedProductIds = [ 12308, 12061, 12145, 12118, 12322, 12142, 12116, 12325];
+
+  /** Products for products_list_2 section (4 products) */
+  public productsList2Ids = [12140, 12198, 12148, 12201];
+
+  /** Products for products_list_3 section (4 products) */
+  public productsList3Ids = [12135, 12134, 12137, 12141];
+
   constructor(private store: Store,
     private route: ActivatedRoute,
     private themeOptionService: ThemeOptionService) { }
@@ -60,10 +74,12 @@ export class DenverComponent implements OnInit {
 
   ngOnInit() {
     if (this.data?.slug == this.slug) {
+      const existingIds = this.data?.content?.products_ids ?? [];
+      const idsToFetch = [...new Set([...existingIds, ...this.allFeaturedProductIds, ...this.productsList2Ids, ...this.productsList3Ids])];
       const getProducts$ = this.store.dispatch(new GetProductByIds({
         status: 1,
-        paginate: this.data?.content?.products_ids.length,
-        ids: this.data?.content?.products_ids?.join(',')
+        paginate: idsToFetch.length,
+        ids: idsToFetch.join(',')
       }));
 
       // Only call GetBrands if brand_ids exist and are not empty

@@ -76,7 +76,7 @@ header {
 
   .top-nav {
     background-color: #0F172A; // Slate Blue background
-    backdrop-filter: blur(10px);
+    // backdrop-filter removed - it breaks cart sidebar position:fixed when scrolling
     position: relative;
     z-index: 1001;
     width: 100%;
