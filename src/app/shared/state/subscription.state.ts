@@ -7,19 +7,19 @@ import { Subscription } from "../action/subscription.action";
 
 @Injectable()
 export class SubscriptionState {
-  
+
   constructor(
     private notificationService: NotificationService,
-    private subscriptionService: SubscriptionService) {}
+    private subscriptionService: SubscriptionService) { }
 
   @Action(Subscription)
   create(ctx: StateContext<any>, action: Subscription) {
     return this.subscriptionService.sendEmail(action.payload).pipe(
       tap({
-        complete:() => {
+        complete: () => {
           this.notificationService.showSuccess('Subscribed successfully');
         },
-        error: err => { 
+        error: err => {
           throw new Error(err?.error?.message);
         }
       })

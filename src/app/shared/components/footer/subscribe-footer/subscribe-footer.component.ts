@@ -24,22 +24,22 @@ export class SubscribeFooterComponent {
     useful_link: false
   };
 
-  constructor(private store: Store){}
+  constructor(private store: Store) { }
 
-  getText(text: string): string{
+  getText(text: string): string {
     const words = text.split(' ');
     const firstTwoWords = words.slice(0, 2)?.join(' ');
     const remainingText = words.slice(2)?.join(' ');
     return `<h2>${firstTwoWords} <span>${remainingText}</span></h2>`
   }
 
-  toggle(value: string){
+  toggle(value: string) {
     this.active[value] = !this.active[value];
   }
 
-  submit(){
-    if(this.email.valid){
-      this.store.dispatch(new Subscription({email: this.email.value!}))
+  submit() {
+    if (this.email.valid) {
+      this.store.dispatch(new Subscription({ email: this.email.value! }))
       this.email.reset();
     }
   }

@@ -114,7 +114,6 @@ export class CheckoutSuccessComponent {
 
   selectDelivery(value: DeliveryBlock) {
     this.form.controls['delivery_description'].setValue(value?.delivery_description);
-    this.form.controls['delivery_interval'].setValue(value?.delivery_interval);
   }
 
   selectPaymentMethod(value: string) {

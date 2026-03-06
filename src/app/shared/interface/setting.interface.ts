@@ -25,8 +25,8 @@ export interface Language {
    language: string;
    code: string;
    icon: string;
- }
- 
+}
+
 export interface DayInterval {
    title: string;
    description: string;
@@ -44,12 +44,12 @@ export interface General {
    site_name: string;
    site_url: string;
    site_title: string;
-   site_tagline:string;
-   default_timezone:string;
+   site_tagline: string;
+   default_timezone: string;
    default_currency_id: number;
    admin_site_language_direction: string;
-   min_order_amount:number;
-   min_order_free_shipping:number;
+   min_order_amount: number;
+   min_order_free_shipping: number;
    product_sku_prefix: string;
    default_currency: Currency;
    mode: string;
@@ -109,7 +109,7 @@ export interface Newsletter {
 
 export interface Analytics {
    facebook_pixel: {
-      status : number | boolean;
+      status: number | boolean;
       pixel_id: string;
    }
    google_analytics: {
@@ -133,7 +133,6 @@ export interface DeliveryDay {
 
 export interface DeliveryBlock {
    delivery_description: string | null;
-   delivery_interval: string | null;
 }
 
 export interface GoogleReCaptcha {
@@ -161,7 +160,7 @@ export interface PaymentMethods {
 
 export interface Analytics {
    facebook_pixel: {
-      status : number | boolean;
+      status: number | boolean;
       pixel_id: string;
    }
    google_analytics: {

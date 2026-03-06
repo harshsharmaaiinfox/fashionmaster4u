@@ -27,19 +27,19 @@ export class NewsletterModalComponent {
   public newsletter: boolean;
   public themeOption: Option;
   public email = new FormControl('', [Validators.email]);
-  public isSubmit: boolean = false; 
+  public isSubmit: boolean = false;
   public storageURL = environment.storageURL;
 
-  constructor(private modalService: NgbModal, private store: Store){
+  constructor(private modalService: NgbModal, private store: Store) {
     this.newsletter$.subscribe(res => this.newsletter = res);
     this.themeOption$.subscribe(res => this.themeOption = res);
 
   }
 
   ngAfterViewInit(): void {
-    if(this.newsletter === true){
+    if (this.newsletter === true) {
       setTimeout(() => {
-      this.openModal();
+        this.openModal();
       }, 3000);
       this.store.dispatch(new UpdateSession('newsletter', false));
     }
@@ -68,10 +68,10 @@ export class NewsletterModalComponent {
     }
   }
 
-  submit(){
+  submit() {
     this.isSubmit = true;
-    if(this.email.valid){
-      this.store.dispatch(new Subscription({email: this.email.value!}))
+    if (this.email.valid) {
+      this.store.dispatch(new Subscription({ email: this.email.value! }))
       this.email.reset();
       this.isSubmit = false;
     }
@@ -79,7 +79,7 @@ export class NewsletterModalComponent {
 
 
   ngOnDestroy() {
-    if(this.modalOpen){
+    if (this.modalOpen) {
       this.modalService.dismissAll();
     }
   }

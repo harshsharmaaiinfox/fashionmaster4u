@@ -109,7 +109,6 @@ export class CheckoutComponent {
       wallet_balance: new FormControl(false),
       coupon: new FormControl(),
       delivery_description: new FormControl('', [Validators.required]),
-      delivery_interval: new FormControl(),
       payment_method: new FormControl('', [Validators.required]),
       create_account: new FormControl(false),
       name: new FormControl('', [Validators.required]),
@@ -363,7 +362,6 @@ export class CheckoutComponent {
 
   selectDelivery(value: DeliveryBlock) {
     this.form.controls['delivery_description'].setValue(value?.delivery_description);
-    this.form.controls['delivery_interval'].setValue(value?.delivery_interval);
     this.checkout();
   }
 

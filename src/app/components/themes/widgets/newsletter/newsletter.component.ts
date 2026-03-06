@@ -15,17 +15,17 @@ export class NewsletterComponent {
 
   @Input() data: NewsLetter | null;
   @Input() style: string = 'basic';
-  
+
   public email = new FormControl('', [Validators.email]);
-  public isSubmit: boolean = false; 
+  public isSubmit: boolean = false;
   public storageURL = environment.storageURL;
 
-  constructor(private store: Store) {}
+  constructor(private store: Store) { }
 
-  submit(){
+  submit() {
     this.isSubmit = true;
-    if(this.email.valid){
-      this.store.dispatch(new Subscription({email: this.email.value!}))
+    if (this.email.valid) {
+      this.store.dispatch(new Subscription({ email: this.email.value! }))
       this.email.reset();
       this.isSubmit = false;
     }
