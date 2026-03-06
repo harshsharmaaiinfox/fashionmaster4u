@@ -104,11 +104,18 @@
                         Subscribe to get exclusive deals, new arrivals and style inspiration straight to your inbox.
                     </p>
                     <div class="footer-newsletter">
-                        <input type="email" placeholder="Your email address" class="newsletter-input">
-                        <button class="newsletter-btn" aria-label="Subscribe">
+                        <input type="email" placeholder="Your email address" class="newsletter-input"
+                            [(ngModel)]="newsletterEmail" (keyup.enter)="subscribeNewsletter()">
+                        <button class="newsletter-btn" aria-label="Subscribe" (click)="subscribeNewsletter()">
                             <i class="ri-send-plane-fill"></i>
                         </button>
                     </div>
+                    <p class="footer-newsletter-success" *ngIf="newsletterSuccess">
+                        <i class="ri-checkbox-circle-line"></i> Thank you! You've been subscribed successfully.
+                    </p>
+                    <p class="footer-newsletter-error" *ngIf="newsletterError">
+                        <i class="ri-error-warning-line"></i> {{ newsletterError }}
+                    </p>
                     <p class="footer-newsletter-note">
                         <i class="ri-lock-line"></i> We respect your privacy. No spam, ever.
                     </p>

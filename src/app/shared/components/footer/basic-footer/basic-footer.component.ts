@@ -19,6 +19,10 @@ export class BasicFooterComponent implements OnInit, OnDestroy {
 
   public showBackToTop: boolean = false;
 
+  public newsletterEmail: string = '';
+  public newsletterSuccess: boolean = false;
+  public newsletterError: string | null = null;
+
   ngOnInit(): void {
     // Initial check
     this.checkScrollPosition();
@@ -47,5 +51,31 @@ export class BasicFooterComponent implements OnInit, OnDestroy {
 
   toggle(value: string) {
     this.active[value] = !this.active[value];
+  }
+
+  subscribeNewsletter() {
+    this.newsletterError = null;
+    this.newsletterSuccess = false;
+
+    if (!this.newsletterEmail) {
+      this.newsletterError = 'Please enter an email address.';
+      return;
+    }
+
+    const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+    if (!emailPattern.test(this.newsletterEmail)) {
+      this.newsletterError = 'Please enter a valid email address.';
+      return;
+    }
+
+    // Simulate API call
+    console.log('Subscribing:', this.newsletterEmail);
+    this.newsletterSuccess = true;
+    this.newsletterEmail = '';
+
+    // Clear success message after 5 seconds
+    setTimeout(() => {
+      this.newsletterSuccess = false;
+    }, 5000);
   }
 }
