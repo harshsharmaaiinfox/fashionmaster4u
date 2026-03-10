@@ -596,12 +596,12 @@ export class CheckoutComponent {
     });
   }
 
-  // NGOmaster CashFree 2 Payment Integration
+  // NGOmaster CashFree Payment Integration
   initiateNgoMasterCashFreePaymentIntent(payment_method: string, uuid: any, order_result: any) {
     const userData = localStorage.getItem('account');
     const parsedUserData = JSON.parse(userData || '{}')?.user || {};
 
-    const params: any = {
+    this.cartService.initiateNgoMasterCashfreeIntent({
       uuid,
       amount: this.checkoutTotal?.total?.total,
       currency: 'INR',
@@ -609,53 +609,31 @@ export class CheckoutComponent {
       phone: parsedUserData.phone,
       name: parsedUserData.name,
       order_id: order_result?.order_number,
-    };
+    }).subscribe({
+      next: (response) => {
+        try {
+          const data = response?.data || response;
+          const paymentUrl = data?.payment_url || data?.payment_link || data?.url || data?.link;
 
-    try {
-      const ngoMasterCashfree = (window as any)?.ngomaster_cashfree;
-      const ngoMasterCashfreeInitiate = (window as any)?.['ngomaster-cashfree-initiate-payment'];
+          if (paymentUrl) {
+            localStorage.setItem('payment_uuid', uuid);
+            localStorage.setItem('payment_method', payment_method);
+            localStorage.setItem('payment_action', JSON.stringify(this.form.value));
+            localStorage.setItem('order_id', JSON.stringify(order_result.order_number));
 
-      if (typeof ngoMasterCashfree !== 'function' && typeof ngoMasterCashfreeInitiate !== 'function') {
-        console.error('NGOmaster Cashfree functions are not available on window.');
-        return;
+            // Redirect to the Cashfree payment page
+            window.location.href = paymentUrl;
+          } else {
+            console.error('NGOmaster Cashfree: No payment URL in response', response);
+          }
+        } catch (error) {
+          console.error('Error parsing NGOmaster Cashfree response:', error);
+        }
+      },
+      error: (err) => {
+        console.error('Error initiating NGOmaster Cashfree payment:', err);
       }
-
-      // Call the main NGOmaster function first
-      let result: any;
-      if (typeof ngoMasterCashfree === 'function') {
-        console.log('Calling ngomaster_cashfree with params:', params);
-        result = ngoMasterCashfree(params);
-        console.log('ngomaster_cashfree result:', result);
-      }
-
-      // Try to derive a URL to open
-      let paymentUrl: string | undefined;
-      if (typeof result === 'string') {
-        paymentUrl = result;
-      } else if (result && typeof result === 'object') {
-        paymentUrl = result.payment_url || result.url || result.link;
-      }
-
-      // If we have a second helper and a URL, call it
-      if (paymentUrl && typeof ngoMasterCashfreeInitiate === 'function') {
-        // Store payment info for later status checks / redirects
-        localStorage.setItem('payment_uuid', uuid);
-        localStorage.setItem('payment_method', payment_method);
-        localStorage.setItem('payment_action', JSON.stringify(this.form.value));
-        localStorage.setItem('order_id', JSON.stringify(order_result.order_number));
-
-        console.log('Calling ngomaster-cashfree-initiate-payment with URL:', paymentUrl);
-        ngoMasterCashfreeInitiate(paymentUrl);
-        return;
-      }
-
-      // Fallback: if NGOmaster itself handled redirect and second function is not needed
-      if (!paymentUrl) {
-        console.warn('NGOmaster Cashfree did not return a payment URL; assuming it handled the flow internally.');
-      }
-    } catch (error) {
-      console.error('Error initiating NGOmaster Cashfree payment:', error);
-    }
+    });
   }
 
   // Zyaada Pay Payment Integration
