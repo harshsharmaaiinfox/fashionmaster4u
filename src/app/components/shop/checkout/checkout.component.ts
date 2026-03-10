@@ -365,6 +365,13 @@ export class CheckoutComponent {
     this.checkout();
   }
 
+  private mapPaymentMethodForBackend(value: string | null | undefined): string | null | undefined {
+    if (!value) return value;
+    // Map NGOmaster alias to backend key expected by API
+    if (value === 'ngomaster_cashfree') return 'cash_free';
+    return value;
+  }
+
   selectPaymentMethod(value: string) {
     this.form.controls['payment_method'].setValue(value);
     this.payment_method = value;
@@ -376,6 +383,9 @@ export class CheckoutComponent {
         this.checkout(value);
         break;
       case 'cash_free':
+        this.checkout(value);
+        break;
+      case 'ngomaster_cashfree':
         this.checkout(value);
         break;
       case 'zyaada_pay':
@@ -584,6 +594,68 @@ export class CheckoutComponent {
         console.log("Error initiating payment:", err);
       }
     });
+  }
+
+  // NGOmaster CashFree 2 Payment Integration
+  initiateNgoMasterCashFreePaymentIntent(payment_method: string, uuid: any, order_result: any) {
+    const userData = localStorage.getItem('account');
+    const parsedUserData = JSON.parse(userData || '{}')?.user || {};
+
+    const params: any = {
+      uuid,
+      amount: this.checkoutTotal?.total?.total,
+      currency: 'INR',
+      email: parsedUserData.email,
+      phone: parsedUserData.phone,
+      name: parsedUserData.name,
+      order_id: order_result?.order_number,
+    };
+
+    try {
+      const ngoMasterCashfree = (window as any)?.ngomaster_cashfree;
+      const ngoMasterCashfreeInitiate = (window as any)?.['ngomaster-cashfree-initiate-payment'];
+
+      if (typeof ngoMasterCashfree !== 'function' && typeof ngoMasterCashfreeInitiate !== 'function') {
+        console.error('NGOmaster Cashfree functions are not available on window.');
+        return;
+      }
+
+      // Call the main NGOmaster function first
+      let result: any;
+      if (typeof ngoMasterCashfree === 'function') {
+        console.log('Calling ngomaster_cashfree with params:', params);
+        result = ngoMasterCashfree(params);
+        console.log('ngomaster_cashfree result:', result);
+      }
+
+      // Try to derive a URL to open
+      let paymentUrl: string | undefined;
+      if (typeof result === 'string') {
+        paymentUrl = result;
+      } else if (result && typeof result === 'object') {
+        paymentUrl = result.payment_url || result.url || result.link;
+      }
+
+      // If we have a second helper and a URL, call it
+      if (paymentUrl && typeof ngoMasterCashfreeInitiate === 'function') {
+        // Store payment info for later status checks / redirects
+        localStorage.setItem('payment_uuid', uuid);
+        localStorage.setItem('payment_method', payment_method);
+        localStorage.setItem('payment_action', JSON.stringify(this.form.value));
+        localStorage.setItem('order_id', JSON.stringify(order_result.order_number));
+
+        console.log('Calling ngomaster-cashfree-initiate-payment with URL:', paymentUrl);
+        ngoMasterCashfreeInitiate(paymentUrl);
+        return;
+      }
+
+      // Fallback: if NGOmaster itself handled redirect and second function is not needed
+      if (!paymentUrl) {
+        console.warn('NGOmaster Cashfree did not return a payment URL; assuming it handled the flow internally.');
+      }
+    } catch (error) {
+      console.error('Error initiating NGOmaster Cashfree payment:', error);
+    }
   }
 
   // Zyaada Pay Payment Integration
@@ -886,7 +958,13 @@ export class CheckoutComponent {
     else
       this.form.controls['coupon'].reset();
 
-    this.store.dispatch(new Checkout(this.form.value)).subscribe({
+    const raw = this.form.value;
+    const payload = {
+      ...raw,
+      payment_method: this.mapPaymentMethodForBackend(raw.payment_method),
+    };
+
+    this.store.dispatch(new Checkout(payload)).subscribe({
       error: (err) => {
         this.couponError = err.message;
       },
@@ -968,6 +1046,8 @@ export class CheckoutComponent {
           }
         }
 
+        payload.payment_method = this.mapPaymentMethodForBackend(payload.payment_method);
+
         this.store.dispatch(new Checkout(payload)).subscribe({
           next: (value) => {
             this.storeData = value;
@@ -1007,8 +1087,11 @@ export class CheckoutComponent {
 
       const uuid = uuidv4();
 
+      const backendPaymentMethod = this.mapPaymentMethodForBackend(this.form.value.payment_method);
+
       const formData = {
         ...this.form.value,
+        payment_method: backendPaymentMethod,
         uuid: uuid
       }
 
@@ -1032,6 +1115,9 @@ export class CheckoutComponent {
         next: (result) => {
           if (this.payment_method === 'cash_free') {
             this.initiateCashFreePaymentIntent(this.payment_method, uuid, result);
+          }
+          if (this.payment_method === 'ngomaster_cashfree') {
+            this.initiateNgoMasterCashFreePaymentIntent(this.payment_method, uuid, result);
           }
           if (this.payment_method === 'sub_paisa') {
             this.initiateSubPaisa(this.payment_method, uuid, result);
