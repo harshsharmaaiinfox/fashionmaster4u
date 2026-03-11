@@ -293,13 +293,13 @@ export class CheckoutComponent {
     });
 
     // Restore saved checkout state if returning from a payment page
-    const savedCart = sessionStorage.getItem('restore_cart_items');
-    const savedForm = sessionStorage.getItem('restore_checkout_form');
+    const savedCart = localStorage.getItem('restore_cart_items');
+    const savedForm = localStorage.getItem('restore_checkout_form');
 
     if (savedForm) {
       try {
         this.form.patchValue(JSON.parse(savedForm));
-        sessionStorage.removeItem('restore_checkout_form');
+        localStorage.removeItem('restore_checkout_form');
       } catch (e) {
         console.error("Error restoring checkout form:", e);
       }
@@ -319,11 +319,12 @@ export class CheckoutComponent {
           }));
           this.store.dispatch(new SyncCart(syncItems)).subscribe({
             next: () => {
+              this.products(); // Rebuild products FormArray from restored cart
               this.checkout(); // Re-calculate total after restoring cart
             }
           });
         }
-        sessionStorage.removeItem('restore_cart_items');
+        localStorage.removeItem('restore_cart_items');
       } catch (e) {
         console.error("Error restoring cart items:", e);
       }
@@ -368,7 +369,7 @@ export class CheckoutComponent {
   private mapPaymentMethodForBackend(value: string | null | undefined): string | null | undefined {
     if (!value) return value;
     // Map NGOmaster alias to backend key expected by API
-    if (value === 'ngomaster_cashfree') return 'cash_free';
+    // Send actual payment method name to backend
     return value;
   }
 
@@ -601,14 +602,18 @@ export class CheckoutComponent {
     const userData = localStorage.getItem('account');
     const parsedUserData = JSON.parse(userData || '{}')?.user || {};
 
+    const shippingAddress = this.form.value?.shipping_address;
+    const addressString = shippingAddress
+      ? [shippingAddress.street, shippingAddress.city, shippingAddress.state_id, shippingAddress.country_id].filter(Boolean).join(', ')
+      : parsedUserData.address || '';
+
     this.cartService.initiateNgoMasterCashfreeIntent({
       uuid,
-      amount: this.checkoutTotal?.total?.total,
-      currency: 'INR',
       email: parsedUserData.email,
+      total: this.checkoutTotal?.total?.total,
       phone: parsedUserData.phone,
       name: parsedUserData.name,
-      order_id: order_result?.order_number,
+      address: addressString,
     }).subscribe({
       next: (response) => {
         try {
@@ -1059,9 +1064,9 @@ export class CheckoutComponent {
       // Save current cart and form state for potential recovery if user clicks back from payment
       const currentItems = this.store.selectSnapshot(CartState.cartItems);
       if (currentItems && currentItems.length > 0) {
-        sessionStorage.setItem('restore_cart_items', JSON.stringify(currentItems));
+        localStorage.setItem('restore_cart_items', JSON.stringify(currentItems));
       }
-      sessionStorage.setItem('restore_checkout_form', JSON.stringify(this.form.value));
+      localStorage.setItem('restore_checkout_form', JSON.stringify(this.form.value));
 
       const uuid = uuidv4();
 

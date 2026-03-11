@@ -88,8 +88,8 @@ export class CheckoutSuccessComponent {
   ngOnInit() {
     this.products();
     // Clear the restoration state as the order was successful
-    sessionStorage.removeItem('restore_cart_items');
-    sessionStorage.removeItem('restore_checkout_form');
+    localStorage.removeItem('restore_cart_items');
+    localStorage.removeItem('restore_checkout_form');
   }
 
   products() {

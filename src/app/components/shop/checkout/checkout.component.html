@@ -185,19 +185,20 @@
                         </ul>
                     </div>
 
-                    <!-- Payment (Common for both) -->
-                    <div class="payment-options-card">
-                        <div class="checkout-section-title mb-4">
-                            <h2><i class="ri-bank-card-line"></i> {{ 'Payment Method' | translate }}</h2>
-                        </div>
-                        <app-payment-block [setting]="(setting$ | async)!"
-                            (selectPaymentMethod)="selectPaymentMethod($event)"></app-payment-block>
-                    </div>
                 </div>
             </div>
 
-            <!-- Right Sidebar: Order Summary -->
+            <!-- Right Sidebar: Payment + Order Summary -->
             <div class="col-xxl-4 col-xl-5">
+                <!-- Payment (Common for both) -->
+                <div class="payment-options-card mb-4">
+                    <div class="checkout-section-title mb-4">
+                        <h2><i class="ri-bank-card-line"></i> {{ 'Payment Method' | translate }}</h2>
+                    </div>
+                    <app-payment-block [setting]="(setting$ | async)!"
+                        (selectPaymentMethod)="selectPaymentMethod($event)"></app-payment-block>
+                </div>
+
                 <div class="checkout-summary-card">
                     <div class="title-header">
                         <h5>{{ 'Order Summary' | translate }}</h5>
