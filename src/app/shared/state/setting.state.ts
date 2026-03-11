@@ -58,6 +58,7 @@ export class SettingState {
                 name: 'ngomaster_cashfree',
                 status: true,
                 title: 'Cashfree',
+                icon: './assets/images/cash_free.jpg'
               },
             ];
             customValue.payment_methods = customPayments; //[result.values.payment_methods[0]];
