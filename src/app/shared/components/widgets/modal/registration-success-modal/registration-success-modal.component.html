@@ -1,0 +1,20 @@
+<ng-template #registrationSuccessModal let-modal>
+    <div class="modal-body text-center p-4">
+        <div class="success-icon-wrap mb-4 animate-bounce-in">
+            <div class="success-circle">
+                <i class="ri-check-line"></i>
+            </div>
+        </div>
+
+        <h3 class="modal-title mb-2 animate-fade-in">{{ 'Registration Successful!' | translate }}</h3>
+        <p class="modal-description mb-4 animate-fade-in-delayed">
+            {{ 'Thank you for registering with us. Your personal information has been securely saved.' | translate }}
+        </p>
+
+        <div class="modal-footer-btn animate-slide-up">
+            <button class="btn-back-home" (click)="modal.close('Back to Home')">
+                <i class="ri-arrow-left-line me-2"></i>
+                {{ 'Ok' | translate }}
+                </butto </div>
+        </div>
+</ng-template>

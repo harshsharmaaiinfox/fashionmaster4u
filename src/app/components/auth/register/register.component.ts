@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Store, Select } from '@ngxs/store';
@@ -12,6 +12,8 @@ import { Option } from '../../../shared/interface/theme-option.interface';
 import { Values } from '../../../shared/interface/setting.interface';
 import * as data from '../../../shared/data/country-code';
 import { NotificationService } from '../../../shared/services/notification.service';
+import { RegistrationSuccessModalComponent } from '../../../shared/components/widgets/modal/registration-success-modal/registration-success-modal.component';
+import { RegistrationErrorModalComponent } from '../../../shared/components/widgets/modal/registration-error-modal/registration-error-modal.component';
 import { environment } from '../../../../environments/environment';
 
 @Component({
@@ -33,6 +35,9 @@ export class RegisterComponent {
   public tnc = new FormControl(false, [Validators.requiredTrue]);
   public reCaptcha: boolean = true;
   public isLoading: boolean = false;
+
+  @ViewChild("registrationSuccessModal") registrationSuccessModal: RegistrationSuccessModalComponent;
+  @ViewChild("registrationErrorModal") registrationErrorModal: RegistrationErrorModalComponent;
 
 
   constructor(
@@ -155,13 +160,19 @@ export class RegisterComponent {
       this.store.dispatch(new Register(payload)).subscribe({
         complete: () => {
           this.isLoading = false;
-          this.router.navigateByUrl('/account/dashboard');
+          this.registrationSuccessModal.openModal();
         },
-        error: () => {
+        error: (err) => {
           this.isLoading = false;
+          // Check if error is related to existing account
+          if (err && err.message && (err.message.includes('already exist') || err.message.includes('taken'))) {
+             this.registrationErrorModal.openModal();
+          } else {
+             // Fallback to normal error notification if it's not an existing account error
+             this.notificationService.showError(err.message || 'Registration failed');
+          }
         }
-      }
-      );
+      });
     }
   }
 }

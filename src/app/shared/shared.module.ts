@@ -84,6 +84,8 @@ import { ProductDetailModalComponent } from './components/widgets/modal/product-
 import { RefundModalComponent } from './components/widgets/modal/refund-modal/refund-modal.component';
 import { VariantAttributesComponent } from './components/widgets/variant-attributes/variant-attributes.component';
 import { PayModalComponent } from './components/widgets/modal/pay-modal/pay-modal.component';
+import { RegistrationSuccessModalComponent } from './components/widgets/modal/registration-success-modal/registration-success-modal.component';
+import { RegistrationErrorModalComponent } from './components/widgets/modal/registration-error-modal/registration-error-modal.component';
 import { DigitalProductBoxComponent } from './components/widgets/product-box/digital-product-box/digital-product-box.component';
 import { SubscribeFooterComponent } from './components/footer/subscribe-footer/subscribe-footer.component';
 import { LinkBoxComponent } from './components/widgets/menu/link-box/link-box.component';
@@ -181,6 +183,8 @@ import { SearchFilterPipe } from './pipe/search-filter.pipe';
     VariantAttributesComponent,
     SubscribeFooterComponent,
     PayModalComponent,
+    RegistrationSuccessModalComponent,
+    RegistrationErrorModalComponent,
     LinkBoxComponent,
     TitleCasePipe,
     CurrencySymbolPipe,
@@ -254,6 +258,8 @@ import { SearchFilterPipe } from './pipe/search-filter.pipe';
     VariantAttributesComponent,
     SubscribeFooterComponent,
     PayModalComponent,
+    RegistrationSuccessModalComponent,
+    RegistrationErrorModalComponent,
     TitleCasePipe,
     CurrencySymbolPipe,
     SummaryPipe,
