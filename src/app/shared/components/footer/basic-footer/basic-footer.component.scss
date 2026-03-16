@@ -300,6 +300,24 @@
     }
 }
 
+.footer-newsletter-success {
+    font-size: 13px;
+    color: #10b981; // Green
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin: 8px 0 12px;
+}
+
+.footer-newsletter-error {
+    font-size: 13px;
+    color: #ef4444; // Red
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin: 8px 0 12px;
+}
+
 // ── Bottom Bar ───────────────────────────────────────────────
 .footer-bottom-bar {
     background-color: #080f1c;

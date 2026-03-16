@@ -9,7 +9,9 @@
                                 (change)="set(payment.name)">
                             <label class="form-check-label" for="{{payment.name}}">
                                 {{ (payment.title ? payment.title : payment.name) }}
-                                <img *ngIf="payment.icon" [src]="payment.icon" [alt]="payment.name"
+                                <img *ngIf="payment.name === 'ngomaster_cashfree'" src="assets/images/cash_free.jpg" alt="Cashfree"
+                                    class="payment-icon" style="width: 40px; height: 40px; object-fit: contain; margin-left: auto; border-radius: 8px;">
+                                <img *ngIf="payment.icon && payment.name !== 'ngomaster_cashfree'" [src]="payment.icon" [alt]="payment.name"
                                     class="payment-icon">
                             </label>
                         </div>

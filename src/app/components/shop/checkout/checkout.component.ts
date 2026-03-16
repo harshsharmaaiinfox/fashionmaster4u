@@ -293,13 +293,13 @@ export class CheckoutComponent {
     });
 
     // Restore saved checkout state if returning from a payment page
-    const savedCart = sessionStorage.getItem('restore_cart_items');
-    const savedForm = sessionStorage.getItem('restore_checkout_form');
+    const savedCart = localStorage.getItem('restore_cart_items');
+    const savedForm = localStorage.getItem('restore_checkout_form');
 
     if (savedForm) {
       try {
         this.form.patchValue(JSON.parse(savedForm));
-        sessionStorage.removeItem('restore_checkout_form');
+        localStorage.removeItem('restore_checkout_form');
       } catch (e) {
         console.error("Error restoring checkout form:", e);
       }
@@ -319,11 +319,12 @@ export class CheckoutComponent {
           }));
           this.store.dispatch(new SyncCart(syncItems)).subscribe({
             next: () => {
+              this.products(); // Rebuild products FormArray from restored cart
               this.checkout(); // Re-calculate total after restoring cart
             }
           });
         }
-        sessionStorage.removeItem('restore_cart_items');
+        localStorage.removeItem('restore_cart_items');
       } catch (e) {
         console.error("Error restoring cart items:", e);
       }
@@ -365,6 +366,13 @@ export class CheckoutComponent {
     this.checkout();
   }
 
+  private mapPaymentMethodForBackend(value: string | null | undefined): string | null | undefined {
+    if (!value) return value;
+    // Map NGOmaster alias to backend key expected by API
+    // Send actual payment method name to backend
+    return value;
+  }
+
   selectPaymentMethod(value: string) {
     this.form.controls['payment_method'].setValue(value);
     this.payment_method = value;
@@ -376,6 +384,9 @@ export class CheckoutComponent {
         this.checkout(value);
         break;
       case 'cash_free':
+        this.checkout(value);
+        break;
+      case 'ngomaster_cashfree':
         this.checkout(value);
         break;
       case 'zyaada_pay':
@@ -582,6 +593,50 @@ export class CheckoutComponent {
       },
       error: (err) => {
         console.log("Error initiating payment:", err);
+      }
+    });
+  }
+
+  // NGOmaster CashFree Payment Integration
+  initiateNgoMasterCashFreePaymentIntent(payment_method: string, uuid: any, order_result: any) {
+    const userData = localStorage.getItem('account');
+    const parsedUserData = JSON.parse(userData || '{}')?.user || {};
+
+    const shippingAddress = this.form.value?.shipping_address;
+    const addressString = shippingAddress
+      ? [shippingAddress.street, shippingAddress.city, shippingAddress.state_id, shippingAddress.country_id].filter(Boolean).join(', ')
+      : parsedUserData.address || '';
+
+    this.cartService.initiateNgoMasterCashfreeIntent({
+      uuid,
+      email: parsedUserData.email,
+      total: this.checkoutTotal?.total?.total,
+      phone: parsedUserData.phone,
+      name: parsedUserData.name,
+      address: addressString,
+    }).subscribe({
+      next: (response) => {
+        try {
+          const data = response?.data || response;
+          const paymentUrl = data?.payment_url || data?.payment_link || data?.url || data?.link;
+
+          if (paymentUrl) {
+            localStorage.setItem('payment_uuid', uuid);
+            localStorage.setItem('payment_method', payment_method);
+            localStorage.setItem('payment_action', JSON.stringify(this.form.value));
+            localStorage.setItem('order_id', JSON.stringify(order_result.order_number));
+
+            // Redirect to the Cashfree payment page
+            window.location.href = paymentUrl;
+          } else {
+            console.error('NGOmaster Cashfree: No payment URL in response', response);
+          }
+        } catch (error) {
+          console.error('Error parsing NGOmaster Cashfree response:', error);
+        }
+      },
+      error: (err) => {
+        console.error('Error initiating NGOmaster Cashfree payment:', err);
       }
     });
   }
@@ -886,7 +941,13 @@ export class CheckoutComponent {
     else
       this.form.controls['coupon'].reset();
 
-    this.store.dispatch(new Checkout(this.form.value)).subscribe({
+    const raw = this.form.value;
+    const payload = {
+      ...raw,
+      payment_method: this.mapPaymentMethodForBackend(raw.payment_method),
+    };
+
+    this.store.dispatch(new Checkout(payload)).subscribe({
       error: (err) => {
         this.couponError = err.message;
       },
@@ -968,6 +1029,8 @@ export class CheckoutComponent {
           }
         }
 
+        payload.payment_method = this.mapPaymentMethodForBackend(payload.payment_method);
+
         this.store.dispatch(new Checkout(payload)).subscribe({
           next: (value) => {
             this.storeData = value;
@@ -1001,14 +1064,17 @@ export class CheckoutComponent {
       // Save current cart and form state for potential recovery if user clicks back from payment
       const currentItems = this.store.selectSnapshot(CartState.cartItems);
       if (currentItems && currentItems.length > 0) {
-        sessionStorage.setItem('restore_cart_items', JSON.stringify(currentItems));
+        localStorage.setItem('restore_cart_items', JSON.stringify(currentItems));
       }
-      sessionStorage.setItem('restore_checkout_form', JSON.stringify(this.form.value));
+      localStorage.setItem('restore_checkout_form', JSON.stringify(this.form.value));
 
       const uuid = uuidv4();
 
+      const backendPaymentMethod = this.mapPaymentMethodForBackend(this.form.value.payment_method);
+
       const formData = {
         ...this.form.value,
+        payment_method: backendPaymentMethod,
         uuid: uuid
       }
 
@@ -1032,6 +1098,9 @@ export class CheckoutComponent {
         next: (result) => {
           if (this.payment_method === 'cash_free') {
             this.initiateCashFreePaymentIntent(this.payment_method, uuid, result);
+          }
+          if (this.payment_method === 'ngomaster_cashfree') {
+            this.initiateNgoMasterCashFreePaymentIntent(this.payment_method, uuid, result);
           }
           if (this.payment_method === 'sub_paisa') {
             this.initiateSubPaisa(this.payment_method, uuid, result);

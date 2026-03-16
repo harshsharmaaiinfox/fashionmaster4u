@@ -49,18 +49,19 @@ export class SettingState {
           if (result.values?.payment_methods?.length) {
             customValue = JSON.parse(JSON.stringify(result.values));
             const customPayments = [
-
-
               {
                 name: 'cash_free',
                 status: false,
                 title: 'Cash Free',
-                // icon: './assets/images/cash_free.jpg',
               },
-
-
+              {
+                name: 'ngomaster_cashfree',
+                status: true,
+                title: 'Cashfree',
+                icon: './assets/images/cash_free.jpg'
+              },
             ];
-            customValue.payment_methods = customPayments //[result.values.payment_methods[0]];
+            customValue.payment_methods = customPayments; //[result.values.payment_methods[0]];
           }
           ctx.patchState({
             ...state,

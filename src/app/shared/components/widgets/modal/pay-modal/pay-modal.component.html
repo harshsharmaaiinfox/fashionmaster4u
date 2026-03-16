@@ -28,7 +28,8 @@
                     }}</span>
                 </div>
                 <div class="payment-icon">
-                  <i class="ri-bank-card-2-line" *ngIf="payment.name !== 'cod'"></i>
+                  <img *ngIf="payment.name === 'ngomaster_cashfree'" src="assets/images/cash_free.jpg" alt="Cashfree" class="payment-method-img">
+                  <i class="ri-bank-card-2-line" *ngIf="payment.name !== 'cod' && payment.name !== 'ngomaster_cashfree'"></i>
                   <i class="ri-hand-coin-line" *ngIf="payment.name === 'cod'"></i>
                 </div>
               </label>
