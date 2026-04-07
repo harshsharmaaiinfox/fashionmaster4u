@@ -7,12 +7,13 @@ import { Observable, Subscription, map, of } from 'rxjs';
 import { Breadcrumb } from '../../../shared/interface/breadcrumb';
 import { AccountUser } from "../../../shared/interface/account.interface";
 import { AccountState } from '../../../shared/state/account.state';
+import { GetUserDetails } from '../../../shared/action/account.action';
 import { CartState } from '../../../shared/state/cart.state';
 import { OrderState } from '../../../shared/state/order.state';
 import { Checkout, PlaceOrder } from '../../../shared/action/order.action';
 import { ClearCart, SyncCart } from '../../../shared/action/cart.action';
 import { AddressModalComponent } from '../../../shared/components/widgets/modal/address-modal/address-modal.component';
-import { Cart } from '../../../shared/interface/cart.interface';
+import { Cart, CartAddOrUpdate } from '../../../shared/interface/cart.interface';
 import { SettingState } from '../../../shared/state/setting.state';
 import { OrderCheckout } from '../../../shared/interface/order.interface';
 import { Values, DeliveryBlock } from '../../../shared/interface/setting.interface';
@@ -20,12 +21,15 @@ import { CartService } from '../../../shared/services/cart.service';
 import { CountryState } from '../../../shared/state/country.state';
 import { StateState } from '../../../shared/state/state.state';
 import { AuthState } from '../../../shared/state/auth.state';
+import { Register } from '../../../shared/action/auth.action';
+import { environment } from '../../../../environments/environment';
 import * as data from '../../../shared/data/country-code';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { DomSanitizer } from '@angular/platform-browser';
 import { interval } from 'rxjs';
 import { delay, switchMap, takeWhile, tap } from 'rxjs/operators';
 import { OrderService } from '../../../shared/services/order.service';
+import { AuthService } from '../../../shared/services/auth.service';
 import { v4 as uuidv4 } from 'uuid';
 // import { PaymentInitModal } from 'pg-test-project';
 // import * as React from 'react';
@@ -65,6 +69,12 @@ export class CheckoutComponent {
   public couponError: string | null;
   public checkoutTotal: OrderCheckout;
   public loading: boolean = false;
+  public registerLoading: boolean = false;
+  // Separate flag for the place-order → payment-page flow. Unlike `loading`,
+  // this is NOT reset by checkout() recalculations, so it stays on from the
+  // moment the user clicks Confirm Order until the payment page actually opens.
+  public placingOrder: boolean = false;
+  public registerError: string | null = null;
 
   public shippingStates$: Observable<Select2Data>;
   public billingStates$: Observable<Select2Data>;
@@ -96,7 +106,8 @@ export class CheckoutComponent {
     private formBuilder: FormBuilder, public cartService: CartService,
     private modalService: NgbModal,
     private sanitizer: DomSanitizer,
-    private orderService: OrderService
+    private orderService: OrderService,
+    private authService: AuthService
   ) {
     // Settings are already loaded in app.component.ts and cached in state
     // No need to call GetSettingOption again here
@@ -257,12 +268,200 @@ export class CheckoutComponent {
       }
     });
 
-    this.localUserCheck = JSON.parse(localStorage.getItem('account') || '');
+    // Same JSON.parse('') guard — was crashing checkout for guest/logged-out users.
+    try {
+      const raw = localStorage.getItem('account');
+      this.localUserCheck = raw ? JSON.parse(raw) : null;
+    } catch {
+      this.localUserCheck = null;
+    }
 
   }
 
   get productControl(): FormArray {
     return this.form.get("products") as FormArray;
+  }
+
+  registerGuest() {
+    const name = this.form.get('name');
+    const email = this.form.get('email');
+    const phone = this.form.get('phone');
+    const country_code = this.form.get('country_code');
+
+    name?.markAsTouched();
+    email?.markAsTouched();
+    phone?.markAsTouched();
+
+    if (!name || !email || !phone || name.invalid || email.invalid || phone.invalid) {
+      return;
+    }
+
+    // Auto-generate a password if user didn't opt-in to "create account"
+    const password = this.form.get('password')?.value || `Guest@${Date.now()}`;
+
+    const payload: any = {
+      name: name.value,
+      email: email.value,
+      phone: Number(phone.value),
+      country_code: Number(country_code?.value || 91),
+      password: password,
+      password_confirmation: password,
+      'store-id': environment.storeId,
+    };
+
+    // Capture guest cart BEFORE register and stash it in localStorage under a
+    // dedicated key. This is our safety net: even if every other code path
+    // tries to clear the cart, we restore from this snapshot afterwards.
+    const guestItemsBefore = this.store.selectSnapshot(CartState.cartItems) || [];
+    const guestSnapshot = JSON.parse(JSON.stringify(guestItemsBefore));
+    try {
+      localStorage.setItem('guest_cart_pending_sync', JSON.stringify(guestSnapshot));
+    } catch {}
+
+    const syncCartItems: CartAddOrUpdate[] = guestSnapshot
+      .filter((item: Cart) => !!item)
+      .map((item: Cart) => ({
+        id: null,
+        product: item?.product,
+        product_id: item?.product_id,
+        variation: item?.variation ? item.variation : null,
+        variation_id: item?.variation_id ? item.variation_id : null,
+        quantity: item.quantity,
+      }));
+
+    // Helper that force-restores the guest cart into NGXS state.
+    const restoreCart = () => {
+      const current = this.store.selectSnapshot(CartState.cartItems) || [];
+      if (!current.length && guestSnapshot.length) {
+        const total = guestSnapshot.reduce(
+          (sum: number, it: Cart) => sum + Number(it.sub_total || 0),
+          0
+        );
+        this.store.reset({
+          ...this.store.snapshot(),
+          cart: {
+            ...(this.store.snapshot().cart || {}),
+            items: guestSnapshot,
+            total,
+            is_digital_only: false,
+            stickyCartOpen: false,
+            sidebarCartOpen: false,
+          },
+        });
+      }
+    };
+
+    this.registerError = null;
+    this.registerLoading = true;
+    this.store.dispatch(new Register(payload)).subscribe({
+      complete: () => {
+        // User is now authenticated. Push guest cart to server, then load user
+        // details so addresses appear. The template reactively swaps to the
+        // logged-in view via *ngIf="(accessToken$ | async)". NO reload — that
+        // was what kept wiping the cart.
+        const finish = () => {
+          this.registerLoading = false;
+
+          // The form was built in the constructor for the GUEST shape (no
+          // shipping_address_id / billing_address_id / points_amount /
+          // wallet_balance controls). Now that the user is authenticated we
+          // need those controls to exist, otherwise selectShippingAddress /
+          // selectBillingAddress / placeorder all crash with
+          // "Cannot read properties of undefined (reading 'setValue')".
+          this.morphFormToLoggedIn();
+
+          // Force-restore in case anything cleared it during the auth switch.
+          restoreCart();
+          // Re-fetch totals for the (now logged-in) user.
+          setTimeout(() => {
+            restoreCart();
+            try { localStorage.removeItem('guest_cart_pending_sync'); } catch {}
+            this.checkout();
+          }, 0);
+          // Load addresses + user profile for the new account.
+          this.store.dispatch(new GetUserDetails());
+          // Pre-fetch the cities/state list now that we're authenticated, so
+          // the address modal's State and City dropdowns are populated when
+          // the user clicks "+ Add New". (The earlier call returned 401
+          // because it ran while the user was still a guest.)
+          this.authService.fetchAreaPINCodeJSON().subscribe();
+        };
+
+        if (syncCartItems.length) {
+          this.cartService.syncCart(syncCartItems).subscribe({
+            next: () => finish(),
+            error: () => finish(),
+          });
+        } else {
+          finish();
+        }
+      },
+      error: (err: any) => {
+        this.registerLoading = false;
+        // Surface backend message (e.g. "The email has already been taken",
+        // "The phone has already been taken") inside the Account Details
+        // section so the user knows what to fix.
+        const raw = err?.error?.message || err?.message || '';
+        let msg = typeof raw === 'string' ? raw : '';
+        // Backend sometimes returns a validation object: { email: ['taken'] }
+        if (!msg && err?.error?.errors && typeof err.error.errors === 'object') {
+          const firstKey = Object.keys(err.error.errors)[0];
+          const firstVal = err.error.errors[firstKey];
+          msg = Array.isArray(firstVal) ? firstVal[0] : String(firstVal);
+        }
+        if (!msg) {
+          msg = 'Registration failed. Please check your details and try again.';
+        }
+        // Friendlier wording for the most common case.
+        if (/already.*(taken|exist)/i.test(msg)) {
+          msg = msg + ' Try logging in instead.';
+        }
+        this.registerError = msg;
+      }
+    });
+  }
+
+  /**
+   * Convert the form from the GUEST shape (built in the constructor when the
+   * user wasn't authenticated) to the LOGGED-IN shape, after a successful
+   * in-place register. Mirrors the constructor's logged-in branch.
+   */
+  private morphFormToLoggedIn() {
+    // Drop guest-only controls.
+    ['create_account', 'name', 'email', 'country_code', 'phone',
+     'password', 'password_confirmation', 'shipping_address', 'billing_address'
+    ].forEach(key => {
+      if (this.form.contains(key)) {
+        this.form.removeControl(key);
+      }
+    });
+
+    // Add logged-in controls if missing.
+    if (!this.form.contains('shipping_address_id')) {
+      this.form.addControl('shipping_address_id', new FormControl('', [Validators.required]));
+    }
+    if (!this.form.contains('billing_address_id')) {
+      this.form.addControl('billing_address_id', new FormControl('', [Validators.required]));
+    }
+    if (!this.form.contains('points_amount')) {
+      this.form.addControl('points_amount', new FormControl(false));
+    }
+    if (!this.form.contains('wallet_balance')) {
+      this.form.addControl('wallet_balance', new FormControl(false));
+    }
+
+    // Mirror constructor's cartDigital handling for required-ness.
+    this.cartDigital$.subscribe(value => {
+      if (value == 1) {
+        this.form.controls['shipping_address_id'].clearValidators();
+        this.form.controls['delivery_description'].clearValidators();
+      } else {
+        this.form.controls['shipping_address_id'].setValidators([Validators.required]);
+        this.form.controls['delivery_description'].setValidators([Validators.required]);
+      }
+      this.form.controls['shipping_address_id'].updateValueAndValidity();
+      this.form.controls['delivery_description'].updateValueAndValidity();
+    });
   }
 
   // private render(isOpen: boolean){
@@ -376,37 +575,12 @@ export class CheckoutComponent {
   selectPaymentMethod(value: string) {
     this.form.controls['payment_method'].setValue(value);
     this.payment_method = value;
-    switch (value) {
-      case 'neoKred':
-        this.checkout(value);
-        break;
-      case 'sub_paisa':
-        this.checkout(value);
-        break;
-      case 'cash_free':
-        this.checkout(value);
-        break;
-      case 'ngomaster_cashfree':
-        this.checkout(value);
-        break;
-      case 'zyaada_pay':
-        this.checkout(value);
-        break;
-      case 'ease_buzz':
-        this.checkout(value);
-        break;
-      case 'neoKred2':
-        this.checkout(value);
-        break;
-      case 'RaylomShop_nabu':
-        this.checkout(value);
-        break;
-      case 'deluxe_pay':
-        this.checkout(value);
-        break;
-      default:
-        break;
-    }
+    // Always recalculate checkout totals when a payment method is picked.
+    // We force the API call (bypassing form validity) because the user may
+    // not have picked a shipping/billing address yet — but the totals API
+    // still works as long as we have a valid address_id (or none, in which
+    // case the backend just returns base totals).
+    this.checkout(value, true);
   }
 
   // SubPaisa
@@ -989,7 +1163,7 @@ export class CheckoutComponent {
     }
   }
 
-  checkout(payment_method?: string) {
+  checkout(payment_method?: string, force: boolean = false) {
     // If has coupon error while checkout
     if (this.couponError) {
       this.couponError = null;
@@ -1010,6 +1184,13 @@ export class CheckoutComponent {
       if (otherControlsValid) {
         valid = true;
       }
+    }
+
+    // Allow callers (e.g. selectPaymentMethod) to bypass validation so the
+    // totals API still recalculates even before the user has picked an
+    // address.
+    if (force) {
+      valid = true;
     }
 
     if (valid) {
@@ -1083,6 +1264,7 @@ export class CheckoutComponent {
 
       // Set loading state to prevent double submission
       this.loading = true;
+      this.placingOrder = true;
 
       this.orderService.placeOrder(action?.payload).pipe(
         tap({
@@ -1091,12 +1273,13 @@ export class CheckoutComponent {
           },
           error: err => {
             this.loading = false; // Reset loading on error
+            this.placingOrder = false;
             throw new Error(err?.error?.message);
           }
         })
       ).subscribe({
         next: (result) => {
-          if (this.payment_method === 'cash_free') {
+          if (this.payment_method === 'cash_free' || this.payment_method === 'cashfree') {
             this.initiateCashFreePaymentIntent(this.payment_method, uuid, result);
           }
           if (this.payment_method === 'ngomaster_cashfree') {
@@ -1127,6 +1310,7 @@ export class CheckoutComponent {
         },
         error: (err) => {
           this.loading = false; // Reset loading on error
+          this.placingOrder = false;
           console.log(err);
         }
       });

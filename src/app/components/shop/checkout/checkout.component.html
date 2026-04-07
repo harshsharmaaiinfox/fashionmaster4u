@@ -74,6 +74,25 @@
                                         placeholder="{{ '••••••••' | translate }}">
                                 </div>
                             </div>
+                            <div class="col-md-12 mt-3" *ngIf="registerError">
+                                <div class="alert alert-danger py-2 px-3 mb-0" role="alert"
+                                    style="font-size: 0.9rem;">
+                                    {{ registerError }}
+                                </div>
+                            </div>
+                            <div class="col-md-12 mt-3">
+                                <div class="d-flex flex-wrap align-items-center justify-content-between gap-3">
+                                    <button type="button" class="btn theme-bg-color text-white"
+                                        [disabled]="registerLoading"
+                                        (click)="registerGuest()">
+                                        {{ (registerLoading ? 'Registering...' : 'Register') | translate }}
+                                    </button>
+                                    <span>
+                                        {{ 'Already have an account?' | translate }}
+                                        <a [routerLink]="['/auth/login']">{{ 'Login' | translate }}</a>
+                                    </span>
+                                </div>
+                            </div>
                         </form>
                     </div>
 
@@ -190,8 +209,8 @@
 
             <!-- Right Sidebar: Payment + Order Summary -->
             <div class="col-xxl-4 col-xl-5">
-                <!-- Payment (Common for both) -->
-                <div class="payment-options-card mb-4">
+                <!-- Payment (only for logged-in users) -->
+                <div class="payment-options-card mb-4" *ngIf="(accessToken$ | async)">
                     <div class="checkout-section-title mb-4">
                         <h2><i class="ri-bank-card-line"></i> {{ 'Payment Method' | translate }}</h2>
                     </div>
@@ -227,7 +246,7 @@
 
                     <form [formGroup]="form" (ngSubmit)="placeorder()">
                         <div class="custom-box-loader">
-                            <div class="box-loader" *ngIf="loading">
+                            <div class="box-loader" *ngIf="loading || placingOrder">
                                 <app-loader [loaderClass]="'custom-loader-wrapper blur-bg'"></app-loader>
                             </div>
 
@@ -310,9 +329,16 @@
                             </ul>
 
                             <button type="submit" class="btn theme-bg-color mt-4"
-                                [disabled]="loading || !(form.valid && checkoutTotal)">
-                                {{ 'Confirm Order' | translate }}
+                                [disabled]="loading || placingOrder || !(form.valid && checkoutTotal)">
+                                <span *ngIf="placingOrder" class="spinner-border spinner-border-sm me-2"
+                                    role="status" aria-hidden="true"></span>
+                                {{ (placingOrder ? 'Processing...' : 'Confirm Order') | translate }}
                             </button>
+                            <p *ngIf="placingOrder"
+                                class="text-center mt-2 mb-0 small fw-bold"
+                                style="color:#0a4d3c;">
+                                {{ 'Please wait, redirecting to secure payment page. Do not close or refresh this page.' | translate }}
+                            </p>
                         </div>
                     </form>
                 </div>

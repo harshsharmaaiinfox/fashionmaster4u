@@ -32,13 +32,17 @@ export class AddressModalComponent {
   public address: UserAddress | null;
   public codes = data.countryCodes;
 
-  public pinCodeAreaOfficeCircleDataJSON: any;
-  public stateNameData: any;
-  public regionNameData: any;
-  public circleNameData: any;
-  public officeNameData: any; // Area Name
-  public divisionNameData: any;
-  public cityNameData: any; // District Name
+  // Initialize as empty arrays, not undefined. select2's [data] binding
+  // iterates these internally; passing undefined throws "data is not
+  // iterable" if the modal renders before downloadPINAreaExcelJSON() fills
+  // them in.
+  public pinCodeAreaOfficeCircleDataJSON: any[] = [];
+  public stateNameData: any[] = [];
+  public regionNameData: any[] = [];
+  public circleNameData: any[] = [];
+  public officeNameData: any[] = []; // Area Name
+  public divisionNameData: any[] = [];
+  public cityNameData: any[] = []; // District Name
 
   @ViewChild("addressModal", { static: false }) AddressModal: TemplateRef<string>;
   @Select(CountryState.countries) countries$: Observable<Select2Data>;
@@ -74,11 +78,31 @@ export class AddressModalComponent {
       }
     });
 
-    const localUserCheck = JSON.parse(localStorage.getItem('account') || '');
-    if(localUserCheck?.user?.access_token) {
-      
+    // Guard against JSON.parse('') throwing SyntaxError when 'account' isn't
+    // in localStorage (e.g., guest user or right after logout). That crash
+    // aborted the component constructor and left the modal rendering as
+    // empty white boxes with no labels or fields.
+    let localUserCheck: any = null;
+    try {
+      const raw = localStorage.getItem('account');
+      if (raw) {
+        localUserCheck = JSON.parse(raw);
+      }
+    } catch {
+      localUserCheck = null;
     }
-    this.downloadPINAreaExcelJSON();
+    if (localUserCheck?.user?.access_token) {
+
+    }
+    // Only fetch the cities list if the user is authenticated. The endpoint
+    // requires a token, so calling it for guests just produces a 401 and a
+    // misleading "Failed to fetch Pincode and Area data" toast on the
+    // checkout page. The list will be re-fetched in openModal() once the
+    // user logs in / registers and actually opens the address form.
+    const hasToken = !!this.store.selectSnapshot((s: any) => s?.auth?.access_token);
+    if (hasToken) {
+      this.downloadPINAreaExcelJSON();
+    }
 
     this.form.controls['pincode']?.valueChanges
     .pipe(
@@ -136,7 +160,7 @@ export class AddressModalComponent {
               });
             }
 
-            this.form.controls['state_id'].setValue(this.filterPinCodeAreas.length ? this.filterPinCodeAreas[0].label : '');
+            this.form.controls['state_id'].setValue(this.filterPinCodeAreas.length ? this.filterPinCodeAreas[0].StateName : '');
             setTimeout(() => {
               this.form.controls['city'].setValue(this.filterPinCodeAreas.length ? this.filterPinCodeAreas[0].District : '');
               this.form.controls['area'].setValue(this.officeNameData.length ? this.officeNameData[0].label : '');
@@ -171,14 +195,56 @@ export class AddressModalComponent {
   downloadPINAreaExcelJSON() {
     this.authService.fetchAreaPINCodeJSON().subscribe({
       next: (res) => {
-        if(res) {
-          this.pinCodeAreaOfficeCircleDataJSON = res['data'];
-          this.stateNameData = [...new Map(this.pinCodeAreaOfficeCircleDataJSON.map((item: any) => [item.StateName, item])).values()];
-        } else {
-          this.notificationService.showError('Failed to fetch Pincode and Area data');
+        // Guard: response shape can vary (sometimes res.data is the array,
+        // sometimes res itself is the array, sometimes it's missing). Without
+        // this we crash with "data is not iterable" on the spread below.
+        const list: any[] = Array.isArray(res?.data)
+          ? res.data
+          : Array.isArray(res)
+            ? res
+            : [];
+
+        if (!list.length) {
+          // Cached response was malformed — bust the cache and refetch fresh.
+          try { sessionStorage.removeItem('allCitiesList_cache_v1'); } catch {}
+          this.authService.fetchAreaPINCodeJSON(true).subscribe({
+            next: (fresh) => {
+              const freshList: any[] = Array.isArray(fresh?.data)
+                ? fresh.data
+                : Array.isArray(fresh)
+                  ? fresh
+                  : [];
+              if (freshList.length) {
+                this.applyCitiesList(freshList);
+              }
+            }
+          });
+          return;
         }
+
+        this.applyCitiesList(list);
+      },
+      error: () => {
+        // Silently ignore — toast on the checkout page is misleading because
+        // the user can still type their address manually.
       }
     });
+  }
+
+  private applyCitiesList(list: any[]) {
+    this.pinCodeAreaOfficeCircleDataJSON = list;
+    try {
+      this.stateNameData = [
+        ...new Map(
+          list.map((item: any) => [
+            item.StateName,
+            { label: item.StateName, value: item.StateName },
+          ])
+        ).values(),
+      ];
+    } catch {
+      this.stateNameData = [];
+    }
   }
 
   validatePinCode(payload: any) {
@@ -274,6 +340,11 @@ export class AddressModalComponent {
 
   async openModal(value?: UserAddress) {
     this.modalOpen = true;
+    // If the cities list wasn't loaded (e.g. earlier call returned 401 while
+    // user was a guest), re-fetch now that we have an auth token.
+    if (!this.pinCodeAreaOfficeCircleDataJSON || !this.pinCodeAreaOfficeCircleDataJSON.length) {
+      this.downloadPINAreaExcelJSON();
+    }
     this.patchForm(value);
     this.modalService.open(this.AddressModal, {
       ariaLabelledBy: 'address-add-Modal',

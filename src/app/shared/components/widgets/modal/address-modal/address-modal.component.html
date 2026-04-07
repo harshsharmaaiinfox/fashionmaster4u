@@ -53,6 +53,7 @@
           <div>
             <label class="form-label" for="city">{{ 'City' | translate }}</label>
             <select2 class="custom-select" [data]="cityOptions" [placeholder]="'Enter City' | translate"
+              [maxResults]="100" [maxResultsMessage]="'Type to search more...'"
               formControlName="city" (update)="cityChange($event)"></select2>
             <!-- <input class="form-control" id="city" type="text" placeholder="{{ 'Enter City' | translate }}" formControlName="city" /> -->
             <div class="invalid-feedback"
@@ -65,6 +66,8 @@
           <div>
             <label class="form-label" for="city">{{ 'Area' | translate }}</label>
             <select2 class="custom-select" [data]="officeNameData" [placeholder]="'Enter Area' | translate"
+              [minCharForSearch]="3" [maxResults]="30"
+              [maxResultsMessage]="'Keep typing to narrow results...'"
               formControlName="area" (update)="areaChange($event)"></select2>
             <div class="invalid-feedback"
               *ngIf="form?.controls?.['area']?.touched && form.controls['area']?.errors?.['required']">

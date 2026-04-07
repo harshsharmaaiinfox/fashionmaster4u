@@ -95,11 +95,17 @@ export class AccountState {
       tap({
         next: result => {
           const state = ctx.getState();
+          // Guard against state.user.address being undefined for brand-new
+          // users (e.g. just registered, no addresses yet). Spreading
+          // undefined throws "data is not iterable".
+          const existingAddresses = Array.isArray(state.user?.address)
+            ? state.user!.address
+            : [];
           ctx.patchState({
             ...state,
             user: {
               ...state.user!,
-              address: [...state.user?.address!, result],
+              address: [...existingAddresses, result],
             }
           });
         },
