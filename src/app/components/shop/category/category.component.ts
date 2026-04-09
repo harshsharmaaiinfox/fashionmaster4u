@@ -47,12 +47,21 @@ export class CategoryComponent {
 
   constructor(private route: ActivatedRoute,
     private router: Router,
-    private store: Store) {
+    private store: Store,
+    private seoService: SeoService) {
       this.category$.subscribe(category => {
-        this.category = category
-        this.breadcrumb.title = `Category: ${this.category?.name}`
-        this.breadcrumb.items[0].label = this.category?.name
-      })
+        this.category = category;
+        this.breadcrumb.title = `Category: ${this.category?.name}`;
+        this.breadcrumb.items[0].label = this.category?.name;
+      });
+
+      // Update ItemList schema when products are loaded
+      this.product$.subscribe(productModel => {
+        if (productModel?.data && this.category) {
+          const categoryUrl = `https://fashionmaster4u.com/category/${this.category.slug}`;
+          this.seoService.setItemListStructuredData(productModel.data, this.category.name, categoryUrl);
+        }
+      });
   }
 
 

@@ -62,7 +62,7 @@
         <div class="explore-header-line"></div>
         <div class="explore-header-text">
           <span class="explore-eyebrow">Curated Picks</span>
-          <h2 class="explore-title">FEATURED PRODUCTS</h2>
+          <h1 class="explore-title">FEATURED PRODUCTS</h1>
         </div>
         <div class="explore-header-line"></div>
       </div>
@@ -74,15 +74,15 @@
 
       <!-- Row 2: 4 products in middle -->
       <div class="mt-4">
-        <app-theme-product [productIds]="featuredProductIds.middle" [style]="'horizontal'"
-          [slider]="false" [showItem]="4" [productStyle]="'product-solid'" [boxClass]="'product-box-bg'">
+        <app-theme-product [productIds]="featuredProductIds.middle" [style]="'horizontal'" [slider]="false"
+          [showItem]="4" [productStyle]="'product-solid'" [boxClass]="'product-box-bg'">
         </app-theme-product>
       </div>
 
       <!-- Row 3: 4 products on bottom -->
       <div class="mt-4">
-        <app-theme-product [productIds]="featuredProductIds.bottom" [style]="'horizontal'"
-          [slider]="false" [showItem]="4" [productStyle]="'product-solid'" [boxClass]="'product-box-bg'">
+        <app-theme-product [productIds]="featuredProductIds.bottom" [style]="'horizontal'" [slider]="false"
+          [showItem]="4" [productStyle]="'product-solid'" [boxClass]="'product-box-bg'">
         </app-theme-product>
       </div>
     </div>
@@ -111,7 +111,8 @@
       <div class="explore-card explore-card--large" [routerLink]="['/collections']"
         [queryParams]="{category: 'women', sortBy: 'asc'}">
         <div class="explore-card__image">
-          <img [src]="exploreMoreItems[0]?.image" [alt]="exploreMoreItems[0]?.title" class="img-fluid">
+          <img [src]="exploreMoreItems[0]?.image" [alt]="exploreMoreItems[0]?.title" class="img-fluid" width="600"
+            height="800" loading="lazy">
         </div>
         <div class="explore-card__body">
           <span class="explore-card__tag">Featured</span>
@@ -125,7 +126,7 @@
         <div class="explore-card explore-card--small" *ngFor="let item of exploreMoreItems | slice:1"
           [routerLink]="['/collections']" [queryParams]="{category: 'women', sortBy: 'asc'}">
           <div class="explore-card__image">
-            <img [src]="item.image" [alt]="item.title" class="img-fluid">
+            <img [src]="item.image" [alt]="item.title" class="img-fluid" width="400" height="533" loading="lazy">
           </div>
           <div class="explore-card__body">
             <h3 class="explore-card__title">{{ item.title }}</h3>
@@ -151,7 +152,8 @@
 <!-- Shop Now Banner Section End -->
 
 <!-- Top Selling Section Start -->
-<section class="product-section product-section-3" *ngIf="data?.content?.products_list_2?.status || productsList2Ids?.length">
+<section class="product-section product-section-3"
+  *ngIf="data?.content?.products_list_2?.status || productsList2Ids?.length">
   <div class="container-fluid-lg">
     <div class="title-header-main product-small">
       <!-- <app-title [title]="data?.content?.products_list_2?.title" [style]="'simple'">
@@ -163,9 +165,8 @@
         our wide range of categories and shop men's clothing online — from casual essentials to formalwear, outerwear,
         and more.
       </p>  -->
-      <app-theme-product [productIds]="productsList2Ids" [style]="'horizontal'"
-        [slider]="true" [sliderOption]="productSlider6ItemMargin" [productStyle]="'product-solid'"
-        [boxClass]="'product-box-bg'">
+      <app-theme-product [productIds]="productsList2Ids" [style]="'horizontal'" [slider]="true"
+        [sliderOption]="productSlider6ItemMargin" [productStyle]="'product-solid'" [boxClass]="'product-box-bg'">
       </app-theme-product>
     </div>
   </div>
@@ -177,7 +178,8 @@
   <div class="promo-banner-container">
 
     <!-- Background Image -->
-    <img src="assets/images/bottom-banner.png" alt="Shop The Collection" class="promo-banner-image">
+    <img src="assets/images/bottom-banner.png" alt="Shop The Collection" class="promo-banner-image" width="1600"
+      height="500" loading="lazy">
 
     <!-- Dark gradient overlay -->
     <div class="promo-banner-overlay"></div>
@@ -224,7 +226,8 @@
 
 
 <!-- Top Selling Section Start -->
-<section class="product-section product-section-3" *ngIf="data?.content?.products_list_3?.status || productsList3Ids?.length">
+<section class="product-section product-section-3"
+  *ngIf="data?.content?.products_list_3?.status || productsList3Ids?.length">
   <div class="container-fluid-lg">
     <div>
       <!-- <app-title [title]="data?.content?.products_list_3?.title" [style]="'simple'">
@@ -232,9 +235,8 @@
       <p class="p-text-main">Our womenswear collection is Affordable, Stylish & On-Trend . From elegantly casual to
         eye-catching styles, explore unique womenswear for those who are always styled-up. Go ahead and combine
         fashion-forward with effortless chic for any occasion.</p> -->
-      <app-theme-product [productIds]="productsList3Ids" [style]="'horizontal'"
-        [slider]="true" [sliderOption]="productSlider6ItemMargin" [productStyle]="'product-solid'"
-        [boxClass]="'product-box-bg'">
+      <app-theme-product [productIds]="productsList3Ids" [style]="'horizontal'" [slider]="true"
+        [sliderOption]="productSlider6ItemMargin" [productStyle]="'product-solid'" [boxClass]="'product-box-bg'">
       </app-theme-product>
     </div>
   </div>

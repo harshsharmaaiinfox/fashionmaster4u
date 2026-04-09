@@ -25,68 +25,44 @@
   <!-- Aherf-->
   <script src="https://analytics.ahrefs.com/analytics.js" data-key="qeDXYCWwt8svtIm9eODy4A" async></script>
 
+  <link rel="preload" as="image" href="assets/images/banner.webp" fetchpriority="high">
+
   <base href="/">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <!-- HTML Meta Tags   -->
-  <title>FashionMaster4U</title>
-  <meta name="title" content="FashionMaster4U">
+  <title>Buy Stylish Men’s & Women’s Clothing Online in India | FashionMaster4u</title>
+  <meta name="title" content="Buy Stylish Men’s & Women’s Clothing Online in India | FashionMaster4u">
   <meta name="description"
-    content="Discover new season shirts jackets suits denim and more at  FashionMaster4U. Premium quality fast shipping across India COD and easy returns.">
+    content="Explore the latest fashion for men and women at FashionMaster4u. Shop trendy t-shirts, dresses, hoodies and more at prices you’ll love. Style made simple.">
+  <meta name="keywords" content="fashionmaster4u, online clothing store India, men clothing online, women clothing online, trendy fashion India, affordable fashion India, buy t shirts online, hoodies for men India, dresses for women India, stylish outfits men women, latest fashion trends India, casual wear online India, budget fashion store, streetwear India, online fashion shopping India">
   <meta name="google-site-verification" content="WbUPnzaqiwAwaHCNsfdWrzqEkdaFhXGT1YN-G4DJ8Rc" />
   <meta name="msvalidate.01" content="1077BA54A21353B678FD2C381FDDD029" />
   <script>
-    // Ensure meta tags are set immediately
-    document.addEventListener('DOMContentLoaded', function () {
-      // Check if we're on a product page - if so, don't override
-      const currentUrl = window.location.pathname;
-      if (currentUrl.includes('/product/')) {
-        console.log('🚫 Skipping default meta tag updates - on product page');
-        return;
-      }
+    // Optimized meta tag updates
+    (function() {
+      const updateMeta = () => {
+        const currentUrl = window.location.pathname;
+        if (currentUrl.includes('/product/')) return;
 
-      // Update title
-      document.title = 'FashionMaster4U';
+        const title = 'Buy Stylish Men’s & Women’s Clothing Online in India | FashionMaster4u';
+        const desc = 'Explore the latest fashion for men and women at FashionMaster4u. Shop trendy t-shirts, dresses, hoodies and more at prices you’ll love. Style made simple.';
+        
+        document.title = title;
+        document.querySelector('meta[name="title"]')?.setAttribute('content', title);
+        document.querySelector('meta[name="description"]')?.setAttribute('content', desc);
+        document.querySelector('meta[property="og:title"]')?.setAttribute('content', title);
+        document.querySelector('meta[property="og:description"]')?.setAttribute('content', desc);
+        document.querySelector('meta[property="twitter:title"]')?.setAttribute('content', title);
+        document.querySelector('meta[property="twitter:description"]')?.setAttribute('content', desc);
+      };
 
-      // Update meta tags
-      let titleMeta = document.querySelector('meta[name="title"]');
-      if (titleMeta) {
-        titleMeta.setAttribute('content', 'FashionMaster4U');
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', updateMeta);
+      } else {
+        updateMeta();
       }
-
-      let descMeta = document.querySelector('meta[name="description"]');
-      if (descMeta) {
-        descMeta.setAttribute('content', 'Discover new season shirts jackets suits denim and more at fashionmaster4u supplier. Premium quality fast shipping across India COD and easy returns.');
-      }
-
-      // Update Open Graph tags
-      let ogTitle = document.querySelector('meta[property="og:title"]');
-      if (ogTitle) {
-        ogTitle.setAttribute('content', 'FashionMaster4U');
-      }
-
-      let ogDesc = document.querySelector('meta[property="og:description"]');
-      if (ogDesc) {
-        ogDesc.setAttribute('content', 'Discover new season shirts jackets suits denim and more at FashionMaster4U. Premium quality fast shipping across India COD and easy returns.');
-      }
-
-      // Update Twitter tags
-      let twitterTitle = document.querySelector('meta[property="twitter:title"]');
-      if (twitterTitle) {
-        twitterTitle.setAttribute('content', 'fashionmaster4u supplier Premium Mens and Womens Fashion Online');
-      }
-
-      let twitterDesc = document.querySelector('meta[property="twitter:description"]');
-      if (twitterDesc) {
-        twitterDesc.setAttribute('content', 'Discover new season shirts jackets suits denim and more at fashionmaster4u supplier. Premium quality fast shipping across India COD and easy returns.');
-      }
-
-      // Update Favicon
-      let favIcon = document.getElementById('appIcon');
-      if (favIcon) {
-        favIcon.setAttribute('href', 'assets/images/fashion4ufav.png?v=fashion4u-2');
-      }
-    });
+    })();
   </script>
 
 
@@ -98,7 +74,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link
-    href="https://fonts.googleapis.com/css2?family=BBH+Bartle&family=BBH+Bogle&family=DM+Sans:ital,opsz,wght@1,9..40,100..1000&family=Geom:ital,wght@0,300..900;1,300..900&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Outfit:wght@100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Rubik:ital,wght@0,300..900;1,300..900&family=Titillium+Web:ital,wght@0,200;0,300;0,400;0,600;0,700;0,900;1,200;1,300;1,400;1,600;1,700&display=swap"
+    href="https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Rubik:ital,wght@0,300..900;1,300..900&family=Titillium+Web:ital,wght@0,200;0,300;0,400;0,600;0,700;0,900;1,200;1,300;1,400;1,600;1,700&display=swap"
     rel="stylesheet">
 
   <!-- Remix Icon -->

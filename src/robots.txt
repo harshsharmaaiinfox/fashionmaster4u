@@ -1,23 +1,28 @@
 User-agent: *
+
+# Allow full site access by default
 Allow: /
 
-# Sitemap
-Sitemap: https://FashionMaster4u.com/sitemap.xml
-
-# Disallow admin and private areas
+# Disallow sensitive & non-SEO sections
 Disallow: /admin/
 Disallow: /private/
 Disallow: /api/
-Disallow: /_next/
-Disallow: /static/
+Disallow: /cart/
+Disallow: /checkout/
+Disallow: /account/
+Disallow: /login
+Disallow: /register
+Disallow: /search
 
-# Allow important pages
+# Allow important SEO pages
 Allow: /about-us
 Allow: /contact-us
-Allow: /blog
-Allow: /products
-Allow: /categories
+Allow: /collections/
+Allow: /products/
+Allow: /categories/
 
-# Crawl delay (optional)
+# Sitemap
+Sitemap: https://fashionmaster4u.com/sitemap.xml
+
+# Crawl delay (optional, mostly ignored by Google)
 Crawl-delay: 1
-

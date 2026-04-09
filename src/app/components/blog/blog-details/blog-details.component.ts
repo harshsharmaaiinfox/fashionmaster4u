@@ -30,10 +30,14 @@ export class BlogDetailsComponent {
   constructor(private seoService: SeoService,
     private route: ActivatedRoute){
     this.blog$.subscribe(blog => {
-      this.breadcrumb.items = [];
-      this.breadcrumb.title = blog.title;
-      this.breadcrumb.items.push({ label: 'Blog', active: true }, { label: blog.title, active: false });
-      // this.seoService.seo();
+      if (blog) {
+        this.breadcrumb.items = [];
+        this.breadcrumb.title = blog.title;
+        this.breadcrumb.items.push({ label: 'Blog', active: true }, { label: blog.title, active: false });
+        
+        // Set Article Schema Markup
+        this.seoService.setArticleStructuredData(blog);
+      }
     });
 
     // For Demo Purpose only

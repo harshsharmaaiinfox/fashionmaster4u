@@ -195,19 +195,54 @@ export class SeoService {
 
   /**
    * Set structured data (JSON-LD)
+   * Enhanced for SSR and multiple schema blocks support
    */
-  setStructuredData(data: any): void {
-    // Remove existing structured data
-    const existingScript = document.querySelector('script[type="application/ld+json"]');
-    if (existingScript) {
-      existingScript.remove();
-    }
+  setStructuredData(data: any, schemaType: string = 'generic'): void {
+    const scriptId = `schema-${schemaType}`;
 
-    // Add new structured data
-    const script = document.createElement('script');
-    script.type = 'application/ld+json';
-    script.text = JSON.stringify(data);
-    document.head.appendChild(script);
+    if (isPlatformBrowser(this.platformId)) {
+      // Remove existing script of this type if it exists
+      const existingScript = this.document.getElementById(scriptId);
+      if (existingScript) {
+        existingScript.remove();
+      }
+
+      // Add new structured data
+      const script = this.document.createElement('script');
+      script.id = scriptId;
+      script.type = 'application/ld+json';
+      script.text = JSON.stringify(data);
+      this.document.head.appendChild(script);
+    } else if (isPlatformServer(this.platformId)) {
+      // For SSR, we append to the head directly
+      const script = this.document.createElement('script');
+      script.setAttribute('id', scriptId);
+      script.setAttribute('type', 'application/ld+json');
+      script.textContent = JSON.stringify(data);
+      this.document.head.appendChild(script);
+    }
+  }
+
+  /**
+   * Set website structured data for search boxes
+   */
+  setWebsiteStructuredData(): void {
+    const structuredData = {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "name": "FashionMaster4u",
+      "url": "https://fashionmaster4u.com",
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": {
+          "@type": "EntryPoint",
+          "urlTemplate": "https://fashionmaster4u.com/collections?search={search_term_string}"
+        },
+        "query-input": "required name=search_term_string"
+      }
+    };
+
+    this.setStructuredData(structuredData, 'website');
   }
 
   /**
@@ -231,9 +266,9 @@ export class SeoService {
       "@context": "https://schema.org",
       "@type": "Product",
       "name": product.name,
-      "description": product.description || product.short_description,
-      "sku": product.sku,
-      "image": images.length > 0 ? images : undefined,
+      "description": this.stripHtmlTags(product.description || product.short_description || product.name),
+      "sku": product.sku || `FM-${product.id}`,
+      "image": images.length > 0 ? images : ["https://fashionmaster4u.com/assets/images/fashionmaster.png"],
       "brand": {
         "@type": "Brand",
         "name": product.brand?.name || "FashionMaster4u"
@@ -243,7 +278,7 @@ export class SeoService {
         "price": product.sale_price || product.price,
         "priceCurrency": product.currency || "INR",
         "availability": product.stock_status === 'in_stock' ? "https://schema.org/InStock" : "https://schema.org/OutOfStock",
-        "url": product.url,
+        "url": product.url || `https://fashionmaster4u.com/product/${product.slug || product.id}`,
         "itemCondition": "https://schema.org/NewCondition",
         "seller": {
           "@type": "Organization",
@@ -256,11 +291,13 @@ export class SeoService {
       structuredData.aggregateRating = {
         "@type": "AggregateRating",
         "ratingValue": product.aggregateRating.rating,
-        "reviewCount": product.aggregateRating.reviewCount
+        "reviewCount": product.aggregateRating.reviewCount,
+        "bestRating": "5",
+        "worstRating": "1"
       };
     }
 
-    this.setStructuredData(structuredData);
+    this.setStructuredData(structuredData, 'product');
   }
 
   /**
@@ -270,22 +307,46 @@ export class SeoService {
     const structuredData = {
       "@context": "https://schema.org",
       "@type": "Organization",
-      "name": "Ecomus",
-      "url": "https://FashionMaster4u.com",
-      "logo": "https://FashionMaster4u.com/assets/images/logo.png",
+      "name": "FashionMaster4u",
+      "url": "https://fashionmaster4u.com",
+      "logo": "https://fashionmaster4u.com/assets/images/fashionmaster.png",
       "sameAs": [
-        "https://facebook.com/ecomus",
-        "https://twitter.com/ecomus",
-        "https://instagram.com/ecomus"
+        "https://www.facebook.com/fashionmaster4u",
+        "https://www.instagram.com/fashionmaster4u",
+        "https://twitter.com/fashionmaster4u"
       ],
       "contactPoint": {
         "@type": "ContactPoint",
-        "telephone": "+1-555-123-4567",
-        "contactType": "customer service"
+        "telephone": "+91-8447543032",
+        "contactType": "customer service",
+        "areaServed": "IN",
+        "availableLanguage": ["en", "hi"]
       }
     };
 
-    this.setStructuredData(structuredData);
+    this.setStructuredData(structuredData, 'organization');
+  }
+
+  /**
+   * Set ItemList structured data for collections/categories
+   */
+  setItemListStructuredData(products: any[], categoryName: string, categoryUrl: string): void {
+    if (!products || products.length === 0) return;
+
+    const structuredData = {
+      "@context": "https://schema.org",
+      "@type": "ItemList",
+      "name": categoryName,
+      "url": categoryUrl,
+      "numberOfItems": products.length,
+      "itemListElement": products.map((product, index) => ({
+        "@type": "ListItem",
+        "position": index + 1,
+        "url": `https://fashionmaster4u.com/product/${product.slug || product.id}`
+      }))
+    };
+
+    this.setStructuredData(structuredData, 'itemlist');
   }
 
   /**
@@ -303,7 +364,7 @@ export class SeoService {
       }))
     };
 
-    this.setStructuredData(structuredData);
+    this.setStructuredData(structuredData, 'breadcrumb');
   }
 
   /**
@@ -314,25 +375,29 @@ export class SeoService {
       "@context": "https://schema.org",
       "@type": "Article",
       "headline": article.title,
-      "description": article.description,
-      "image": article.image,
+      "description": this.stripHtmlTags(article.description || article.content || article.title),
+      "image": article.image || "https://fashionmaster4u.com/assets/images/fashionmaster.png",
       "author": {
         "@type": "Person",
-        "name": article.author
+        "name": article.author || "FashionMaster4u Team"
       },
       "publisher": {
         "@type": "Organization",
-        "name": "Ecomus",
+        "name": "FashionMaster4u",
         "logo": {
           "@type": "ImageObject",
-          "url": "https://FashionMaster4u.com/assets/images/logo.png"
+          "url": "https://fashionmaster4u.com/assets/images/fashionmaster.png"
         }
       },
-      "datePublished": article.publishedDate,
-      "dateModified": article.modifiedDate
+      "datePublished": article.publishedDate || article.created_at,
+      "dateModified": article.modifiedDate || article.updated_at || article.created_at,
+      "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": `https://fashionmaster4u.com/blog/${article.slug || article.id}`
+      }
     };
 
-    this.setStructuredData(structuredData);
+    this.setStructuredData(structuredData, 'article');
   }
 
   /**
@@ -443,11 +508,11 @@ export class SeoService {
 
     console.log('✅ Setting default SEO for non-product page:', currentUrl);
     this.setSEOData({
-      title: 'FashionMaster4u Premium Mens and Womens Fashion Online',
-      description: 'Discover new season shirts jackets suits denim and more at FashionMaster4u. Premium quality fast shipping across India COD and easy returns.',
-      keywords: 'activewear, gym wear, joggers, men\'s clothes, women\'s clothes, stylish outfits, comfort fit, performance clothing, FashionMaster4u',
+      title: 'Buy Stylish Men’s & Women’s Clothing Online in India | FashionMaster4u',
+      description: 'Explore the latest fashion for men and women at FashionMaster4u. Shop trendy t-shirts, dresses, hoodies and more at prices you’ll love. Style made simple.',
+      keywords: 'fashionmaster4u, online clothing store India, men clothing online, women clothing online, trendy fashion India, affordable fashion India, buy t shirts online, hoodies for men India, dresses for women India, stylish outfits men women, latest fashion trends India, casual wear online India, budget fashion store, streetwear India, online fashion shopping India',
       type: 'website',
-      url: 'https://FashionMaster4u.com/'
+      url: 'https://fashionmaster4u.com/'
     });
     this.setFavicon('assets/images/fashion4ufav.png');
   }

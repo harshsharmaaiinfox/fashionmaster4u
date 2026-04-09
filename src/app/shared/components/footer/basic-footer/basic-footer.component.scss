@@ -413,3 +413,53 @@
         font-size: 18px;
     }
 }
+
+// ── SEO Content Section ──────────────────────────────────────
+.footer-seo-content {
+    margin-top: 32px;
+    padding-top: 32px;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    color: #ffffff;
+    padding-bottom: 20px;
+
+    .seo-section {
+        margin-bottom: 24px;
+
+        &:last-child {
+            margin-bottom: 0;
+        }
+    }
+
+    h4 {
+        font-size: 16px;
+        font-weight: 600;
+        margin-bottom: 12px;
+        color: #ffffff;
+        letter-spacing: 0.3px;
+        text-transform: none;
+    }
+
+    p {
+        font-size: 14px;
+        line-height: 1.8;
+        color: rgba(255, 255, 255, 0.9);
+        margin-bottom: 0;
+        text-align: justify;
+
+        strong {
+            color: #ffffff;
+            font-weight: 600;
+        }
+
+        a {
+            color: #ffffff;
+            text-decoration: underline;
+            text-underline-offset: 3px;
+            transition: opacity 0.2s ease;
+
+            &:hover {
+                opacity: 0.8;
+            }
+        }
+    }
+}

@@ -8,7 +8,7 @@
             <img [src]="product.product_thumbnail ?
                 product.product_thumbnail.original_url : 
                 'assets/images/product.png'"
-                class="bg-img img-fluid">
+                class="bg-img img-fluid" width="300" height="300" loading="lazy">
         </a>
         <a href="javascript:void(0)" *ngIf="!close" class="heart-icon" [class.theme-color]="product.is_wishlist" (click)="addToWishlist(product)">
             <i class="ri-heart-{{product.is_wishlist ? 'fill' : 'line' }}"></i>

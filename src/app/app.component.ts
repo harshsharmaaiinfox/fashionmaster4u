@@ -141,6 +141,10 @@ export class AppComponent implements OnInit {
   ngOnInit() {
     // Set default SEO data
     this.seoService.updateDefaultSeo();
+
+    // Set Global Schema Markup
+    this.seoService.setOrganizationStructuredData();
+    this.seoService.setWebsiteStructuredData();
   }
 
   loadScript(val: Analytics): void {

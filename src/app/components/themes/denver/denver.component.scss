@@ -52,6 +52,17 @@
   width: 100%;
   height: auto;
   display: block;
+  object-fit: cover;
+  object-position: center;
+
+  @media (max-width: 768px) {
+    min-height: 250px; // Ensure the banner has impact on mobile
+  }
+
+  @media (max-width: 480px) {
+    min-height: 200px; // Maintain readable height on small phones
+    object-position: 70% center; // Slight shift if needed to keep the text box centered
+  }
 }
 
 .hero-banner-content {
@@ -467,13 +478,16 @@
     overflow: visible;
     --bs-gutter-x: 0.5rem;
     --bs-gutter-y: 0.5rem;
+
     @media (min-width: 768px) {
       --bs-columns: 4;
     }
+
     @media (min-width: 576px) and (max-width: 767px) {
       --bs-columns: 2;
     }
-    > div {
+
+    >div {
       min-width: 0; // allow flex shrink so all 4 fit
     }
   }
@@ -488,16 +502,21 @@
     .product-image {
       aspect-ratio: 4/5;
     }
+
     .product-detail {
       padding: 12px 14px;
+
       .name {
         font-size: 14px;
       }
+
       .current-price {
         font-size: 15px;
       }
+
       .add-to-cart-box {
         min-height: 40px;
+
         ::ng-deep .btn-add-cart {
           height: 40px !important;
           font-size: 12px !important;
