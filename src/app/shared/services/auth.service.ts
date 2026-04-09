@@ -1,6 +1,7 @@
 import { Injectable } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
-import { Observable } from "rxjs";
+import { Observable, of } from "rxjs";
+import { shareReplay, tap } from "rxjs/operators";
 import { environment } from "../../../environments/environment";
 import { AuthNumberLoginState, AuthStateModal, AuthUserForgotModel, AuthUserStateModel, AuthVerifyNumberOTPState, RegisterModal, UpdatePasswordModel, VerifyEmailOtpModel } from "../interface/auth.interface";
 
@@ -50,9 +51,44 @@ export class AuthService {
     return this.http.post(`${environment.URL}/validPincode`, payload);
   }
 
-  fetchAreaPINCodeJSON(): Observable<any> {
-    return this.http.get<any>(`${environment.URL}/allCitiesList`);
-    // return this.http.get<any>(`assets/pincode_cleaned.json`);
+  // In-memory cache (across navigations within the SPA) and a sessionStorage
+  // mirror (survives full page reloads within the same browser tab). The
+  // /allCitiesList payload is large and rarely changes, so we fetch it at
+  // most once per browser session.
+  private citiesCache$: Observable<any> | null = null;
+  private static readonly CITIES_CACHE_KEY = 'allCitiesList_cache_v1';
+
+  fetchAreaPINCodeJSON(forceRefresh: boolean = false): Observable<any> {
+    if (forceRefresh) {
+      this.citiesCache$ = null;
+      try { sessionStorage.removeItem(AuthService.CITIES_CACHE_KEY); } catch {}
+    }
+
+    if (this.citiesCache$) {
+      return this.citiesCache$;
+    }
+
+    // Try sessionStorage (survives reloads within the same tab).
+    try {
+      const cached = sessionStorage.getItem(AuthService.CITIES_CACHE_KEY);
+      if (cached) {
+        const parsed = JSON.parse(cached);
+        this.citiesCache$ = of(parsed).pipe(shareReplay(1));
+        return this.citiesCache$;
+      }
+    } catch {}
+
+    this.citiesCache$ = this.http.get<any>(`${environment.URL}/allCitiesList`).pipe(
+      tap(res => {
+        try {
+          sessionStorage.setItem(AuthService.CITIES_CACHE_KEY, JSON.stringify(res));
+        } catch {
+          // sessionStorage may be full or unavailable; ignore.
+        }
+      }),
+      shareReplay(1),
+    );
+    return this.citiesCache$;
   }
 
 
