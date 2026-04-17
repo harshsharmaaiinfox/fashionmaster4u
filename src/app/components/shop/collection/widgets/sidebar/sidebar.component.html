@@ -68,6 +68,34 @@
           </div>
         </div>
       </div>
+        <!-- Size Filter -->
+        <div class="accordion-item" ngbAccordionItem [collapsed]="false" *ngIf="!hideFilter?.includes('size')">
+          <h2 class="accordion-header" ngbAccordionHeader>
+            <button class="accordion-button" type="button" ngbAccordionButton>
+              <span>{{ 'size' | translate }}</span>
+            </button>
+          </h2>
+          <div ngbAccordionCollapse>
+            <div class="accordion-body" ngbAccordionBody>
+              <ul class="category-list custom-padding custom-height">
+                <li *ngFor="let size of sizeOptions">
+                  <div class="form-check ps-0 m-0 category-list-box">
+                    <input
+                      class="checkbox_animated"
+                      type="checkbox"
+                      [id]="'size-filter' + size"
+                      [value]="size"
+                      [checked]="checkedSize(size)"
+                      (change)="onSizeToggle($event)">
+                    <label class="form-check-label" [for]="'size-filter' + size">
+                      <span class="name">{{ size }}</span>
+                    </label>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
       <!-- <div class="accordion-item" ngbAccordionItem [collapsed]="false" *ngIf="!hideFilter?.includes('rating')">
         <h2 class="accordion-header" ngbAccordionHeader>
           <button class="accordion-button" ngbAccordionButton>

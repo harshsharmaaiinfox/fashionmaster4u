@@ -34,6 +34,7 @@ export class CollectionComponent {
     'status': 1,
     'field': 'created_at',
     'price': '',
+    'size': '',
     'category': '',
     'tag': '',
     'sort': 'asc', // ASC, DSC
@@ -57,6 +58,7 @@ export class CollectionComponent {
         'paginate': 40,
         'status': 1,
         'price': params['price'] ? params['price'] : '',
+        'size': params['size'] ? params['size'] : '',
         'brand': params['brand'] ? params['brand'] : '',
         'category': params['category'] ? params['category'] : '',
         'tag': params['tag'] ? params['tag'] : '',

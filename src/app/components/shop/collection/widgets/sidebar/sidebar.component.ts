@@ -1,4 +1,5 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnChanges } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Store, Select } from '@ngxs/store';
 import { Observable } from 'rxjs';
 import { AttributeService } from '../../../../../shared/services/attribute.service';
@@ -15,7 +16,10 @@ import { GetBrands } from '../../../../../shared/action/brand.action';
   templateUrl: './sidebar.component.html',
   styleUrls: ['./sidebar.component.scss']
 })
-export class CollectionSidebarComponent {
+export class CollectionSidebarComponent implements OnChanges {
+  // Size filter options
+  sizeOptions: string[] = ['S', 'M', 'L', 'XL', 'XXL'];
+  selectedSizes: string[] = [];
 
   @Input() filter: Params;
   @Input() hideFilter: string[];
@@ -23,14 +27,46 @@ export class CollectionSidebarComponent {
   @Select(AttributeState.attribute) attribute$: Observable<AttributeModel>;
   @Select(BrandState.brand) brand$: Observable<BrandModel>;
 
-  constructor(private store: Store,
+  constructor(
+    private route: ActivatedRoute,
+    private router: Router,
+    private store: Store,
     public attributeService: AttributeService) {
     this.store.dispatch(new GetAttributes({ status: 1}));
     this.store.dispatch(new GetBrands({status: 1}));
+  }
+
+  ngOnChanges() {
+    this.selectedSizes = this.filter?.['size'] ? String(this.filter['size']).split(',') : [];
   }
 
   closeCanvasMenu() {
     this.attributeService.offCanvasMenu = false;
   }
 
+  // Handle size filter toggle
+  onSizeToggle(event: Event) {
+    const checkbox = event.target as HTMLInputElement;
+    const size = checkbox.value;
+    const index = this.selectedSizes.indexOf(size);
+
+    if (checkbox.checked && index === -1) this.selectedSizes.push(size);
+    if (!checkbox.checked && index !== -1) this.selectedSizes.splice(index, 1);
+
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: {
+        size: this.selectedSizes.length ? this.selectedSizes.join(',') : null,
+        page: 1
+      },
+      queryParamsHandling: 'merge',
+      skipLocationChange: false
+    });
+  }
+
+  checkedSize(size: string) {
+    return this.selectedSizes.indexOf(size) !== -1;
+  }
 }
+
+

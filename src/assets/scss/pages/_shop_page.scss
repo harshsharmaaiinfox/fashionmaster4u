@@ -202,6 +202,9 @@
 
 .category-list {
   @include flex_wrap($dis: flex, $wrap: wrap, $gap: 0);
+  list-style: none;
+  padding-left: 0;
+  margin: 0;
 
   body.rtl & {
     padding-right: 0;
